@@ -82,10 +82,10 @@ La puntuación del juego es muy sencilla. Cada vez que se gana una partida se a�
 ### Guardar y cargar partida
 Debido a la sencillez y velocidad de las partidas, este juego no permite ni cargar ni guardar partidas.
 
-## Estados del juego
+## Estados del juego e interfaces
 El siguiente diagrama describe los estados (pantallas) que tiene aljuego y como se pasa de unas a otras:
 
-## Interfaces
+![](img/Interfaces.png)
 
 ## Niveles
 Los niveles del juego en esta caso son los mapas. Estos mapas se pretende que sean generados de manera semialeatoria, siempre manteniendo una ponderación de distancias para permitir que ambosjugadores tengan las mismas oportunidades de ganar.
@@ -94,13 +94,13 @@ Esto mapas estarán creados como matriz cuadrada en la que solo se crearán medi
 
 Estos mapas tendrán un aspecto similar a este:
 
+![](img/Map.png)
+
 ## Progeso del juego
 El juego debido a su caracter arcade no tiene ninguntipo de progresión ya que esta pensado para partidas cortas y divertidas.
 
 ## Música y sonido
 Manteniendo el estilo 8-bit mencionado para el apartado artístico, la música y sonido seguirá este mismo concepto. Sonido ligeros y chiptune que recuerden a juegos retro como "*Contra*", "*Pac-Man*", "*Pong*", etc. 
-
-## Concepts
 
 ## Detalles de producción
 +**Fecha de inicio:** 24/09/2018
