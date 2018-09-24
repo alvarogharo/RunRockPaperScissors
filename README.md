@@ -86,6 +86,8 @@ El siguiente diagrama describe los estados (pantallas) que tiene al juego y como
 
 ![](img/Interfaces.png)
 
+![](img/Interfaces2.png)
+
 ## Niveles
 Los niveles del juego en esta caso son los mapas. Estos mapas se pretende que sean generados de manera semialeatoria, siempre manteniendo una ponderación de distancias para permitir que ambos jugadores tengan las mismas oportunidades de ganar.
 
