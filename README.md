@@ -101,6 +101,10 @@ El juego debido a su carácter arcade no tiene ningún tipo de progresión ya qu
 ## Música y sonido
 Manteniendo el estilo 8-bit mencionado para el apartado artístico, la música y sonido seguirá este mismo concepto. Sonido ligeros y chiptune que recuerden a juegos retro como "*Contra*", "*Pac-Man*", "*Pong*", etc. 
 
+## Assets
+
+![](img/Assets.png)
+
 ## Detalles de producción
 +**Fecha de inicio:** 24/09/2018
 
