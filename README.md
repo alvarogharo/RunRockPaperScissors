@@ -103,6 +103,9 @@ Manteniendo el estilo 8-bit mencionado para el apartado artístico, la música y
 
 ## Assets
 
+Los assets que se readilizarán guardando un estilo simplista para intentar conseguir un acabado lo mas cercano a los 8 bits.
+Se pretende conseguir con poca cantidad de elementos pero muy concretos, como los que se muestran a continuación:
+
 ![](img/Assets.png)
 
 ## Detalles de producción
