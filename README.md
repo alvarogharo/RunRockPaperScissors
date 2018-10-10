@@ -6,6 +6,10 @@
 
 Álvaro Gómez Haro - @snadker 
 
+###  Tablero Trello
+
+https://trello.com/b/MTZLdX3d
+
 ### Plataforma
 
 Web y posiblemente web para dispositivos móviles
