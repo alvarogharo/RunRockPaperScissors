@@ -1,4 +1,4 @@
-game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameDiv')
+game = new Phaser.Game(1080, 1920, Phaser.AUTO, 'gameDiv')
   
 game.state.add('bootState', CatCatcher.bootState)
 game.state.add('preloadState', CatCatcher.preloadState)
