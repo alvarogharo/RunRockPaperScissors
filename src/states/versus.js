@@ -22,18 +22,18 @@ RunRockPaperScissors.versusState.prototype = {
         game.load.image('scissors', 'assets/sprites/objects/scissors.png');
         game.load.image('nothing', 'assets/sprites/objects/nothing.png');
 
-        game.load.bitmapFont('myFont', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
+        
     },
 
     create: function() {
         scale = 12;
 
-        p1 = 'nothing';
-        p2 = 'rock';
+        p1 = 'rock';
+        p2 = 'scissors';
 
-        var text = game.add.bitmapText(260, 450, 'myFont', 'P1', 80);
+        var text = game.add.bitmapText(260, 450, 'myFontB', 'P1', 80);
         
-        text = game.add.bitmapText(730, 450, 'myFont', 'P2', 80);
+        text = game.add.bitmapText(730, 450, 'myFontR', 'P2', 80);
         
         var text = game.add.bitmapText(450, 580, 'myFont', 'VS', 120);
         text.smoothed = false;
@@ -84,6 +84,8 @@ RunRockPaperScissors.versusState.prototype = {
                 break;
         }
         
+        updateScore();
+        console.log(score);
 
         timer = 0;
     },
@@ -92,8 +94,51 @@ RunRockPaperScissors.versusState.prototype = {
         game.debug.text('Elapsed seconds: ' + timer, 32, 32);
         timer += game.time.physicsElapsed;
 
-        if (timer >= 3){
+        if (timer >= 1){
             game.state.start('scoreState');
         }
+    }
+}
+
+function determineWinner(){
+    if (p1 != p2){
+        if (p1 == 'rock'){
+            if (p2 == 'scissors' || p2 == 'nothing'){
+                return 1;
+            }else{
+                return 2;
+            }
+        }else if (p1 == 'paper'){
+            if (p2 == 'rock' || p2 == 'nothing'){
+                return 1;
+            }else{
+                return 2;
+            }
+        }else if (p1 == 'scissors'){
+            if (p2 == 'paper' || p2 == 'nothing'){
+                return 1;
+            }else{
+                return 2;
+            }
+        }else if (p1 == 'nothing'){
+            if (p2 != 'nothing'){
+                return 2;
+            }
+        }else{
+            console.log("Objeto de jugador erroneo: P1: "+p1+", P2: "+p2);
+        }
+    }else{
+        return 0;
+    }
+}
+
+function updateScore(){
+    var winner = determineWinner();
+    if (winner == 1){
+        score[0] += 1;
+    }else if (winner == 2){
+        score[1] += 1;
+    }else if (winner != 0){
+        console.log("Valor de ganador erroneo: "+ winner);
     }
 }

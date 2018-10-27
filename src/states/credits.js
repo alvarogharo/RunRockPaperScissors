@@ -20,7 +20,6 @@ RunRockPaperScissors.creditsState.prototype = {
     },
 
     update: function() {
-
     }
 }
 
