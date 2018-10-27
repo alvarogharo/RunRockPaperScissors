@@ -1,18 +1,18 @@
-var CatCatcher = {}
+var RunRockPaperScissors = {}
 
-CatCatcher.bootState = function(game) {
+RunRockPaperScissors.bootState = function(game) {
 
 }
 
-CatCatcher.bootState.prototype = {
+RunRockPaperScissors.bootState.prototype = {
 
     preload: function() {
         
     },
 
     create: function() {
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.state.start('preloadState');
+        //game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.state.start('mainMenuState');
     },
 
     update: function() {
