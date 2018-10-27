@@ -30,7 +30,7 @@ RunRockPaperScissors.scoreState.prototype = {
         game.debug.text('Elapsed seconds: ' + timer, 32, 32);
         timer += game.time.physicsElapsed;
 
-        if (timer >= 5){
+        if (timer >= 1){
             if (score[0] == mode){
                 game.state.start('winnerState', true, false, 1);
             }else if (score[1] == mode){
