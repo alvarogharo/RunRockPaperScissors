@@ -1,8 +1,8 @@
-CatCatcher.endingState = function(game) {
+RunRockPaperScissors.creditsState = function(game) {
 
 }
 
-CatCatcher.endingState.prototype = {
+RunRockPaperScissors.creditsState.prototype = {
 
     preload: function() {
         
