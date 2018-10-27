@@ -19,7 +19,7 @@ RunRockPaperScissors.bootState.prototype = {
         //game.physics.startSystem(Phaser.Physics.ARCADE);
         score = new Array(1,3);
         mode = 3;
-        game.state.start('versusState');
+        game.state.start('gameState');
     },
 
     update: function() {
