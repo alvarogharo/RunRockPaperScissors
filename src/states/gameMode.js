@@ -28,7 +28,7 @@ RunRockPaperScissors.gameModeState.prototype = {
 }
 
 function best1(){
-    game.state.start('waitingState');
+    game.state.start('waitingState', true, false, 0);
 }
 
 function best3(){

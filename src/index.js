@@ -11,4 +11,4 @@ game.state.add('scoreState', RunRockPaperScissors.scoreState);
 game.state.add('winnerState', RunRockPaperScissors.winnerState);
 
   
-game.state.start('bootState');
+game.state.start('versusState');

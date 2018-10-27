@@ -12,8 +12,9 @@ RunRockPaperScissors.mainMenuState.prototype = {
         game.load.image('rock', 'assets/sprites/objects/rock.png');
         game.load.image('paper', 'assets/sprites/objects/paper.png');
         game.load.image('scissors', 'assets/sprites/objects/scissors.png');
+        game.load.image('nothing', 'assets/sprites/objects/nothing.png');
 
-        game.load.bitmapFont('myFont', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
+        
     },
 
     create: function() {

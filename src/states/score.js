@@ -1,8 +1,8 @@
-RunRockPaperScissors.creditsState = function(game) {
+RunRockPaperScissors.scoreState = function(game) {
 
 }
 
-RunRockPaperScissors.creditsState.prototype = {
+RunRockPaperScissors.scoreState.prototype = {
 
     preload: function() {
         game.load.image('backButton', 'assets/sprites/buttons/backButton.png');
@@ -22,8 +22,4 @@ RunRockPaperScissors.creditsState.prototype = {
     update: function() {
 
     }
-}
-
-function back(){
-    game.state.start('mainMenuState');
 }
