@@ -1,9 +1,14 @@
-game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameDiv')
+game = new Phaser.Game(1080, 1920, Phaser.AUTO, 'gameDiv')
   
-game.state.add('bootState', CatCatcher.bootState)
-game.state.add('preloadState', CatCatcher.preloadState)
-game.state.add('menuState', CatCatcher.menuState)
-game.state.add('levelState', CatCatcher.levelState)
-game.state.add('endingState', CatCatcher.endingState)
+game.state.add('bootState', RunRockPaperScissors.bootState);
+game.state.add('mainMenuState', RunRockPaperScissors.mainMenuState);
+game.state.add('gameModeState', RunRockPaperScissors.gameModeState);
+game.state.add('creditsState', RunRockPaperScissors.creditsState);
+game.state.add('waitingState', RunRockPaperScissors.waitingState);
+game.state.add('gameState', RunRockPaperScissors.gameState);
+game.state.add('versusState', RunRockPaperScissors.versusState);
+game.state.add('scoreState', RunRockPaperScissors.scoreState);
+game.state.add('winnerState', RunRockPaperScissors.winnerState);
+
   
-game.state.start('bootState')
+game.state.start('bootState');
