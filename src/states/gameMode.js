@@ -28,13 +28,16 @@ RunRockPaperScissors.gameModeState.prototype = {
 }
 
 function best1(){
-    game.state.start('waitingState', true, false, 0);
+    mode = 1;
+    game.state.start('waitingState');
 }
 
 function best3(){
+    mode = 3;
     game.state.start('waitingState');
 }
 
 function best5(){
+    mode = 5;
     game.state.start('waitingState');
 }

@@ -153,44 +153,44 @@ RunRockPaperScissors.gameState.prototype = {
             timer -= game.time.physicsElapsed;
             timerObj.setText(Math.round(timer).toString());
 
-            if(!onceP1){
-                if (cursors.left.isDown){
-                    onceP1 = true;
-                    p1.move(map,'left', false);
-                }else if (cursors.right.isDown){
-                    onceP1 = true;
-                    p1.move(map,'right', false);
-                }else if (cursors.up.isDown){
-                    onceP1 = true;
-                    p1.move(map,'up', false);
-                }else if (cursors.down.isDown){
-                    onceP1 = true;
-                    p1.move(map,'down', false);
-                }
-            }
-
-            if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown && !cursors.down.isDown){
-                onceP1 = false;
-            }
-
             if(!onceP2){
-                if (wasd.left.isDown){
+                if (cursors.left.isDown){
                     onceP2 = true;
                     p2.move(map,'left', false);
-                }else if (wasd.right.isDown){
+                }else if (cursors.right.isDown){
                     onceP2 = true;
                     p2.move(map,'right', false);
-                }else if (wasd.up.isDown){
+                }else if (cursors.up.isDown){
                     onceP2 = true;
                     p2.move(map,'up', false);
-                }else if (wasd.down.isDown){
+                }else if (cursors.down.isDown){
                     onceP2 = true;
                     p2.move(map,'down', false);
                 }
             }
 
-            if (!wasd.right.isDown && !wasd.left.isDown && !wasd.up.isDown && !wasd.down.isDown){
+            if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown && !cursors.down.isDown){
                 onceP2 = false;
+            }
+
+            if(!onceP1){
+                if (wasd.left.isDown){
+                    onceP1 = true;
+                    p1.move(map,'left', false);
+                }else if (wasd.right.isDown){
+                    onceP1 = true;
+                    p1.move(map,'right', false);
+                }else if (wasd.up.isDown){
+                    onceP1 = true;
+                    p1.move(map,'up', false);
+                }else if (wasd.down.isDown){
+                    onceP1 = true;
+                    p1.move(map,'down', false);
+                }
+            }
+
+            if (!wasd.right.isDown && !wasd.left.isDown && !wasd.up.isDown && !wasd.down.isDown){
+                onceP1 = false;
             }
         }else if (timer < 0){
             game.state.start('versusState', true, false, p1.item, p2.item);

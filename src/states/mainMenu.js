@@ -45,8 +45,8 @@ RunRockPaperScissors.mainMenuState.prototype = {
         scissors.scale.set(scale,scale);
 
         //var playButton = game.add.sprite(200, 1100, 'playButton');
-        var playButton = game.add.button(200, 1100, 'playButton', play, this, 2, 1, 0);
-        var creditsButton = game.add.button(200, 1450, 'creditsButton', credits, this, 2, 1, 0);
+        var playButton = game.add.button(200, 1100, 'playButton', this.play, this, 2, 1, 0);
+        var creditsButton = game.add.button(200, 1450, 'creditsButton', this.credits, this, 2, 1, 0);
 
         playButton.onInputOver.add(over, this);
         playButton.onInputOut.add(out, this);
@@ -59,6 +59,14 @@ RunRockPaperScissors.mainMenuState.prototype = {
 
     update: function() {
 
+    },
+
+    play: function  () {
+        game.state.start('gameModeState');
+    },
+    
+    credits: function  () {
+        game.state.start('creditsState');
     }
 
     
@@ -74,12 +82,4 @@ function over() {
 
 function out() {
     console.log('button out');
-}
-
-function play () {
-    game.state.start('gameModeState');
-}
-
-function credits () {
-    game.state.start('creditsState');
 }

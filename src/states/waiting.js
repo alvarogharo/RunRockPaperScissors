@@ -5,10 +5,6 @@ RunRockPaperScissors.waitingState = function(game) {
 var timer;
 
 RunRockPaperScissors.waitingState.prototype = {
-    
-    init: function(t) {
-        timer = t;
-    },
 
     preload: function() {
         game.load.image('backButton', 'assets/sprites/buttons/backButton.png');
@@ -24,7 +20,7 @@ RunRockPaperScissors.waitingState.prototype = {
         text.smoothed = false;
         text.color = 'white';
 
-        
+        timer = 0;
     },
 
     update: function() {
