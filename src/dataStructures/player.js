@@ -5,7 +5,9 @@ function Player(x, y, id){
     this.lastY = y;
     this.id = id;
     this.item = 'nothing';
-    this.hud = null;
+    this.hud1 = null;
+    this.hud2 = null;
+    this.hudRoom = null;
     this.sprite = null;
 
     var spacing = 150;
@@ -55,9 +57,15 @@ function Player(x, y, id){
 
     this.updateHUD = function(){
         
-        if (this.hud != null){
-            
-            this.hud.loadTexture(this.item);
+        if (this.hud1 != null){
+            this.hud1.loadTexture(this.item);
+            if (this.hud2 != null){
+                this.hud2.loadTexture(this.item);
+                this.hudRoom.loadTexture('roomF');
+            }
+            if (this.hud2 != null && this.item == 'nothing'){
+                this.hudRoom.loadTexture('roomE');
+            }
         }
     }
 

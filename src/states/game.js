@@ -11,6 +11,11 @@ var wasd;
 var onceP1;
 var onceP2;
 
+var graphics
+var countDown;
+var countDownObj;
+var play;
+
 RunRockPaperScissors.gameState.prototype = {
 
     preload: function() {
@@ -23,6 +28,7 @@ RunRockPaperScissors.gameState.prototype = {
 
         game.load.image('map', 'assets/sprites/map/map.png');
         game.load.image('roomF', 'assets/sprites/room/roomFull.png');
+        game.load.image('roomE', 'assets/sprites/room/roomEmpty.png');
         game.load.image('p1', 'assets/sprites/players/p1.png');
         game.load.image('p2', 'assets/sprites/players/p2.png');
         game.load.image('rock', 'assets/sprites/objects/rock.png');
@@ -35,9 +41,14 @@ RunRockPaperScissors.gameState.prototype = {
         var scale = 8;
         onceP1 = false;
         onceP2 = false;
+        countDown = 3;
+        play = false;
 
-        p1 = new Player(0,0,'p1');
-        p2 = new Player(5,5,'p2');
+        map = new Map();
+        map.createLevel(map.level0);
+
+        p1 = new Player(5,2,'p1');
+        p2 = new Player(0,2,'p2');
 
         //Textos superiores
         var text = game.add.bitmapText(90, 100, 'myFontB', 'P1', 80);
@@ -57,16 +68,16 @@ RunRockPaperScissors.gameState.prototype = {
         p2Room.smoothed = false;
 
         //HUD Obj p1 p2
-        p1.hud = game.add.sprite(253, 123, 'rock');
-        p2.hud = game.add.sprite(723, 123, 'nothing');
+        p1.hud1 = game.add.sprite(253, 123, 'rock');
+        p2.hud1 = game.add.sprite(723, 123, 'nothing');
 
         
 
-        p1.hud.scale.set(10,10);
-        p2.hud.scale.set(10,10);
+        p1.hud1.scale.set(10,10);
+        p2.hud1.scale.set(10,10);
 
-        p1.hud.smoothed = false;
-        p2.hud.smoothed = false;
+        p1.hud1.smoothed = false;
+        p2.hud1.smoothed = false;
 
         //HUD Map
         var mapH = game.add.sprite(45, 300, 'map');
@@ -75,30 +86,29 @@ RunRockPaperScissors.gameState.prototype = {
         mapH.smoothed = false;
 
         //Bottom HUD room
-        var room = game.add.sprite(270, 1350, 'roomF');
+        p1.hudRoom= game.add.sprite(270, 1350, 'roomE');
 
-        room.scale.set(scale,scale);
-        room.smoothed = false;
+        p1.hudRoom.scale.set(scale,scale);
+        p1.hudRoom.smoothed = false;
 
         //Bottom HUD obj
-        var objBig = game.add.sprite(500, 1435, 'rock');
+        p1.hud2 = game.add.sprite(500, 1435, 'rock');
 
-        objBig.scale.set(10,10);
-        objBig.smoothed = false;
+        p1.hud2.scale.set(10,10);
+        p1.hud2.smoothed = false;
 
         var p1Big = game.add.sprite(430, 1550, 'p1');
 
         p1Big.scale.set(25,25);
         p1Big.smoothed = false;
 
-        map = new Map();
-        map.fullMap();
-        map.rooms[0][0].player = 'p1';
+        
+        /*map.rooms[0][0].player = 'p1';
         map.rooms[5][5].player = 'p2';
         
         map.rooms[1][0].type = 'paper';
         map.rooms[2][3].type = 'paper';
-        map.rooms[5][1].type = 'scissors';
+        map.rooms[5][1].type = 'scissors';*/
 
         cursors = game.input.keyboard.createCursorKeys();
 
@@ -112,6 +122,14 @@ RunRockPaperScissors.gameState.prototype = {
 
         this.printMap(map);
 
+        graphics = game.add.graphics(0,0);
+        // draw a rectangle
+        graphics.beginFill('black');
+        graphics.drawRect(0, 1320, 1080, 600);
+        graphics.endFill();
+
+        countDownObj = game.add.bitmapText(480, 1450, 'myFont', countDown.toString(), 200);
+
         timer = 0;
     },
 
@@ -119,44 +137,63 @@ RunRockPaperScissors.gameState.prototype = {
         game.debug.text('Elapsed seconds: ' + timer, 32, 32);
         timer += game.time.physicsElapsed;
 
-        if(!onceP1){
-            if (cursors.left.isDown){
-                onceP1 = true;
-                p1.move(map,'left', false);
-            }else if (cursors.right.isDown){
-                onceP1 = true;
-                p1.move(map,'right', false);
-            }else if (cursors.up.isDown){
-                onceP1 = true;
-                p1.move(map,'up', false);
-            }else if (cursors.down.isDown){
-                onceP1 = true;
-                p1.move(map,'down', false);
+        if (countDown >= -3){
+            countDown -= game.time.physicsElapsed*3;
+        }
+
+        if (countDown >= 1){
+            countDownObj.setText(Math.round(countDown).toString());
+        }else if (countDown <= 0){
+            countDownObj.x = 380;
+            countDownObj.setText('GO!');
+        }
+        
+        if (countDown <= -2){
+            countDownObj.visible = false;
+            graphics.destroy();
+            play = true;
+        }
+
+        if (play){
+            if(!onceP1){
+                if (cursors.left.isDown){
+                    onceP1 = true;
+                    p1.move(map,'left', false);
+                }else if (cursors.right.isDown){
+                    onceP1 = true;
+                    p1.move(map,'right', false);
+                }else if (cursors.up.isDown){
+                    onceP1 = true;
+                    p1.move(map,'up', false);
+                }else if (cursors.down.isDown){
+                    onceP1 = true;
+                    p1.move(map,'down', false);
+                }
             }
-        }
 
-        if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown && !cursors.down.isDown){
-            onceP1 = false;
-        }
-
-        if(!onceP2){
-            if (wasd.left.isDown){
-                onceP2 = true;
-                p2.move(map,'left', false);
-            }else if (wasd.right.isDown){
-                onceP2 = true;
-                p2.move(map,'right', false);
-            }else if (wasd.up.isDown){
-                onceP2 = true;
-                p2.move(map,'up', false);
-            }else if (wasd.down.isDown){
-                onceP2 = true;
-                p2.move(map,'down', false);
+            if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown && !cursors.down.isDown){
+                onceP1 = false;
             }
-        }
 
-        if (!wasd.right.isDown && !wasd.left.isDown && !wasd.up.isDown && !wasd.down.isDown){
-            onceP2 = false;
+            if(!onceP2){
+                if (wasd.left.isDown){
+                    onceP2 = true;
+                    p2.move(map,'left', false);
+                }else if (wasd.right.isDown){
+                    onceP2 = true;
+                    p2.move(map,'right', false);
+                }else if (wasd.up.isDown){
+                    onceP2 = true;
+                    p2.move(map,'up', false);
+                }else if (wasd.down.isDown){
+                    onceP2 = true;
+                    p2.move(map,'down', false);
+                }
+            }
+
+            if (!wasd.right.isDown && !wasd.left.isDown && !wasd.up.isDown && !wasd.down.isDown){
+                onceP2 = false;
+            }
         }
 
         p1.updateHUD();
@@ -249,25 +286,27 @@ RunRockPaperScissors.gameState.prototype = {
         for(var i= 0; i<map.rooms[0].length;i++){
             for(var j= 0; j<map.rooms.length;j++){
                 var auxRoom = map.rooms[i][j];
-                if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type == 'nothing'){
-                    map.sprites[i][j].loadTexture('roomEmpty');
-                }else if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type != 'nothing'){
-                    map.sprites[i][j].loadTexture('roomFull');
-                }else if (auxRoom.player == 'p1'&& auxRoom.type == 'nothing'){
-                    map.sprites[i][j].loadTexture('roomP1Empty');
-                }else if (auxRoom.player == 'p1'&& auxRoom.type != 'nothing'){
-                    map.sprites[i][j].loadTexture('roomP1Full');
-                }else if (auxRoom.player == 'p2'&& auxRoom.type == 'nothing'){
-                    map.sprites[i][j].loadTexture('roomP2Empty');
-                }else if (auxRoom.player == 'p2'&& auxRoom.type != 'nothing'){
-                    map.sprites[i][j].loadTexture('roomP2Full');
-                }
+                if (auxRoom != null){
+                    if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type == 'nothing'){
+                        map.sprites[i][j].loadTexture('roomEmpty');
+                    }else if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type != 'nothing'){
+                        map.sprites[i][j].loadTexture('roomFull');
+                    }else if (auxRoom.player == 'p1'&& auxRoom.type == 'nothing'){
+                        map.sprites[i][j].loadTexture('roomP1Empty');
+                    }else if (auxRoom.player == 'p1'&& auxRoom.type != 'nothing'){
+                        map.sprites[i][j].loadTexture('roomP1Full');
+                    }else if (auxRoom.player == 'p2'&& auxRoom.type == 'nothing'){
+                        map.sprites[i][j].loadTexture('roomP2Empty');
+                    }else if (auxRoom.player == 'p2'&& auxRoom.type != 'nothing'){
+                        map.sprites[i][j].loadTexture('roomP2Full');
+                    }
 
-                if (map.objs[i][j] != null){
-                    if (auxRoom.player == 'p1' || auxRoom.player == 'p2'){
-                        map.objs[i][j].visible = false;
-                    }else{
-                        map.objs[i][j].visible = true;
+                    if (map.objs[i][j] != null){
+                        if (auxRoom.player == 'p1' || auxRoom.player == 'p2'){
+                            map.objs[i][j].visible = false;
+                        }else{
+                            map.objs[i][j].visible = true;
+                        }
                     }
                 }
             }
