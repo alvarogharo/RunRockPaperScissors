@@ -58,6 +58,11 @@ function Player(x, y, id){
             this.lastY = this.y;
 
             this.item = map.rooms[this.x][this.y].type;
+            if (this.item != 'nothing'){
+                game.sound.play('objRoom');
+            }else{
+                game.sound.play('buttonOver');
+            }
         }
         this.sprite.x = offsetX+(spacing*this.x);
         this.sprite.y = offsetY+(spacing*this.y);

@@ -34,6 +34,9 @@ RunRockPaperScissors.gameState.prototype = {
         game.load.image('map', 'assets/sprites/map/map.png');
         game.load.image('roomF', 'assets/sprites/room/roomFull.png');
         game.load.image('roomE', 'assets/sprites/room/roomEmpty.png');
+
+        //Sounds
+        game.load.audio('objRoom', 'assets/sounds/objRoom.wav');
     },
 
     create: function() {

@@ -22,10 +22,17 @@ RunRockPaperScissors.creditsState.prototype = {
 
         //Button
         var backButton = game.add.button(200, 1450, 'backButton', this.back, this, 2, 1, 0);
+
+        backButton.onInputOver.add(this.over, this);
     },
 
     //Buttons actions
     back: function(){
+        game.sound.play('buttonClicked');
         game.state.start('mainMenuState');
+    },
+
+    over: function(){
+        game.sound.play('buttonOver');
     }
 }

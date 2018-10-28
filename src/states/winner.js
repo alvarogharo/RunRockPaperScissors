@@ -10,6 +10,9 @@ RunRockPaperScissors.winnerState.prototype = {
     preload: function() {
         game.load.image('replayButton', 'assets/sprites/buttons/replayButton.png');
         game.load.image('mainMenuButton', 'assets/sprites/buttons/mainMenuButton.png');
+
+        //Sounds
+        game.load.audio('win', 'assets/sounds/win.wav');
     },
 
     create: function() {
@@ -36,6 +39,8 @@ RunRockPaperScissors.winnerState.prototype = {
         }
         text.smoothed = false;
 
+        game.sound.play('win');
+
         //Buttons
         var replayButton = game.add.button(200, 1100, 'replayButton', this.replay, this, 2, 1, 0);
         var mainMenuButton = game.add.button(200, 1450, 'mainMenuButton', this.mainMenu, this, 2, 1, 0);
@@ -55,6 +60,7 @@ RunRockPaperScissors.winnerState.prototype = {
     },
     
     over: function() {
+        game.sound.play('buttonOver');
         console.log('button over');
     },
     
@@ -63,11 +69,13 @@ RunRockPaperScissors.winnerState.prototype = {
     },
     
     replay: function(){
+        game.sound.play('buttonClicked');
         score = [0,0];
         game.state.start('gameState');
     },
     
     mainMenu: function(){
+        game.sound.play('buttonClicked');
         game.state.start('mainMenuState');
     }
 

@@ -25,6 +25,8 @@ RunRockPaperScissors.scoreState.prototype = {
         for(var t in texts){
             t.smoothed = false;
         }
+
+        game.sound.play('buttonClicked');
     },
 
     update: function() {

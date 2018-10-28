@@ -16,6 +16,10 @@ RunRockPaperScissors.mainMenuState.prototype = {
         game.load.image('paper', 'assets/sprites/objects/paper.png');
         game.load.image('scissors', 'assets/sprites/objects/scissors.png');
         game.load.image('nothing', 'assets/sprites/objects/nothing.png');
+
+        //Buton sounds
+        game.load.audio('buttonOver', 'assets/sounds/buttonOver_walk.wav');
+        game.load.audio('buttonClicked', 'assets/sounds/buttonClicked.wav');
     },
 
     create: function() {
@@ -62,10 +66,12 @@ RunRockPaperScissors.mainMenuState.prototype = {
 
     //Button actions
     play: function  () {
+        game.sound.play('buttonClicked');
         game.state.start('gameModeState');
     },
     
     credits: function  () {
+        game.sound.play('buttonClicked');
         game.state.start('creditsState');
     },
 
@@ -74,6 +80,7 @@ RunRockPaperScissors.mainMenuState.prototype = {
     },
     
     over: function() {
+        game.sound.play('buttonOver');
         console.log('button over');
     },
     

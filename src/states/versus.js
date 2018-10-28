@@ -9,6 +9,7 @@ RunRockPaperScissors.versusState = function(game) {
     this.winner;
 }
 
+var one;
 
 
 RunRockPaperScissors.versusState.prototype = {
@@ -56,6 +57,8 @@ RunRockPaperScissors.versusState.prototype = {
 
         //Timer initialization
         this.timer = 0;
+
+        one = true;
     },
 
     update: function() {
@@ -64,6 +67,10 @@ RunRockPaperScissors.versusState.prototype = {
         if (this.timer >= 3){
             game.state.start('scoreState');
         }else if(this.timer >= 1){
+            if (one){
+                one = false;
+                game.sound.play('buttonClicked');
+            }
             if (this.winner == 1){
                 this.p1Wins.visible = true;
                 this.wins.visible = true;
