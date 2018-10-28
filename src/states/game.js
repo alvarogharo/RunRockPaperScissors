@@ -5,11 +5,14 @@ RunRockPaperScissors.gameState = function(game) {
 var map;
 var p1;
 var p2;
-var timer;
+
 var cursors;
 var wasd;
 var onceP1;
 var onceP2;
+
+var timer;
+var timerObj;
 
 var graphics
 var countDown;
@@ -42,6 +45,7 @@ RunRockPaperScissors.gameState.prototype = {
         onceP1 = false;
         onceP2 = false;
         countDown = 3;
+        timer = 5;
         play = false;
 
         map = new Map();
@@ -52,8 +56,10 @@ RunRockPaperScissors.gameState.prototype = {
 
         //Textos superiores
         var text = game.add.bitmapText(90, 100, 'myFontB', 'P1', 80);
+        text.smoothed = false;
         text = game.add.bitmapText(880, 100, 'myFontR', 'P2', 80);
-        text = game.add.bitmapText(480, 50, 'myFont', '10', 120);
+        timerObj = game.add.bitmapText(520, 50, 'myFont', Math.round(timer).toString(), 120);
+        timerObj.smoothed = false;
         text.smoothed = false;
         text.color = 'white';
 
@@ -129,13 +135,9 @@ RunRockPaperScissors.gameState.prototype = {
         graphics.endFill();
 
         countDownObj = game.add.bitmapText(480, 1450, 'myFont', countDown.toString(), 200);
-
-        timer = 0;
     },
 
     update: function() {
-        game.debug.text('Elapsed seconds: ' + timer, 32, 32);
-        timer += game.time.physicsElapsed;
 
         if (countDown >= -3){
             countDown -= game.time.physicsElapsed*3;
@@ -154,7 +156,11 @@ RunRockPaperScissors.gameState.prototype = {
             play = true;
         }
 
-        if (play){
+        if (play && timer >= 0){
+
+            timer -= game.time.physicsElapsed;
+            timerObj.setText(Math.round(timer).toString());
+
             if(!onceP1){
                 if (cursors.left.isDown){
                     onceP1 = true;
@@ -194,8 +200,10 @@ RunRockPaperScissors.gameState.prototype = {
             if (!wasd.right.isDown && !wasd.left.isDown && !wasd.up.isDown && !wasd.down.isDown){
                 onceP2 = false;
             }
+        }else if (timer < 0){
+            game.state.start('versusState', true, false, p1.item, p2.item);
         }
-
+        
         p1.updateHUD();
         p2.updateHUD();
 

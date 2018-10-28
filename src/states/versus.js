@@ -28,9 +28,6 @@ RunRockPaperScissors.versusState.prototype = {
     create: function() {
         scale = 12;
 
-        p1 = 'rock';
-        p2 = 'scissors';
-
         var text = game.add.bitmapText(260, 450, 'myFontB', 'P1', 80);
         
         text = game.add.bitmapText(730, 450, 'myFontR', 'P2', 80);
@@ -85,7 +82,6 @@ RunRockPaperScissors.versusState.prototype = {
         }
         
         updateScore();
-        console.log(score);
 
         timer = 0;
     },
