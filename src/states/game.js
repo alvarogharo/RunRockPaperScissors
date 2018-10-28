@@ -3,7 +3,13 @@ RunRockPaperScissors.gameState = function(game) {
 }
 
 var map;
+var p1;
+var p2;
 var timer;
+var cursors;
+var wasd;
+var onceP1;
+var onceP2;
 
 RunRockPaperScissors.gameState.prototype = {
 
@@ -27,6 +33,8 @@ RunRockPaperScissors.gameState.prototype = {
 
     create: function() {
         var scale = 8;
+        onceP1 = false;
+        onceP2 = false;
 
         //Textos superiores
         var text = game.add.bitmapText(90, 100, 'myFontB', 'P1', 80);
@@ -56,10 +64,10 @@ RunRockPaperScissors.gameState.prototype = {
         p2Obj.smoothed = false;
 
         //HUD Map
-        var map = game.add.sprite(45, 300, 'map');
+        var mapH = game.add.sprite(45, 300, 'map');
 
-        map.scale.set(scale,scale);
-        map.smoothed = false;
+        mapH.scale.set(scale,scale);
+        mapH.smoothed = false;
 
         //Bottom HUD room
         var room = game.add.sprite(270, 1350, 'roomF');
@@ -78,12 +86,28 @@ RunRockPaperScissors.gameState.prototype = {
         p1Big.scale.set(25,25);
         p1Big.smoothed = false;
 
+        
+        p1 = new Player(0,0,'p1');
+        p2 = new Player(5,5,'p2');
+
         map = new Map();
         map.fullMap();
-        map.rooms[0][3].type = 'paper';
-        map.rooms[2][3].player = 'p2';
-        aux2.rooms[2][3].type = 'paper';
+        map.rooms[0][0].player = 'p1';
+        map.rooms[5][5].player = 'p2';
+        
+        map.rooms[1][0].type = 'paper';
+        map.rooms[2][3].type = 'paper';
         map.rooms[5][1].type = 'scissors';
+
+        cursors = game.input.keyboard.createCursorKeys();
+
+        wasd = {
+            up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+            down: game.input.keyboard.addKey(Phaser.Keyboard.S),
+            left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+            right: game.input.keyboard.addKey(Phaser.Keyboard.D),
+        };
+
 
         this.printMap(map);
 
@@ -94,7 +118,49 @@ RunRockPaperScissors.gameState.prototype = {
         game.debug.text('Elapsed seconds: ' + timer, 32, 32);
         timer += game.time.physicsElapsed;
 
+        if(!onceP1){
+            if (cursors.left.isDown){
+                onceP1 = true;
+                p1.move(map,'left', false);
+            }else if (cursors.right.isDown){
+                onceP1 = true;
+                p1.move(map,'right', false);
+            }else if (cursors.up.isDown){
+                onceP1 = true;
+                p1.move(map,'up', false);
+            }else if (cursors.down.isDown){
+                onceP1 = true;
+                p1.move(map,'down', false);
+            }
+        }
+
+        if (!cursors.right.isDown && !cursors.left.isDown && !cursors.up.isDown && !cursors.down.isDown){
+            onceP1 = false;
+        }
+
+        if(!onceP2){
+            if (wasd.left.isDown){
+                onceP2 = true;
+                p2.move(map,'left', false);
+            }else if (wasd.right.isDown){
+                onceP2 = true;
+                p2.move(map,'right', false);
+            }else if (wasd.up.isDown){
+                onceP2 = true;
+                p2.move(map,'up', false);
+            }else if (wasd.down.isDown){
+                onceP2 = true;
+                p2.move(map,'down', false);
+            }
+        }
+
+        if (!wasd.right.isDown && !wasd.left.isDown && !wasd.up.isDown && !wasd.down.isDown){
+            onceP2 = false;
+        }
+
+        this.rePrintMap(map);
     },
+
 
     printMap: function(map){
         var offsetX = 100;
@@ -105,69 +171,104 @@ RunRockPaperScissors.gameState.prototype = {
         var objOffsetY = 32;
         var paperOffsetX = 10;
 
+        var auxRoom;
+
         for(var i= 0; i<map.rooms[0].length;i++){
             for(var j= 0; j<map.rooms.length;j++){
-                if ( map.rooms[i][j] != null ){
-                    if (map.rooms[i][j].player != 'p1' && map.rooms[i][j].player != 'p2' && map.rooms[i][j].type == 'nothing'){
-                        var room = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomEmpty');
-                        room.scale.set(8,8);
-                        room.smoothed = false;
-                    }else if (map.rooms[i][j].player != 'p1' && map.rooms[i][j].player != 'p2' && map.rooms[i][j].type != 'nothing'){
-                        var room = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomFull');
-                        room.scale.set(8,8);
-                        room.smoothed = false;
-                    }else if (map.rooms[i][j].player == 'p1'&& map.rooms[i][j].type == 'nothing'){
-                        var room = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP1Empty');
-                        room.scale.set(8,8);
-                        room.smoothed = false;
-                    }else if (map.rooms[i][j].player == 'p1'&& map.rooms[i][j].type != 'nothing'){
-                        var room = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP1Full');
-                        room.scale.set(8,8);
-                        room.smoothed = false;
-                    }else if (map.rooms[i][j].player == 'p2'&& map.rooms[i][j].type == 'nothing'){
-                        var room = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP2Empty');
-                        room.scale.set(8,8);
-                        room.smoothed = false;
-                    }else if (map.rooms[i][j].player == 'p2'&& map.rooms[i][j].type != 'nothing'){
-                        var room = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP2Full');
-                        room.scale.set(8,8);
-                        room.smoothed = false;
+                auxRoom = map.rooms[i][j];
+                
+                if ( auxRoom != null ){
+                    if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type == 'nothing'){
+                        map.sprites[i][j] = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomEmpty');
+                        map.sprites[i][j].scale.set(8,8);
+                        map.sprites[i][j].smoothed = false;
+                    }else if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type != 'nothing'){
+                        map.sprites[i][j] = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomFull');
+                        map.sprites[i][j].scale.set(8,8);
+                        map.sprites[i][j].smoothed = false;
+                    }else if (auxRoom.player == 'p1'&& auxRoom.type == 'nothing'){
+                        map.sprites[i][j] = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP1Empty');
+                        map.sprites[i][j].scale.set(8,8);
+                        map.sprites[i][j].smoothed = false;
+                    }else if (auxRoom.player == 'p1'&& auxRoom.type != 'nothing'){
+                        map.sprites[i][j] = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP1Full');
+                        map.sprites[i][j].scale.set(8,8);
+                        map.sprites[i][j].smoothed = false;
+                    }else if (auxRoom.player == 'p2'&& auxRoom.type == 'nothing'){
+                        map.sprites[i][j] = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP2Empty');
+                        map.sprites[i][j].scale.set(8,8);
+                        map.sprites[i][j].smoothed = false;
+                    }else if (auxRoom.player == 'p2'&& auxRoom.type != 'nothing'){
+                        map.sprites[i][j] = game.add.sprite(offsetX+(spacing*i), offsetY+(spacing*j), 'roomP2Full');
+                        map.sprites[i][j].scale.set(8,8);
+                        map.sprites[i][j].smoothed = false;
                     }
 
-                    if (map.rooms[i][j].player != 'p1' && map.rooms[i][j].player != 'p2'){
-                        switch(map.rooms[i][j].type){
+                    if (auxRoom.player != 'p1' && auxRoom.player != 'p2'){
+                        switch(auxRoom.type){
                             case 'rock':
-                                var obj = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'rock');
-                                obj.scale.set(8,8);
-                                obj.smoothed = false;
+                                map.objs[i][j] = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'rock');
+                                map.objs[i][j].scale.set(8,8);
+                                map.objs[i][j].smoothed = false;
                                 break;
                             case 'paper':
-                                var obj = game.add.sprite(paperOffsetX+objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'paper');
-                                obj.scale.set(8,8);
-                                obj.smoothed = false;
+                                map.objs[i][j] = game.add.sprite(paperOffsetX+objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'paper');
+                                map.objs[i][j].scale.set(8,8);
+                                map.objs[i][j].smoothed = false;
                                 break;
                             case 'scissors':
-                                var obj = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'scissors');
-                                obj.scale.set(8,8);
-                                obj.smoothed = false;
+                                map.objs[i][j] = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'scissors');
+                                map.objs[i][j].scale.set(8,8);
+                                map.objs[i][j].smoothed = false;
                                 break;
                         }
                     }
 
-                    switch(map.rooms[i][j].player){
+                    switch(auxRoom.player){
                         case 'p1':
-                            var obj = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'p1');
-                            obj.scale.set(8,8);
-                            obj.smoothed = false;
+                            p1.sprite = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'p1');
+                            p1.sprite.scale.set(8,8);
+                            p1.sprite.smoothed = false;
                             break;
                         case 'p2':
-                            var obj = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'p2');
-                            obj.scale.set(8,8);
-                            obj.smoothed = false;
+                            p2.sprite = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'p2');
+                            p2.sprite.scale.set(8,8);
+                            p2.sprite.smoothed = false;
                             break;
                     }
                 }
             }
         }
+    },
+
+    rePrintMap: function(map){
+        for(var i= 0; i<map.rooms[0].length;i++){
+            for(var j= 0; j<map.rooms.length;j++){
+                var auxRoom = map.rooms[i][j];
+                if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type == 'nothing'){
+                    map.sprites[i][j].loadTexture('roomEmpty');
+                }else if (auxRoom.player != 'p1' && auxRoom.player != 'p2' && auxRoom.type != 'nothing'){
+                    map.sprites[i][j].loadTexture('roomFull');
+                }else if (auxRoom.player == 'p1'&& auxRoom.type == 'nothing'){
+                    map.sprites[i][j].loadTexture('roomP1Empty');
+                }else if (auxRoom.player == 'p1'&& auxRoom.type != 'nothing'){
+                    map.sprites[i][j].loadTexture('roomP1Full');
+                }else if (auxRoom.player == 'p2'&& auxRoom.type == 'nothing'){
+                    map.sprites[i][j].loadTexture('roomP2Empty');
+                }else if (auxRoom.player == 'p2'&& auxRoom.type != 'nothing'){
+                    map.sprites[i][j].loadTexture('roomP2Full');
+                }
+
+                if (map.objs[i][j] != null){
+                    if (auxRoom.player == 'p1' || auxRoom.player == 'p2'){
+                        map.objs[i][j].visible = false;
+                    }else{
+                        map.objs[i][j].visible = true;
+                    }
+                }
+            }
+        }
+
+        
     }
 }

@@ -6,6 +6,20 @@ function Map(){
                   [null,null,null,null,null,null],
                   [null,null,null,null,null,null],
                   [null,null,null,null,null,null]];
+
+    this.sprites = [[null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null]];
+
+    this.objs = [[null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null],
+                   [null,null,null,null,null,null]];
     
     this.fullMap = function(){
         for(var i= 0; i<this.rooms[0].length;i++){
