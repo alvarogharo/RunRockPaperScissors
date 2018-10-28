@@ -13,8 +13,6 @@ RunRockPaperScissors.mainMenuState.prototype = {
         game.load.image('paper', 'assets/sprites/objects/paper.png');
         game.load.image('scissors', 'assets/sprites/objects/scissors.png');
         game.load.image('nothing', 'assets/sprites/objects/nothing.png');
-
-        
     },
 
     create: function() {
@@ -57,8 +55,6 @@ RunRockPaperScissors.mainMenuState.prototype = {
         creditsButton.onInputOver.add(over, this);
         creditsButton.onInputOut.add(out, this);
         creditsButton.onInputUp.add(up, this);
-
-        
     },
 
     update: function() {
