@@ -6,28 +6,29 @@ var timer;
 
 RunRockPaperScissors.scoreState.prototype = {
 
-    preload: function() {
-    },
-
     create: function() {
+        //Timer initialization
         timer = 0;
 
-        var text = game.add.bitmapText(130, 100+100, 'myFont', 'MATCH', 120);
-        text = game.add.bitmapText(130, 260+100, 'myFont', 'Scoreboard', 120);
+        //Texts
+        var texts = new Array();
+        texts[0] = game.add.bitmapText(130, 100+100, 'myFont', 'MATCH', 120);
+        texts[1] = game.add.bitmapText(130, 260+100, 'myFont', 'Scoreboard', 120);
 
-        text = game.add.bitmapText(260, 730, 'myFontB', 'P1', 120);
-        text = game.add.bitmapText(730, 730, 'myFontR', 'P2', 120); 
-        text = game.add.bitmapText(500, 900, 'myFont', '-', 160);
+        texts[2] = game.add.bitmapText(260, 730, 'myFontB', 'P1', 120);
+        texts[3] = game.add.bitmapText(730, 730, 'myFontR', 'P2', 120); 
+        texts[4] = game.add.bitmapText(500, 900, 'myFont', '-', 160);
 
-        text = game.add.bitmapText(300, 930, 'myFontB', score[0].toString(), 150);
-        text = game.add.bitmapText(760, 930, 'myFontR',score[1].toString(), 150);
-        text.smoothed = false;
-        text.color = 'white';
+        texts[5] = game.add.bitmapText(300, 930, 'myFontB', score[0].toString(), 150);
+        texts[6] = game.add.bitmapText(760, 930, 'myFontR',score[1].toString(), 150);
 
+        for(var t in texts){
+            t.smoothed = false;
+        }
     },
 
     update: function() {
-        game.debug.text('Elapsed seconds: ' + timer, 32, 32);
+        //Timer
         timer += game.time.physicsElapsed;
 
         if (timer >= 1){

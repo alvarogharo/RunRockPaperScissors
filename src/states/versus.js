@@ -1,167 +1,172 @@
 RunRockPaperScissors.versusState = function(game) {
-
+    this.timer;
+    this.p1;
+    this.p2;
+    this.p1Wins;
+    this.p2Wins;
+    this.wins;
+    this.scale;
+    this.winner;
 }
 
-var timer;
-var p1;
-var p2;
-var p1Wins;
-var p2Wins;
-var wins;
-var scale;
-var winner;
+
 
 RunRockPaperScissors.versusState.prototype = {
     init: function(player1, player2){
-        p1 = player1;
-        p2 = player2;
-    },
-
-    preload: function() {
-        game.load.image('backButton', 'assets/sprites/buttons/backButton.png');
-        game.load.image('creditsBanner', 'assets/sprites/credits/creditsBanner.png');
-
-        game.load.image('rock', 'assets/sprites/objects/rock.png');
-        game.load.image('paper', 'assets/sprites/objects/paper.png');
-        game.load.image('scissors', 'assets/sprites/objects/scissors.png');
-        game.load.image('nothing', 'assets/sprites/objects/nothing.png');
+        this.p1 = player1;
+        this.p2 = player2;
     },
 
     create: function() {
-        scale = 12;
+        //Initializing scale
+        this.scale = 12;
 
-        var text = game.add.bitmapText(260, 450, 'myFontB', 'P1', 80);
-        text.smoothed = false;
-        
-        text = game.add.bitmapText(730, 450, 'myFontR', 'P2', 80);
-        text.smoothed = false;
-        
-        var text = game.add.bitmapText(450, 580, 'myFont', 'VS', 120);
-        text.smoothed = false;
+        //Texts
+        var texts = new Array();
+        texts[0] = game.add.bitmapText(260, 450, 'myFontB', 'P1', 80);
+        texts[1] = game.add.bitmapText(730, 450, 'myFontR', 'P2', 80);  
+        texts[2] = game.add.bitmapText(450, 580, 'myFont', 'VS', 120);
 
-        p1Wins = game.add.bitmapText(260, 1000, 'myFontB', 'P1', 120);
-        p1Wins.smoothed = false;
-        p1Wins.visible = false;
+        for (var t in texts){
+            t.smoothed = false;
+        }
 
-        p2Wins = game.add.bitmapText(260, 1000, 'myFontR', 'P2', 120);
-        p2Wins.smoothed = false
-        p2Wins.visible = false;
+        //Round winner texts
+        this.p1Wins = game.add.bitmapText(260, 1000, 'myFontB', 'P1', 120);
+        this.p1Wins.smoothed = false;
+        this.p1Wins.visible = false;
 
-        wins = game.add.bitmapText(260, 1200, 'myFont', 'Wins', 120);
-        wins.smoothed = false;
-        wins.visible = false;
+        this.p2Wins = game.add.bitmapText(260, 1000, 'myFontR', 'P2', 120);
+        this.p2Wins.smoothed = false
+        this.p2Wins.visible = false;
 
-        switch (p1){
+        this.wins = game.add.bitmapText(260, 1200, 'myFont', 'Wins', 120);
+        this.wins.smoothed = false;
+        this.wins.visible = false;
+
+        //Printing player final obj
+        this.printPlayersObj();
+
+        //Determining winner
+        this.winner = 0;
+        this.winner = this.determineWinner();
+
+        //Updating global score
+        this.updateScore();
+
+        //Timer initialization
+        this.timer = 0;
+    },
+
+    update: function() {
+        this.timer += game.time.physicsElapsed;
+
+        if (this.timer >= 3){
+            game.state.start('scoreState');
+        }else if(this.timer >= 1){
+            if (this.winner == 1){
+                this.p1Wins.visible = true;
+                this.wins.visible = true;
+            }else if (this.winner == 2){
+                this.p2Wins.visible = true;
+                this.wins.visible = true;
+            }else{
+                this.wins.visible = true;
+                this.wins.setText('TIE');
+            }
+        }
+    },
+
+    printPlayersObj: function(){
+        //Print player1 obj
+        switch (this.p1){
             case 'rock':
                 var obj1 = game.add.sprite(250, 640, 'rock');
-                obj1.scale.set(scale,scale);
+                obj1.scale.set(this.scale,this.scale);
                 obj1.smoothed = false;
                 break;
             case 'paper':
                 var obj1 = game.add.sprite(260, 640, 'paper');
-                obj1.scale.set(scale,scale);
+                obj1.scale.set(this.scale,this.scale);
                 obj1.smoothed = false;
                 break;
             case 'scissors':
                 var obj1 = game.add.sprite(250, 640, 'scissors');
-                obj1.scale.set(scale,scale);
+                obj1.scale.set(this.scale,this.scale);
                 obj1.smoothed = false;
                 break;
             case 'nothing':
                 var obj1 = game.add.sprite(250, 640, 'nothing');
-                obj1.scale.set(scale,scale);
+                obj1.scale.set(this.scale,this.scale);
                 obj1.smoothed = false;
                 break;
         }
-
-        switch (p2){
+        //Print player2 obj
+        switch (this.p2){
             case 'rock':
                 var obj2 = game.add.sprite(740, 640, 'rock');
-                obj2.scale.set(scale,scale);
+                obj2.scale.set(this.scale,this.scale);
                 obj2.smoothed = false;
                 break;
             case 'paper':
                 var obj2 = game.add.sprite(750, 640, 'paper');
-                obj2.scale.set(scale,scale);
+                obj2.scale.set(this.scale,this.scale);
                 obj2.smoothed = false;
                 break;
             case 'scissors':
                 var obj2 = game.add.sprite(740, 640, 'scissors');
-                obj2.scale.set(scale,scale);
+                obj2.scale.set(this.scale,this.scale);
                 obj2.smoothed = false;
                 break;
             case 'nothing':
                 var obj2 = game.add.sprite(740, 640, 'nothing');
-                obj2.scale.set(scale,scale);
+                obj2.scale.set(this.scale,this.scale);
                 obj2.smoothed = false;
                 break;
         }
-        winner = 0;
-        winner = determineWinner();
-
-        updateScore();
-
-        timer = 0;
     },
 
-    update: function() {
-        timer += game.time.physicsElapsed;
-
-        if (timer >= 3){
-            game.state.start('scoreState');
-        }else if(timer >= 1){
-            if (winner == 1){
-                p1Wins.visible = true;
-                wins.visible = true;
-            }else if (winner == 2){
-                p2Wins.visible = true;
-                wins.visible = true;
+    //Determine de winning logic
+    determineWinner: function(){
+        if (this.p1 != this.p2){
+            if (this.p1 == 'rock'){
+                if (this.p2 == 'scissors' || this.p2 == 'nothing'){
+                    return 1;
+                }else{
+                    return 2;
+                }
+            }else if (this.p1 == 'paper'){
+                if (this.p2 == 'rock' || this.p2 == 'nothing'){
+                    return 1;
+                }else{
+                    return 2;
+                }
+            }else if (this.p1 == 'scissors'){
+                if (this.p2 == 'paper' || this.p2 == 'nothing'){
+                    return 1;
+                }else{
+                    return 2;
+                }
+            }else if (this.p1 == 'nothing'){
+                if (this.p2 != 'nothing'){
+                    return 2;
+                }
             }else{
-                wins.visible = true;
-                wins.setText('TIE');
-            }
-        }
-    }
-}
-
-function determineWinner(){
-    if (p1 != p2){
-        if (p1 == 'rock'){
-            if (p2 == 'scissors' || p2 == 'nothing'){
-                return 1;
-            }else{
-                return 2;
-            }
-        }else if (p1 == 'paper'){
-            if (p2 == 'rock' || p2 == 'nothing'){
-                return 1;
-            }else{
-                return 2;
-            }
-        }else if (p1 == 'scissors'){
-            if (p2 == 'paper' || p2 == 'nothing'){
-                return 1;
-            }else{
-                return 2;
-            }
-        }else if (p1 == 'nothing'){
-            if (p2 != 'nothing'){
-                return 2;
+                console.log("Objeto de jugador erroneo: P1: "+this.p1+", P2: "+this.p2);
             }
         }else{
-            console.log("Objeto de jugador erroneo: P1: "+p1+", P2: "+p2);
+            return 0;
         }
-    }else{
-        return 0;
-    }
-}
-
-function updateScore(){
-    if (winner == 1){
-        score[0] += 1;
-    }else if (winner == 2){
-        score[1] += 1;
-    }else if (winner != 0){
-        console.log("Valor de ganador erroneo: "+ winner);
+    },
+    
+    //Updates de global score
+    updateScore: function(){
+        if (this.winner == 1){
+            this.score[0] += 1;
+        }else if (this.winner == 2){
+            score[1] += 1;
+        }else if (this.winner != 0){
+            console.log("Valor de ganador erroneo: "+ this.winner);
+        }
     }
 }

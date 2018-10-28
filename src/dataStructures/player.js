@@ -1,10 +1,17 @@
 function Player(x, y, id){
+
     this.x = x;
     this.y = y;
     this.lastX = x;
     this.lastY = y;
+
+    this.cursor = null;
+
     this.id = id;
     this.item = 'nothing';
+
+    this.once = false;
+
     this.hud1 = null;
     this.hud2 = null;
     this.hudRoom = null;
@@ -14,6 +21,7 @@ function Player(x, y, id){
     var offsetX = 132;
     var offsetY = 382;
 
+    //Moves the player in the direction assigned if possible
     this.move = function(map,dir, lastSeconds){
         var auxX = this.x;
         var auxY = this.y;
@@ -55,6 +63,7 @@ function Player(x, y, id){
         this.sprite.y = offsetY+(spacing*this.y);
     }
 
+    //Updates the player item HUD
     this.updateHUD = function(){
         
         if (this.hud1 != null){
@@ -66,6 +75,46 @@ function Player(x, y, id){
             if (this.hud2 != null && this.item == 'nothing'){
                 this.hudRoom.loadTexture('roomE');
             }
+        }
+    }
+
+    this.createCursor = function(){
+        if (id == 'p1'){
+            this.cursor = {
+                up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+                down: game.input.keyboard.addKey(Phaser.Keyboard.S),
+                left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+                right: game.input.keyboard.addKey(Phaser.Keyboard.D),
+            };
+        }else if (id == 'p2'){
+            this.cursor = {
+                up: game.input.keyboard.addKey(Phaser.Keyboard.UP),
+                down: game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+                left: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+                right: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+            };
+        }
+    }
+
+    this.handleInput = function(map){
+        if(!this.once){
+            if (this.cursor.left.isDown){
+                this.once = true;
+                this.move(map,'left', false);
+            }else if (this.cursor.right.isDown){
+                this.once = true;
+                this.move(map,'right', false);
+            }else if (this.cursor.up.isDown){
+                this.once = true;
+                this.move(map,'up', false);
+            }else if (this.cursor.down.isDown){
+                this.once = true;
+                this.move(map,'down', false);
+            }
+        }
+
+        if (!this.cursor.right.isDown && !this.cursor.left.isDown && !this.cursor.up.isDown && !this.cursor.down.isDown){
+            this.once = false;
         }
     }
 

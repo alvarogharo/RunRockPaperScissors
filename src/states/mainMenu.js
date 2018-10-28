@@ -5,8 +5,11 @@ RunRockPaperScissors.mainMenuState = function(game) {
 RunRockPaperScissors.mainMenuState.prototype = {
 
     preload: function() {
+        //Buttons
         game.load.image('playButton', 'assets/sprites/buttons/playButton.png');
         game.load.image('creditsButton', 'assets/sprites/buttons/creditsButton.png');
+
+        //Icons
         game.load.image('p1', 'assets/sprites/players/p1.png');
         game.load.image('p2', 'assets/sprites/players/p2.png');
         game.load.image('rock', 'assets/sprites/objects/rock.png');
@@ -19,67 +22,63 @@ RunRockPaperScissors.mainMenuState.prototype = {
 
         var scale = 12;
         
-        var text = game.add.bitmapText(130, 100+100, 'myFont', 'RUN', 120);
-        text = game.add.bitmapText(130, 260+100, 'myFont', 'Rock', 120);
-        text = game.add.bitmapText(130, 420+100, 'myFont', 'Paper', 120);
-        text = game.add.bitmapText(130, 580+100, 'myFont', 'Scissors', 120);
-        text.smoothed = false;
-        text.color = 'white';
+        //Texts
+        var text = new Array(); 
+        text[0] = game.add.bitmapText(130, 100+100, 'myFont', 'RUN', 120);
+        text[1] = game.add.bitmapText(130, 260+100, 'myFont', 'Rock', 120);
+        text[2] = game.add.bitmapText(130, 420+100, 'myFont', 'Paper', 120);
+        text[3] = game.add.bitmapText(130, 580+100, 'myFont', 'Scissors', 120);
 
-        var p1 = game.add.sprite(780, 230, 'p1');   
-        var p2 = game.add.sprite(930, 230, 'p2');
-        var rock = game.add.sprite(855, 410, 'rock');
-        var paper = game.add.sprite(865, 580, 'paper');
-        var scissors = game.add.sprite(855, 740, 'scissors');
+        for (var t in text){
+            t.smoothed = false;
+        }
 
-        p1.smoothed = false;
-        p2.smoothed = false;
-        rock.smoothed = false;
-        paper.smoothed = false;
-        scissors.smoothed = false;
+        //Icons
+        var icons = new Array();
+        icons[0] = game.add.sprite(780, 230, 'p1');   
+        icons[1]  = game.add.sprite(930, 230, 'p2');
+        icons[2]  = game.add.sprite(855, 410, 'rock');
+        icons[3]  = game.add.sprite(865, 580, 'paper');
+        icons[4]  = game.add.sprite(855, 740, 'scissors');
 
-        p1.scale.set(scale,scale);
-        p2.scale.set(scale,scale);
-        rock.scale.set(scale,scale);
-        paper.scale.set(scale,scale);
-        scissors.scale.set(scale,scale);
+        for(var i = 0; i<icons.length; i++){
+            icons[i].smoothed = false;
+            icons[i].scale.set(scale);
+        }
 
-        //var playButton = game.add.sprite(200, 1100, 'playButton');
+
+        //Buttons
         var playButton = game.add.button(200, 1100, 'playButton', this.play, this, 2, 1, 0);
         var creditsButton = game.add.button(200, 1450, 'creditsButton', this.credits, this, 2, 1, 0);
 
-        playButton.onInputOver.add(over, this);
-        playButton.onInputOut.add(out, this);
-        playButton.onInputUp.add(up, this);
+        playButton.onInputOver.add(this.over, this);
+        playButton.onInputOut.add(this.out, this);
+        playButton.onInputUp.add(this.up, this);
 
-        creditsButton.onInputOver.add(over, this);
-        creditsButton.onInputOut.add(out, this);
-        creditsButton.onInputUp.add(up, this);
+        creditsButton.onInputOver.add(this.over, this);
+        creditsButton.onInputOut.add(this.out, this);
+        creditsButton.onInputUp.add(this.up, this);
     },
 
-    update: function() {
-
-    },
-
+    //Button actions
     play: function  () {
         game.state.start('gameModeState');
     },
     
     credits: function  () {
         game.state.start('creditsState');
-    }
+    },
 
+    up: function() {
+        console.log('button up', arguments);
+    },
     
-}
-
-function up() {
-    console.log('button up', arguments);
-}
-
-function over() {
-    console.log('button over');
-}
-
-function out() {
-    console.log('button out');
+    over: function() {
+        console.log('button over');
+    },
+    
+    out: function() {
+        console.log('button out');
+    }
+    
 }

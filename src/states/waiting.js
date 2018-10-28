@@ -1,33 +1,30 @@
 RunRockPaperScissors.waitingState = function(game) {
-
+    this.timer;
 }
-
-var timer;
 
 RunRockPaperScissors.waitingState.prototype = {
 
-    preload: function() {
-        game.load.image('backButton', 'assets/sprites/buttons/backButton.png');
-        game.load.image('creditsBanner', 'assets/sprites/credits/creditsBanner.png');
-        
-    },
-
     create: function() {
-        var text = game.add.bitmapText(130, 440, 'myFont', 'WAITING', 120);
-        text = game.add.bitmapText(130, 600, 'myFont', 'For', 120);
-        text = game.add.bitmapText(130, 760, 'myFont', 'Other', 120);
-        text = game.add.bitmapText(130, 920, 'myFont', 'Player...', 120);
-        text.smoothed = false;
-        text.color = 'white';
+        //Texts
+        var texts = new Array();
+        texts[0] = game.add.bitmapText(130, 440, 'myFont', 'WAITING', 120);
+        texts[1] = game.add.bitmapText(130, 600, 'myFont', 'For', 120);
+        texts[2] = game.add.bitmapText(130, 760, 'myFont', 'Other', 120);
+        texts[3] = game.add.bitmapText(130, 920, 'myFont', 'Player...', 120);
 
-        timer = 0;
+        for(var t in texts){
+            t.smoothed = false;
+        }
+
+        //Timer initialization
+        this.timer = 0;
     },
 
     update: function() {
-        game.debug.text('Elapsed seconds: ' + timer, 32, 32);
-        timer += game.time.physicsElapsed;
+        //Timer waits for 3 seconds
+        this.timer += game.time.physicsElapsed;
 
-        if (timer >= 5){
+        if (this.timer >= 3){
             game.state.start('gameState');
         }
     }

@@ -5,24 +5,27 @@ RunRockPaperScissors.creditsState = function(game) {
 RunRockPaperScissors.creditsState.prototype = {
 
     preload: function() {
+        //Button
         game.load.image('backButton', 'assets/sprites/buttons/backButton.png');
+
+        //Banner
         game.load.image('creditsBanner', 'assets/sprites/credits/creditsBanner.png');
     },
 
     create: function() {
+        //Text
         var text = game.add.bitmapText(130, 100+100, 'myFont', 'CREDITS', 120);
         text.smoothed = false;
-        text.color = 'white';
 
+        //Banner
         var credits = game.add.sprite(140, 600, 'creditsBanner');
 
-        var backButton = game.add.button(200, 1450, 'backButton', back, this, 2, 1, 0);
+        //Button
+        var backButton = game.add.button(200, 1450, 'backButton', this.back, this, 2, 1, 0);
     },
 
-    update: function() {
+    //Buttons actions
+    back: function(){
+        game.state.start('mainMenuState');
     }
-}
-
-function back(){
-    game.state.start('mainMenuState');
 }

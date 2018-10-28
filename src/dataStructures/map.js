@@ -61,6 +61,7 @@ function Map(){
     this.p1Pos = new Array();
     this.p2Pos = new Array();
     
+    //Fill the map withempty rooms
     this.fullMap = function(){
         for(var i= 0; i<this.rooms[0].length;i++){
             for(var j= 0; j<this.rooms.length;j++){
@@ -69,6 +70,7 @@ function Map(){
         }
     }
 
+    //Cast an array level to a room level
     this.createLevel = function(level){
         for(var i= 0; i<this.rooms[0].length;i++){
             for(var j= 0; j<this.rooms.length;j++){
@@ -105,6 +107,7 @@ function Map(){
         }
     }
 
+    //Cast the rooms to string
     this.toString = function(){
         var st = '';
 
