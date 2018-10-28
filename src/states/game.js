@@ -36,6 +36,9 @@ RunRockPaperScissors.gameState.prototype = {
         onceP1 = false;
         onceP2 = false;
 
+        p1 = new Player(0,0,'p1');
+        p2 = new Player(5,5,'p2');
+
         //Textos superiores
         var text = game.add.bitmapText(90, 100, 'myFontB', 'P1', 80);
         text = game.add.bitmapText(880, 100, 'myFontR', 'P2', 80);
@@ -54,14 +57,16 @@ RunRockPaperScissors.gameState.prototype = {
         p2Room.smoothed = false;
 
         //HUD Obj p1 p2
-        var p1Obj = game.add.sprite(253, 123, 'rock');
-        var p2Obj = game.add.sprite(723, 123, 'nothing');
+        p1.hud = game.add.sprite(253, 123, 'rock');
+        p2.hud = game.add.sprite(723, 123, 'nothing');
 
-        p1Obj.scale.set(10,10);
-        p2Obj.scale.set(10,10);
+        
 
-        p1Obj.smoothed = false;
-        p2Obj.smoothed = false;
+        p1.hud.scale.set(10,10);
+        p2.hud.scale.set(10,10);
+
+        p1.hud.smoothed = false;
+        p2.hud.smoothed = false;
 
         //HUD Map
         var mapH = game.add.sprite(45, 300, 'map');
@@ -85,10 +90,6 @@ RunRockPaperScissors.gameState.prototype = {
 
         p1Big.scale.set(25,25);
         p1Big.smoothed = false;
-
-        
-        p1 = new Player(0,0,'p1');
-        p2 = new Player(5,5,'p2');
 
         map = new Map();
         map.fullMap();
@@ -157,6 +158,9 @@ RunRockPaperScissors.gameState.prototype = {
         if (!wasd.right.isDown && !wasd.left.isDown && !wasd.up.isDown && !wasd.down.isDown){
             onceP2 = false;
         }
+
+        p1.updateHUD();
+        p2.updateHUD();
 
         this.rePrintMap(map);
     },

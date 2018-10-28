@@ -4,7 +4,8 @@ function Player(x, y, id){
     this.lastX = x;
     this.lastY = y;
     this.id = id;
-    this.item = null;
+    this.item = 'nothing';
+    this.hud = null;
     this.sprite = null;
 
     var spacing = 150;
@@ -51,4 +52,13 @@ function Player(x, y, id){
         this.sprite.x = offsetX+(spacing*this.x);
         this.sprite.y = offsetY+(spacing*this.y);
     }
+
+    this.updateHUD = function(){
+        
+        if (this.hud != null){
+            
+            this.hud.loadTexture(this.item);
+        }
+    }
+
 }
