@@ -49,10 +49,10 @@ RunRockPaperScissors.gameState.prototype = {
         play = false;
 
         map = new Map();
-        map.createLevel(map.level0);
+        map.createLevel(map.levels[Math.floor(Math.random() * map.levels.length)]);
 
-        p1 = new Player(5,2,'p1');
-        p2 = new Player(0,2,'p2');
+        p1 = new Player(map.p1Pos[0],map.p1Pos[1],'p1');
+        p2 = new Player(map.p2Pos[0],map.p2Pos[1],'p2');
 
         //Textos superiores
         var text = game.add.bitmapText(90, 100, 'myFontB', 'P1', 80);
@@ -107,14 +107,6 @@ RunRockPaperScissors.gameState.prototype = {
 
         p1Big.scale.set(25,25);
         p1Big.smoothed = false;
-
-        
-        /*map.rooms[0][0].player = 'p1';
-        map.rooms[5][5].player = 'p2';
-        
-        map.rooms[1][0].type = 'paper';
-        map.rooms[2][3].type = 'paper';
-        map.rooms[5][1].type = 'scissors';*/
 
         cursors = game.input.keyboard.createCursorKeys();
 

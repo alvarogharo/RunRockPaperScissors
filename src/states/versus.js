@@ -5,7 +5,11 @@ RunRockPaperScissors.versusState = function(game) {
 var timer;
 var p1;
 var p2;
+var p1Wins;
+var p2Wins;
+var wins;
 var scale;
+var winner;
 
 RunRockPaperScissors.versusState.prototype = {
     init: function(player1, player2){
@@ -21,19 +25,31 @@ RunRockPaperScissors.versusState.prototype = {
         game.load.image('paper', 'assets/sprites/objects/paper.png');
         game.load.image('scissors', 'assets/sprites/objects/scissors.png');
         game.load.image('nothing', 'assets/sprites/objects/nothing.png');
-
-        
     },
 
     create: function() {
         scale = 12;
 
         var text = game.add.bitmapText(260, 450, 'myFontB', 'P1', 80);
+        text.smoothed = false;
         
         text = game.add.bitmapText(730, 450, 'myFontR', 'P2', 80);
+        text.smoothed = false;
         
         var text = game.add.bitmapText(450, 580, 'myFont', 'VS', 120);
         text.smoothed = false;
+
+        p1Wins = game.add.bitmapText(260, 1000, 'myFontB', 'P1', 120);
+        p1Wins.smoothed = false;
+        p1Wins.visible = false;
+
+        p2Wins = game.add.bitmapText(260, 1000, 'myFontR', 'P2', 120);
+        p2Wins.smoothed = false
+        p2Wins.visible = false;
+
+        wins = game.add.bitmapText(260, 1200, 'myFont', 'Wins', 120);
+        wins.smoothed = false;
+        wins.visible = false;
 
         switch (p1){
             case 'rock':
@@ -80,18 +96,30 @@ RunRockPaperScissors.versusState.prototype = {
                 obj2.smoothed = false;
                 break;
         }
-        
+        winner = 0;
+        winner = determineWinner();
+
         updateScore();
 
         timer = 0;
     },
 
     update: function() {
-        game.debug.text('Elapsed seconds: ' + timer, 32, 32);
         timer += game.time.physicsElapsed;
 
-        if (timer >= 1){
+        if (timer >= 3){
             game.state.start('scoreState');
+        }else if(timer >= 1){
+            if (winner == 1){
+                p1Wins.visible = true;
+                wins.visible = true;
+            }else if (winner == 2){
+                p2Wins.visible = true;
+                wins.visible = true;
+            }else{
+                wins.visible = true;
+                wins.setText('TIE');
+            }
         }
     }
 }
@@ -129,7 +157,6 @@ function determineWinner(){
 }
 
 function updateScore(){
-    var winner = determineWinner();
     if (winner == 1){
         score[0] += 1;
     }else if (winner == 2){
