@@ -1,5 +1,7 @@
 RunRockPaperScissors.winnerState = function(game) {
     this.winner;
+    var replayButton;
+    var mainMenuButton;
 }
 
 RunRockPaperScissors.winnerState.prototype = {
@@ -9,7 +11,11 @@ RunRockPaperScissors.winnerState.prototype = {
 
     preload: function() {
         game.load.image('replayButton', 'assets/sprites/buttons/replayButton.png');
+        game.load.image('replayButtonOver', 'assets/sprites/buttons/replayButtonOver.png');
+        game.load.image('replayButtonDown', 'assets/sprites/buttons/replayButtonDown.png');
         game.load.image('mainMenuButton', 'assets/sprites/buttons/mainMenuButton.png');
+        game.load.image('mainMenuButtonOver', 'assets/sprites/buttons/mainMenuButtonOver.png');
+        game.load.image('mainMenuButtonDown', 'assets/sprites/buttons/mainMenuButtonDown.png');
 
         //Sounds
         game.load.audio('win', 'assets/sounds/win.wav');
@@ -42,16 +48,18 @@ RunRockPaperScissors.winnerState.prototype = {
         game.sound.play('win');
 
         //Buttons
-        var replayButton = game.add.button(200, 1100, 'replayButton', this.replay, this, 2, 1, 0);
-        var mainMenuButton = game.add.button(200, 1450, 'mainMenuButton', this.mainMenu, this, 2, 1, 0);
+        replayButton = game.add.button(200, 1100, 'replayButton', this.replay, this, 2, 1, 0);
+        mainMenuButton = game.add.button(200, 1450, 'mainMenuButton', this.mainMenu, this, 2, 1, 0);
 
-        replayButton.onInputOver.add(this.over, this);
-        replayButton.onInputOut.add(this.out, this);
+        replayButton.onInputOver.add(this.overR, this);
+        replayButton.onInputOut.add(this.outR, this);
         replayButton.onInputUp.add(this.up, this);
+        replayButton.onInputDown.add(this.downR, this);
 
-        mainMenuButton.onInputOver.add(this.over, this);
-        mainMenuButton.onInputOut.add(this.out, this);
+        mainMenuButton.onInputOver.add(this.overM, this);
+        mainMenuButton.onInputOut.add(this.outM, this);
         mainMenuButton.onInputUp.add(this.up, this);
+        mainMenuButton.onInputDown.add(this.downM, this);
     },
 
     //Button actions
@@ -59,13 +67,38 @@ RunRockPaperScissors.winnerState.prototype = {
         console.log('button up', arguments);
     },
     
-    over: function() {
+    overR: function() {
         game.sound.play('buttonOver');
+        replayButton.loadTexture('replayButtonOver');
         console.log('button over');
     },
     
-    out: function() {
+    outR: function() {
+        replayButton.loadTexture('replayButton');
         console.log('button out');
+    },
+
+    downR: function() {
+        game.sound.play('buttonOver');
+        replayButton.loadTexture('replayButtonDown');
+        console.log('button over');
+    },
+
+    overM: function() {
+        game.sound.play('buttonOver');
+        mainMenuButton.loadTexture('mainMenuButtonOver');
+        console.log('button over');
+    },
+    
+    outM: function() {
+        mainMenuButton.loadTexture('mainMenuButton');
+        console.log('button out');
+    },
+
+    downM: function() {
+        game.sound.play('buttonOver');
+        mainMenuButton.loadTexture('mainMenuButtonDown');
+        console.log('button over');
     },
     
     replay: function(){

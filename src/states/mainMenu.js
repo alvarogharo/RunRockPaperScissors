@@ -1,5 +1,6 @@
 RunRockPaperScissors.mainMenuState = function(game) {
-
+    var playButton;
+    var creditsBut
 }
 
 RunRockPaperScissors.mainMenuState.prototype = {
@@ -7,7 +8,11 @@ RunRockPaperScissors.mainMenuState.prototype = {
     preload: function() {
         //Buttons
         game.load.image('playButton', 'assets/sprites/buttons/playButton.png');
+        game.load.image('playButtonOver', 'assets/sprites/buttons/playButtonOver.png');
+        game.load.image('playButtonDown', 'assets/sprites/buttons/playButtonDown.png');
         game.load.image('creditsButton', 'assets/sprites/buttons/creditsButton.png');
+        game.load.image('creditsButtonOver', 'assets/sprites/buttons/creditsButtonOver.png');
+        game.load.image('creditsButtonDown', 'assets/sprites/buttons/creditsButtonDown.png');
 
         //Icons
         game.load.image('p1', 'assets/sprites/players/p1.png');
@@ -52,16 +57,18 @@ RunRockPaperScissors.mainMenuState.prototype = {
 
 
         //Buttons
-        var playButton = game.add.button(200, 1100, 'playButton', this.play, this, 2, 1, 0);
-        var creditsButton = game.add.button(200, 1450, 'creditsButton', this.credits, this, 2, 1, 0);
+        playButton = game.add.button(200, 1100, 'playButton', this.play, this, 2, 1, 0);
+        creditsButton = game.add.button(200, 1450, 'creditsButton', this.credits, this, 2, 1, 0);
 
-        playButton.onInputOver.add(this.over, this);
-        playButton.onInputOut.add(this.out, this);
+        playButton.onInputOver.add(this.overPlay, this);
+        playButton.onInputOut.add(this.outPlay, this);
         playButton.onInputUp.add(this.up, this);
+        playButton.onInputDown.add(this.downPlay, this);
 
-        creditsButton.onInputOver.add(this.over, this);
-        creditsButton.onInputOut.add(this.out, this);
+        creditsButton.onInputOver.add(this.overCredits, this);
+        creditsButton.onInputOut.add(this.outCredits, this);
         creditsButton.onInputUp.add(this.up, this);
+        creditsButton.onInputDown.add(this.downCredits, this);
     },
 
     //Button actions
@@ -79,13 +86,34 @@ RunRockPaperScissors.mainMenuState.prototype = {
         console.log('button up', arguments);
     },
     
-    over: function() {
+    overPlay: function() {
         game.sound.play('buttonOver');
+        playButton.loadTexture('playButtonOver');
+        console.log('button over');
+    },
+
+    overCredits: function() {
+        game.sound.play('buttonOver');
+        creditsButton.loadTexture('creditsButtonOver');
         console.log('button over');
     },
     
-    out: function() {
+    outPlay: function() {
+        playButton.loadTexture('playButton');
         console.log('button out');
+    },
+
+    outCredits: function() {
+        creditsButton.loadTexture('creditsButton');
+        console.log('button out');
+    },
+
+    downPlay: function() {
+        playButton.loadTexture('playButtonDown');
+    },
+
+    downCredits: function() {
+        creditsButton.loadTexture('creditsButtonDown');
     }
     
 }
