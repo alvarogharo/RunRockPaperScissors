@@ -1,5 +1,5 @@
 game = new Phaser.Game(1080, 1920, Phaser.AUTO, 'gameDiv')
-  
+
 game.state.add('bootState', RunRockPaperScissors.bootState);
 game.state.add('mainMenuState', RunRockPaperScissors.mainMenuState);
 game.state.add('gameModeState', RunRockPaperScissors.gameModeState);

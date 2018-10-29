@@ -123,8 +123,9 @@ Se pretende conseguir con poca cantidad de elementos pero muy concretos, como lo
 
 ## Lecciones aprendidas en la fase 2
 + Phaser otorga muchas faicilidades. Sin embargo, para este tipo de juego no aporta demasiado.
-+ El escalado de Phaser por defecto es suavizado.
-+ Manejar the manera correcta variables locales y globales.
++ El escalado de Phaser por defecto es suavizado. Usar "tuSprite.smoothed = false;" lo soluciona.
++ Manejar de manera correcta variables locales y globales es muy importante para no sobrecargar Phaser.
++ Meter fuentes personalizadas en Phaser se hace en formato bitmap. A estas fuentes, Phaser, no te permite cambiarles el color por código.
 
 ## A implementar en proxima versión
 + Transiciones entre estados
