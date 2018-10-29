@@ -6,10 +6,6 @@
 
 Álvaro Gómez Haro - @snadker 
 
-###  Tablero Trello
-
-https://trello.com/b/MTZLdX3d
-
 ### Plataforma
 
 Web y posiblemente web para dispositivos móviles
@@ -18,7 +14,7 @@ Web y posiblemente web para dispositivos móviles
 
 RUN RockPaperScissors es un juego que toma la mecánica básica de piedra papel y tijera y le da una vuelta de tuerca obligando a los jugadores a avanzar por un mapa en un tiempo limitado para coger su objeto de combate (piedra, papel o tijeras).
 
-Ambos jugadores aparecerán en un mapa compartido, divido como una cuadrícula por la que podrán moverse de cuadrado en cuadrado. Dispondrán aproximadamente de 10 segundos para correr lo más rápido posible al objeto que desean utilizar para vencer a su oponente. Ambos jugadores pueden ver por donde se mueve el enemigo contrario y que objeto tiene, por lo que podrán rectificar y coger un nuevo objeto para vencerle si lo desean.
+Ambos jugadores aparecerán en un mapa compartido, divido como una cuadrícula por la que podrán moverse de cuadrado en cuadrado. Dispondrán aproximadamente de 5 segundos para correr lo más rápido posible al objeto que desean utilizar para vencer a su oponente. Ambos jugadores pueden ver por donde se mueve el enemigo contrario y que objeto tiene, por lo que podrán rectificar y coger un nuevo objeto para vencerle si lo desean.
 
 Para ganar se aplican las reglas clásicas de "*Piedra, papel, tijera*", únicamente añadiendo que si cuando termina el tiempo un jugador se ha quedado en una cuadrícula vacía (sin objeto) este quedará indefenso y perderá, sin importar el objeto que tenga el contrario. En caso de que ambos jugadores queden sin objeto al terminar el tiempo se contará como empate.
 
@@ -46,6 +42,8 @@ Sin embargo, el target principal son personas de 30 años en adelante que hayan 
 
 La base principal del juego es un balanceo adecuado para permitir a ambos jugadores tener las mismas posibilidades y un enfoque centrado en las partidas cortas. Algo bastante importante aunque complicado sería la creación de un sistema de generación semi-aleatoria de niveles bien balanceados, sin embargo, cabe la posibilidad de que esto no llegue a ser desarrollado. Esto último facilitaría la rejugablidad del conjunto bastante necesaria debido a la brevedad de las partidas.
 
+**NOTA:** En la versión actual se disponen de 5 niveles prediseñados para las partidas que apareceran de manera aleatoria en las partidas.
+
 En cuanto a la estética el juego seguirá una líneas de juegos 8-bit/16-bit con pocos colores y que recuerde a rpgs antiguos de texto, incluso ASCII. Manteniendo el conjunto simple pero funcional y trabajado.
 
 ## Mecánicas
@@ -65,7 +63,9 @@ Los objetos disponibles son los clásicos de "*Piedra, papel, tijera*":
 
 Si un jugador acabase la partida en una room vacía y el otro tuviera cualquier objeto disponible el primer jugador perdería. Si ambos jugadores quedarán sin objeto existiría un empate. También se daría empate en caso de que dos jugadores acabasen la partida con el mismo objeto.
 
-Existe la posibilidad de forzar un empate, para esto, los dos jugadores deberán ocupar una misma casilla vacía. Así, en un situación desesperada un jugador podría forzar el empate para evitar una derrota.
+Existe la posibilidad de forzar un empate en el ultimo segundo de partida, para esto, los dos jugadores deberán ocupar una misma casilla vacía. Así, en un situación desesperada un jugador podría forzar el empate para evitar una derrota.
+
+**NOTA:** En la versión actual el forzar empate no esta implementado.
 
 #### Reglas situacionales 
 + Si un jugador ya ocupa una room con objeto el otro jugador no podrá entrar en esta.
@@ -115,8 +115,22 @@ Se pretende conseguir con poca cantidad de elementos pero muy concretos, como lo
 ![](img/Assets.png)
 
 ## Detalles de producción
-+**Fecha de inicio:** 24/09/2018
++ **Fecha de inicio:** 24/09/2018
 
-+**Fecha de fin:** 10/12/2018
++ **Fecha de fin:** 10/12/2018
 
-+**Presupuesto:** 0€
++ **Presupuesto:** 0€
+
+## Lecciones aprendidas en la fase 2
++ Phaser otorga muchas faicilidades. Sin embargo, para este tipo de juego no aporta demasiado.
++ El escalado de Phaser por defecto es suavizado.
++ Manejar the manera correcta variables locales y globales.
+
+## A implementar en proxima versión
++ Transiciones entre estados
++ Pantalla de boot
++ Animaciones
++ Sonido ambiental
++ Crear una clase para encapsular los botones
++ Comunicación online con API Rest
+
