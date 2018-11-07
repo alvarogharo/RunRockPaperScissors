@@ -27,7 +27,5 @@ function Button(x,y,sprite,onClick,state){
 
     button.onInputOver.add(over,this.state);
     button.onInputDown.add(down,this.state);
-    button.onInputOut.add(out,this.state);
-
-    
+    button.onInputOut.add(out,this.state); 
 }

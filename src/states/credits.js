@@ -24,7 +24,6 @@ RunRockPaperScissors.creditsState.prototype = {
 
         //Button
         backButton = new Button(200,1450,'backButton',this.back,this);
-
     },
 
     //Buttons actions

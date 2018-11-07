@@ -57,18 +57,8 @@ RunRockPaperScissors.mainMenuState.prototype = {
 
 
         //Buttons
-        playButton = game.add.button(200, 1100, 'playButton', this.play, this, 2, 1, 0);
-        creditsButton = game.add.button(200, 1450, 'creditsButton', this.credits, this, 2, 1, 0);
-
-        playButton.onInputOver.add(this.overPlay, this);
-        playButton.onInputOut.add(this.outPlay, this);
-        playButton.onInputUp.add(this.up, this);
-        playButton.onInputDown.add(this.downPlay, this);
-
-        creditsButton.onInputOver.add(this.overCredits, this);
-        creditsButton.onInputOut.add(this.outCredits, this);
-        creditsButton.onInputUp.add(this.up, this);
-        creditsButton.onInputDown.add(this.downCredits, this);
+        playButton = new Button(200,1100,'playButton',this.play,this);
+        creditsButton = new Button(200,1450,'creditsButton',this.credits,this);
     },
 
     //Button actions
@@ -80,40 +70,5 @@ RunRockPaperScissors.mainMenuState.prototype = {
     credits: function  () {
         game.sound.play('buttonClicked');
         game.state.start('creditsState');
-    },
-
-    up: function() {
-        console.log('button up', arguments);
-    },
-    
-    overPlay: function() {
-        game.sound.play('buttonOver');
-        playButton.loadTexture('playButtonOver');
-        console.log('button over');
-    },
-
-    overCredits: function() {
-        game.sound.play('buttonOver');
-        creditsButton.loadTexture('creditsButtonOver');
-        console.log('button over');
-    },
-    
-    outPlay: function() {
-        playButton.loadTexture('playButton');
-        console.log('button out');
-    },
-
-    outCredits: function() {
-        creditsButton.loadTexture('creditsButton');
-        console.log('button out');
-    },
-
-    downPlay: function() {
-        playButton.loadTexture('playButtonDown');
-    },
-
-    downCredits: function() {
-        creditsButton.loadTexture('creditsButtonDown');
     }
-    
 }

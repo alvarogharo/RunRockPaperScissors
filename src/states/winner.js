@@ -48,57 +48,8 @@ RunRockPaperScissors.winnerState.prototype = {
         game.sound.play('win');
 
         //Buttons
-        replayButton = game.add.button(200, 1100, 'replayButton', this.replay, this, 2, 1, 0);
-        mainMenuButton = game.add.button(200, 1450, 'mainMenuButton', this.mainMenu, this, 2, 1, 0);
-
-        replayButton.onInputOver.add(this.overR, this);
-        replayButton.onInputOut.add(this.outR, this);
-        replayButton.onInputUp.add(this.up, this);
-        replayButton.onInputDown.add(this.downR, this);
-
-        mainMenuButton.onInputOver.add(this.overM, this);
-        mainMenuButton.onInputOut.add(this.outM, this);
-        mainMenuButton.onInputUp.add(this.up, this);
-        mainMenuButton.onInputDown.add(this.downM, this);
-    },
-
-    //Button actions
-    up: function() {
-        console.log('button up', arguments);
-    },
-    
-    overR: function() {
-        game.sound.play('buttonOver');
-        replayButton.loadTexture('replayButtonOver');
-        console.log('button over');
-    },
-    
-    outR: function() {
-        replayButton.loadTexture('replayButton');
-        console.log('button out');
-    },
-
-    downR: function() {
-        game.sound.play('buttonOver');
-        replayButton.loadTexture('replayButtonDown');
-        console.log('button over');
-    },
-
-    overM: function() {
-        game.sound.play('buttonOver');
-        mainMenuButton.loadTexture('mainMenuButtonOver');
-        console.log('button over');
-    },
-    
-    outM: function() {
-        mainMenuButton.loadTexture('mainMenuButton');
-        console.log('button out');
-    },
-
-    downM: function() {
-        game.sound.play('buttonOver');
-        mainMenuButton.loadTexture('mainMenuButtonDown');
-        console.log('button over');
+        replayButton = new Button(200,1100,'replayButton',this.replay,this);
+        mainMenuButton = new Button(200,1450,'mainMenuButton',this.mainMenu,this);
     },
     
     replay: function(){
@@ -109,8 +60,8 @@ RunRockPaperScissors.winnerState.prototype = {
     
     mainMenu: function(){
         game.sound.play('buttonClicked');
+        score = [0,0];
         game.state.start('mainMenuState');
     }
-
 }
 
