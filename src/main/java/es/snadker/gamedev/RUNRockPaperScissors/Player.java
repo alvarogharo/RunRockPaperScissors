@@ -4,6 +4,7 @@ public class Player {
 
 	private long id;
 	private int x, y;
+	private int lastX, lastY;
 	private int score;
 	
 	Player() {
@@ -42,9 +43,25 @@ public class Player {
 		this.score = score;
 	}
 
+	public int getLastX() {
+		return lastX;
+	}
+
+	public void setLastX(int lastX) {
+		this.lastX = lastX;
+	}
+
+	public int getLastY() {
+		return lastY;
+	}
+
+	public void setLastY(int lastY) {
+		this.lastY = lastY;
+	}
+	
 	@Override
 	public String toString() {
-		return "Player [id=" + id + ", x=" + x + ", y=" + y + ", score=" + score + "]";
+		return "Player [id=" + id + ", x=" + x + ", y=" + y + ", lastX=" + lastX + ", lastY=" + lastY + ", score=" + score + "]";
 	}
 
 }
