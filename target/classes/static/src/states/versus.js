@@ -169,7 +169,7 @@ RunRockPaperScissors.versusState.prototype = {
     //Updates de global score
     updateScore: function(){
         if (this.winner == 1){
-            this.score[0] += 1;
+            score[0] += 1;
         }else if (this.winner == 2){
             score[1] += 1;
         }else if (this.winner != 0){

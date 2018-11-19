@@ -47,9 +47,13 @@ RunRockPaperScissors.gameState.prototype = {
         this.timer = 5;
         this.play = false;
 
+        //GET SERVER MAP
+
         //Creating the map
         this.map = new Map();
         this.map.createLevel(this.map.levels[Math.floor(Math.random() * this.map.levels.length)]);
+
+        //INITIALIZE PLAYERS
 
         //Creating the players
         var p1Pos = this.map.p1Pos;
@@ -111,6 +115,8 @@ RunRockPaperScissors.gameState.prototype = {
         p1Big.scale.set(25,25);
         p1Big.smoothed = false;
 
+        //INITILIZE P1 CONTROL
+
         //Player control intialization
         this.p1.createCursor();
         this.p2.createCursor();
@@ -136,10 +142,17 @@ RunRockPaperScissors.gameState.prototype = {
         //Game loopwiththe timer
         if (this.play && this.timer >= 0){
 
+            //GET CDGAME
+
             this.timer -= game.time.physicsElapsed;
             this.timerObj.setText(Math.round(this.timer).toString());
 
+            //GET MAP
+
+            //HANDLE P1 INPUT
             this.p1.handleInput(this.map);
+
+            //SET P2 VALUES FROM SERVER
             this.p2.handleInput(this.map);
 
         }else if (this.timer < 0){ //When the time its over
@@ -273,6 +286,8 @@ RunRockPaperScissors.gameState.prototype = {
     },
 
     updateCountdown: function(){
+        //GET CDINIT
+
         if (this.countDown >= -3){
             this.countDown -= game.time.physicsElapsed*3;
         }
