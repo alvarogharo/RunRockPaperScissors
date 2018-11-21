@@ -22,8 +22,12 @@ public class GameController {
 
 	Map<Long, Player> players = new ConcurrentHashMap<>();
 	AtomicLong nextId = new AtomicLong(0);
+	int mode = 0;
+	GameMap map  = new GameMap();
+	
 	Random rnd = new Random();
 	Cat cat = new Cat();
+	
 
 	// Con GET recuperamos el número de jugadores
 	@GetMapping(value = "/game")
@@ -38,8 +42,8 @@ public class GameController {
 		Player player = new Player();
 		long id = nextId.incrementAndGet();
 		player.setId(id);
-		player.setX(rnd.nextInt(700));
-		player.setY(rnd.nextInt(500));
+		player.setX(0);
+		player.setY(0);
 		players.put(player.getId(), player);
 		return player;
 	}
@@ -55,6 +59,18 @@ public class GameController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	// Con este PUT actualizamos la información del modo de juego de la partida
+		@PutMapping(value = "/game")
+		public ResponseEntity<Integer> updateMode(@RequestBody int mode) {
+			if (mode != 0) {
+				this.mode = mode;
+				System.out.println(mode);
+				return new ResponseEntity<>(mode, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}
 
 	// Con este PUT actualizamos la información del jugador con ID = id
 	@PutMapping(value = "/game/{id}")

@@ -50,13 +50,6 @@ function Map(){
                    [null,null,null,null,null,null],
                    [null,null,null,null,null,null],
                    [null,null,null,null,null,null]];
-
-    this.objs = [[null,null,null,null,null,null],
-                   [null,null,null,null,null,null],
-                   [null,null,null,null,null,null],
-                   [null,null,null,null,null,null],
-                   [null,null,null,null,null,null],
-                   [null,null,null,null,null,null]];
     
     this.p1Pos = new Array();
     this.p2Pos = new Array();
