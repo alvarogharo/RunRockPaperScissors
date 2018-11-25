@@ -61,6 +61,9 @@ RunRockPaperScissors.gameState.prototype = {
 
         this.p1 = new Player(p1Pos[0],p1Pos[1],'p1');
         this.p2 = new Player(p2Pos[0],p2Pos[1],'p2');
+        
+        this.p1.putPlayer();
+        this.p2.putPlayer();
 
         //Upper texts
         var text = game.add.bitmapText(90, 100, 'myFontB', 'P1', 80);
@@ -173,11 +176,20 @@ RunRockPaperScissors.gameState.prototype = {
             //HANDLE P1 INPUT
             if (id == 1){
                 this.p1.handleInput(this.map);
-                //get pos player 2
             }else{
                 this.p2.handleInput(this.map);
-                //get pos player 1
             }
+            auxP1 = this.p1;
+            auxP2 = this.p2;
+            auxMap = this.map;
+            this.getPlayer(function(data){
+                pos = data;
+                if(id == 1){
+                    auxP2.moveServer(auxMap, pos, this);
+                }else{
+                    auxP1.moveServer(auxMap, pos, this);
+                }
+            });
 
         }else if (this.timer < 0){ //When the time its over
             game.state.start('versusState', true, false, this.p1.item, this.p2.item);
@@ -331,7 +343,7 @@ RunRockPaperScissors.gameState.prototype = {
         }
     },
 
-    getPlayer(callback) {
+    getPlayer: function(callback) {
         $.ajax({
             method: "GET",
             url: 'http://localhost:8080/game/' + otherId,
@@ -340,8 +352,7 @@ RunRockPaperScissors.gameState.prototype = {
                 "Content-Type": "application/json"
             }
         }).done(function (data) {
-            game.player2 = JSON.parse(JSON.stringify(data));
             callback(data);
         })
-    },
+    }
 }

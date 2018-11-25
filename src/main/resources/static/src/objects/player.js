@@ -63,9 +63,32 @@ function Player(x, y, id){
             }else{
                 game.sound.play('buttonOver');
             }
+
+            this.putPlayer();
         }
         this.sprite.x = offsetX+(spacing*this.x);
         this.sprite.y = offsetY+(spacing*this.y);
+    }
+
+    //Moves the player in the direction assigned if possible
+    this.moveServer = function(map, pos, game){
+        this.x = pos[0];
+        this.y = pos[1];
+
+        map.rooms[this.x][this.y].player = id;
+        map.rooms[this.lastX][this.lastY].player = null;
+        this.lastX = this.x;
+        this.lastY = this.y;
+
+        this.item = map.rooms[this.x][this.y].type;
+        /*if (this.item != 'nothing'){
+            game.sound.play('objRoom');
+        }else{
+            game.sound.play('buttonOver');
+        }*/
+        this.sprite.x = offsetX+(spacing*this.x);
+        this.sprite.y = offsetY+(spacing*this.y);
+        game.rePrintMap(Map);
     }
 
     //Updates the player item HUD
@@ -112,6 +135,23 @@ function Player(x, y, id){
         if (this.cursor != null && !this.cursor.right.isDown && !this.cursor.left.isDown && !this.cursor.up.isDown && !this.cursor.down.isDown){
             this.once = false;
         }
+    }
+
+    this.putPlayer = function() {
+        let auxPos;
+        auxPos = [this.x,this.y];
+        
+        $.ajax({
+            method: "PUT",
+            url: 'http://localhost:8080/game/' + this.id.substring(1,2),
+            data: JSON.stringify(auxPos),
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+        	//console.log("Actualizada posicion de player 1: " + JSON.stringify(data))
+        })
     }
 
 }

@@ -57,10 +57,13 @@ public class GameController {
 	// Con este GET, podemos recuperar la información particular de cada uno de los
 	// jugadores
 	@GetMapping(value = "/game/{id}")
-	public ResponseEntity<Player> getPlayer(@PathVariable long id) {
+	public ResponseEntity<int[]> getPlayerPos(@PathVariable long id) {
 		Player player = players.get(id);
+		int[] pos = new int[2];
 		if (player != null) {
-			return new ResponseEntity<>(player, HttpStatus.OK);
+			pos[0] = player.getX();
+			pos[1] = player.getY();
+			return new ResponseEntity<>(pos, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -80,11 +83,12 @@ public class GameController {
 
 	// Con este PUT actualizamos la información del jugador con ID = id
 	@PutMapping(value = "/game/{id}")
-	public ResponseEntity<Player> updatePlayer(@PathVariable long id, @RequestBody Player player) {
-		Player savedPlayer = players.get(player.getId());
+	public ResponseEntity<int[]> updatePlayer(@PathVariable long id, @RequestBody int[] pos) {
+		Player savedPlayer = players.get(id);
 		if (savedPlayer != null) {
-			players.put(id, player);
-			return new ResponseEntity<>(player, HttpStatus.OK);
+			players.get(id).setX(pos[0]);
+			players.get(id).setY(pos[1]);
+			return new ResponseEntity<>(pos, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
