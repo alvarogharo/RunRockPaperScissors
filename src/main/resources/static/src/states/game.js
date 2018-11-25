@@ -17,7 +17,7 @@ RunRockPaperScissors.gameState = function(game) {
     this.play;
 }
 
-
+var auxMap;
 
 RunRockPaperScissors.gameState.prototype = {
 
@@ -46,12 +46,15 @@ RunRockPaperScissors.gameState.prototype = {
         this.countDown = 3;
         this.timer = 5;
         this.play = false;
+        
 
         //GET SERVER MAP
 
         //Creating the map
         this.map = new Map();
         this.map.createLevel(serverMap);
+
+        auxMap = this.map;
 
         //INITIALIZE PLAYERS
 
@@ -159,6 +162,7 @@ RunRockPaperScissors.gameState.prototype = {
     },
 
     update: function() {
+        auxMap = this.map;
 
         //CountDown Managing
         this.updateCountdown();
@@ -181,13 +185,15 @@ RunRockPaperScissors.gameState.prototype = {
             }
             auxP1 = this.p1;
             auxP2 = this.p2;
-            auxMap = this.map;
+            
             this.getPlayer(function(data){
                 pos = data;
                 if(id == 1){
-                    auxP2.moveServer(auxMap, pos, this);
+                    auxP2.moveServer(auxMap, pos);
+
                 }else{
-                    auxP1.moveServer(auxMap, pos, this);
+                    auxP1.moveServer(auxMap, pos);
+
                 }
             });
 
@@ -201,6 +207,7 @@ RunRockPaperScissors.gameState.prototype = {
 
         //Updating the map
         this.rePrintMap(this.map);
+        console.log(this.map);
     },
 
     //First printo of the map

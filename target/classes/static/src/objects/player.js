@@ -20,6 +20,7 @@ function Player(x, y, id){
     var spacing = 150;
     var offsetX = 132;
     var offsetY = 382;
+    var first = true;
 
     //Moves the player in the direction assigned if possible
     this.move = function(map,dir, lastSeconds){
@@ -71,24 +72,26 @@ function Player(x, y, id){
     }
 
     //Moves the player in the direction assigned if possible
-    this.moveServer = function(map, pos, game){
+    this.moveServer = function(map, pos){
         this.x = pos[0];
         this.y = pos[1];
 
-        map.rooms[this.x][this.y].player = id;
-        map.rooms[this.lastX][this.lastY].player = null;
-        this.lastX = this.x;
-        this.lastY = this.y;
+        if (this.x != this.lastX || this.y != this.lastY){
+            first = false;
+            map.rooms[this.x][this.y].player = id;
+            map.rooms[this.lastX][this.lastY].player = null;
+            this.lastX = this.x;
+            this.lastY = this.y;
 
-        this.item = map.rooms[this.x][this.y].type;
-        /*if (this.item != 'nothing'){
-            game.sound.play('objRoom');
-        }else{
-            game.sound.play('buttonOver');
-        }*/
+            this.item = map.rooms[this.x][this.y].type;
+            if (this.item != 'nothing'){
+                game.sound.play('objRoom');
+            }else{
+                game.sound.play('buttonOver');
+            }
+        }
         this.sprite.x = offsetX+(spacing*this.x);
         this.sprite.y = offsetY+(spacing*this.y);
-        game.rePrintMap(Map);
     }
 
     //Updates the player item HUD
