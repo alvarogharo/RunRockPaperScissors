@@ -76,8 +76,7 @@ function Player(x, y, id){
         this.x = pos[0];
         this.y = pos[1];
 
-        if (this.x != this.lastX || this.y != this.lastY){
-            first = false;
+        if (this.x != this.lastX ||  this.y != this.lastY){
             map.rooms[this.x][this.y].player = id;
             map.rooms[this.lastX][this.lastY].player = null;
             this.lastX = this.x;

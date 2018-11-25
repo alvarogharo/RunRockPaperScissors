@@ -22,6 +22,7 @@ public class GameController {
 
 	Map<Long, Player> players = new ConcurrentHashMap<>();
 	AtomicLong nextId = new AtomicLong(0);
+	Timer timer =  new Timer();
 	int mode = 0;
 	GameMap map  = new GameMap();
 	
@@ -40,7 +41,29 @@ public class GameController {
 	public int[][] getMap() {
 		return map.getRooms();
 	}
-
+	
+	// Con GET recuperamos el número de jugadores
+	@GetMapping(value = "/cd")
+	public long getTimer() {
+		System.out.println(timer.getCount());
+		return timer.getCount();
+	}
+	
+	// Con GET recuperamos el número de jugadores
+	@GetMapping(value = "/cdRestart")
+	public long restartTimer() {
+		timer.reset();
+		return timer.getCount();
+	}
+	
+	// Con POST creamos un nuevo jugador
+	@PostMapping(value = "/cd")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Long startTimer() {
+		timer.startTimer();
+		return timer.getCount();
+	}
+	
 	// Con POST creamos un nuevo jugador
 	@PostMapping(value = "/game")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -104,19 +127,5 @@ public class GameController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
-	
-	// Con POST creamos un nuevo jugador
-	@PostMapping(value = "/cat")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Cat randomizeCat() {
-		cat = new Cat();
-		return cat;
-	}
-	
-	// Con GET recuperamos el número de jugadores
-	@GetMapping(value = "/cat")
-	public Cat getCat() {
-		return cat;
 	}
 }

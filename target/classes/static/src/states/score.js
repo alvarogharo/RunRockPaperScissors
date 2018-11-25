@@ -27,13 +27,17 @@ RunRockPaperScissors.scoreState.prototype = {
         }
 
         game.sound.play('buttonClicked');
+        if (host){
+            this.startTimer();
+        }
     },
 
     update: function() {
-        //Timer
-        timer += game.time.physicsElapsed;
 
-        if (timer >= 1){
+        this.getCountDown();
+
+        if (timer >= 3){
+            if (host) this.resetTimer();
             if (score[0] == mode){
                 game.state.start('winnerState', true, false, 1);
             }else if (score[1] == mode){
@@ -43,5 +47,42 @@ RunRockPaperScissors.scoreState.prototype = {
             }
             
         }
+    },
+
+    getCountDown: function(callback) {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/cd/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+            timer = data;
+        })
+    },
+
+    resetTimer: function(callback) {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/cdRestart/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+        })
+    },
+
+    startTimer: function () {
+        $.ajax({
+            method: "POST",
+            url: 'http://localhost:8080/cd',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).done(function (data) {
+        })
     }
 }

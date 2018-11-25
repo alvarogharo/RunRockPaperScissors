@@ -8,16 +8,17 @@ RunRockPaperScissors.gameState = function(game) {
     this.onceP1;
     this.onceP2;
 
-    this.timer;
+    var timer;
     this.timerObj;
 
     this.graphics
-    this.countDown;
+    var countDown;
     this.countDownObj;
-    this.play;
+    var play;
 }
 
 var auxMap;
+
 
 RunRockPaperScissors.gameState.prototype = {
 
@@ -43,9 +44,9 @@ RunRockPaperScissors.gameState.prototype = {
         var scale = 8;
         this.onceP1 = false;
         this.onceP2 = false;
-        this.countDown = 3;
-        this.timer = 5;
-        this.play = false;
+        countDown = 3;
+        timer = 5;
+        play = false;
         
 
         //GET SERVER MAP
@@ -74,7 +75,7 @@ RunRockPaperScissors.gameState.prototype = {
         text = game.add.bitmapText(880, 100, 'myFontR', 'P2', 80);
         text.smoothed = false;
 
-        this.timerObj = game.add.bitmapText(520, 50, 'myFont', Math.round(this.timer).toString(), 120);
+        this.timerObj = game.add.bitmapText(520, 50, 'myFont', Math.round(timer).toString(), 120);
         this.timerObj.smoothed = false;
 
         //HUD Room p1 p2
@@ -156,9 +157,13 @@ RunRockPaperScissors.gameState.prototype = {
         graphics.beginFill('black');
         graphics.drawRect(0, 1320, 1080, 600);
         graphics.endFill();
+        
+        if (host){
+            this.startTimer();
+        }
 
         //Countdown text
-        this.countDownObj = game.add.bitmapText(480, 1450, 'myFont', this.countDown.toString(), 200);
+        this.countDownObj = game.add.bitmapText(480, 1450, 'myFont', countDown.toString(), 200);
     },
 
     update: function() {
@@ -168,12 +173,12 @@ RunRockPaperScissors.gameState.prototype = {
         this.updateCountdown();
 
         //Game loopwiththe timer
-        if (this.play && this.timer >= 0){
+        if (play && timer >= 0){
 
             //GET CDGAME
 
-            this.timer -= game.time.physicsElapsed;
-            this.timerObj.setText(Math.round(this.timer).toString());
+            timer -= game.time.physicsElapsed;
+            this.timerObj.setText(Math.round(timer).toString());
 
             //GET MAP
 
@@ -197,7 +202,8 @@ RunRockPaperScissors.gameState.prototype = {
                 }
             });
 
-        }else if (this.timer < 0){ //When the time its over
+        }else if (timer < 0){ //When the time its over
+            if (host) this.resetTimer();
             game.state.start('versusState', true, false, this.p1.item, this.p2.item);
         }
         
@@ -207,7 +213,6 @@ RunRockPaperScissors.gameState.prototype = {
 
         //Updating the map
         this.rePrintMap(this.map);
-        console.log(this.map);
     },
 
     //First printo of the map
@@ -255,7 +260,6 @@ RunRockPaperScissors.gameState.prototype = {
 
                     //printing objs
                     if (auxRoom.player != 'p1' && auxRoom.player != 'p2'){
-                        console.log(auxRoom);
                         switch(auxRoom.type){
                             case 'rock':
                                 this.map.objs[i][j] = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'rock');
@@ -331,22 +335,20 @@ RunRockPaperScissors.gameState.prototype = {
 
     updateCountdown: function(){
         //GET CDINIT
+        this.getCountDown();
 
-        if (this.countDown >= -3){
-            this.countDown -= game.time.physicsElapsed*3;
-        }
-
-        if (this.countDown >= 1){
-            this.countDownObj.setText(Math.round(this.countDown).toString());
-        }else if (this.countDown <= 0){
+        if (countDown >= 1){
+            this.countDownObj.setText(Math.round(countDown).toString());
+        }else if (countDown <= 0){
             this.countDownObj.x = 380;
             this.countDownObj.setText('GO!');
         }
         
-        if (this.countDown <= -2){
+        if (countDown <= -2 && !play){
             this.countDownObj.visible = false;
             graphics.destroy();
-            this.play = true;
+            play = true;
+            console.log(this.startTimer());
         }
     },
 
@@ -361,5 +363,46 @@ RunRockPaperScissors.gameState.prototype = {
         }).done(function (data) {
             callback(data);
         })
-    }
+    },
+
+    getCountDown: function(callback) {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/cd/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+            if (!play){
+                countDown = 3-data;
+            }else{
+                timer = 5-data; 
+            }
+        })
+    },
+
+    startTimer: function () {
+        $.ajax({
+            method: "POST",
+            url: 'http://localhost:8080/cd',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).done(function (data) {
+        })
+    },
+
+    resetTimer: function(callback) {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/cdRestart/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+        })
+    },
 }

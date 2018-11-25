@@ -1,5 +1,5 @@
 RunRockPaperScissors.versusState = function(game) {
-    this.timer;
+    timer;
     this.p1;
     this.p2;
     this.p1Wins;
@@ -56,17 +56,21 @@ RunRockPaperScissors.versusState.prototype = {
         this.updateScore();
 
         //Timer initialization
-        this.timer = 0;
+        timer = 0;
+        if (host){
+            this.startTimer();
+        }
 
         one = true;
     },
 
     update: function() {
-        this.timer += game.time.physicsElapsed;
+        this.getCountDown();
 
-        if (this.timer >= 3){
+        if (timer >= 6){
+            if (host) this.resetTimer();
             game.state.start('scoreState');
-        }else if(this.timer >= 1){
+        }else if(timer >= 3){
             if (one){
                 one = false;
                 game.sound.play('buttonClicked');
@@ -175,5 +179,42 @@ RunRockPaperScissors.versusState.prototype = {
         }else if (this.winner != 0){
             console.log("Valor de ganador erroneo: "+ this.winner);
         }
+    },
+
+    getCountDown: function(callback) {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/cd/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+            timer = data;
+        })
+    },
+
+    resetTimer: function(callback) {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/cdRestart/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+        })
+    },
+
+    startTimer: function () {
+        $.ajax({
+            method: "POST",
+            url: 'http://localhost:8080/cd',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).done(function (data) {
+        })
     }
 }
