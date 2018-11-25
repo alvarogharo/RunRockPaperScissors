@@ -4,6 +4,8 @@ RunRockPaperScissors.gameModeState = function(game) {
     var best5Button;
     var joinButton;
     var matchCreated;
+    var host;
+    var restart;
     var doOne;
 }
 
@@ -28,6 +30,7 @@ RunRockPaperScissors.gameModeState.prototype = {
     create: function() {
         doOne = true;
         matchCreated = null;
+        restart = false;
 
         //Text
         var text = game.add.bitmapText(130, 100+50, 'myFont', 'GAME', 120);
@@ -56,6 +59,16 @@ RunRockPaperScissors.gameModeState.prototype = {
         game.sound.play('buttonClicked');
         this.createPlayer();
         mode = m;
+        host = true;
+        this.putMode();
+        game.state.start('waitingState');
+    },
+
+    //Button actions
+    join: function(){
+        game.sound.play('buttonClicked');
+        this.createPlayer();
+        host = false;
         this.putMode();
         game.state.start('waitingState');
     },
@@ -75,7 +88,7 @@ RunRockPaperScissors.gameModeState.prototype = {
             text.smoothed = false;
 
             //Join button
-            joinButton = new Button(200,1550,'joinButton',function(){this.best(5)},this);
+            joinButton = new Button(200,1550,'joinButton',function(){this.join()},this);
         }
     },
 

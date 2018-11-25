@@ -2,6 +2,7 @@ package es.snadker.gamedev.RUNRockPaperScissors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameMap {
 
@@ -23,53 +24,27 @@ public class GameMap {
     List<int[][]> levels = new ArrayList<int[][]>();
 
 	private int[][] rooms = new int[0][0];
-
-	private int[] p1Pos = { 0, 0 };
-	private int[] p2Pos = { 0, 0 };
-
-	// Fill the map withempty rooms
-	public void fullMap() {
-		for (int i = 0; i < rooms[0].length; i++) {
-			for (int j = 0; j < rooms.length; j++) {
-				rooms[i][j] = new Room(i, j, "nothing");
-			}
-		}
+	
+	public GameMap(){
+		levels.add(level0);
+		levels.add(level1);
+		levels.add(level2);
+		levels.add(level3);
+		levels.add(level4);
+		
+		Random rand = new Random();
+		int aux = rand.nextInt(levels.size());
+		
+		rooms = levels.get(aux);
 	}
-
-	public void createLevel(int[][] level) {
-		for (int i = 0; i < rooms[0].length; i++) {
-			for (int j = 0; j < rooms.length; j++) {
-				switch (level[i][j]) {
-				case -1:
-					rooms[j][i] = null;
-					break;
-				case 0:
-					rooms[j][i] = new Room(i, j, "nothing");
-					break;
-				case 1:
-					rooms[j][i] = new Room(i, j, "nothing");
-					rooms[j][i].setPlayer("p1");
-					p1Pos[0] = j;
-					p1Pos[1] = i;
-					break;
-				case 2:
-					rooms[j][i] = new Room(i, j, "nothing");
-					rooms[j][i].setPlayer("p2");
-					p2Pos[0] = j;
-					p2Pos[1] = i;
-					break;
-				case 3:
-					rooms[j][i] = new Room(i, j, "rock");
-					break;
-				case 4:
-					rooms[j][i] = new Room(i, j, "paper");
-					break;
-				case 5:
-					rooms[j][i] = new Room(i, j, "scissors");
-					break;
-				}
-			}
-		}
+	
+	public GameMap getRandomMap(){
+		Random rand = new Random();
+		int aux = rand.nextInt(levels.size());
+		
+		rooms = levels.get(aux);
+		
+		return this;
 	}
 	
 	@Override
@@ -90,5 +65,13 @@ public class GameMap {
 		rms += "]";
 		
 		return rms;
+	}
+
+	public int[][] getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(int[][] rooms) {
+		this.rooms = rooms;
 	}
 }

@@ -5,6 +5,8 @@ RunRockPaperScissors.bootState = function(game) {
     //Global game variables
     var mode;
     var score;
+    var id;
+    var otherId;
 }
 
 RunRockPaperScissors.bootState.prototype = {

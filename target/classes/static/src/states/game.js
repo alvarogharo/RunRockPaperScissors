@@ -51,7 +51,7 @@ RunRockPaperScissors.gameState.prototype = {
 
         //Creating the map
         this.map = new Map();
-        this.map.createLevel(this.map.levels[Math.floor(Math.random() * this.map.levels.length)]);
+        this.map.createLevel(serverMap);
 
         //INITIALIZE PLAYERS
 
@@ -99,27 +99,48 @@ RunRockPaperScissors.gameState.prototype = {
         mapH.smoothed = false;
 
         //Bottom HUD room
-        this.p1.hudRoom= game.add.sprite(270, 1350, 'roomE');
+        if (id == 1){
+            this.p1.hudRoom= game.add.sprite(270, 1350, 'roomE');
 
-        this.p1.hudRoom.scale.set(scale,scale);
-        this.p1.hudRoom.smoothed = false;
+            this.p1.hudRoom.scale.set(scale,scale);
+            this.p1.hudRoom.smoothed = false;
 
-        //Bottom HUD obj
-        this.p1.hud2 = game.add.sprite(500, 1435, 'rock');
+            //Bottom HUD obj
+            this.p1.hud2 = game.add.sprite(500, 1435, 'rock');
 
-        this.p1.hud2.scale.set(10,10);
-        this.p1.hud2.smoothed = false;
+            this.p1.hud2.scale.set(10,10);
+            this.p1.hud2.smoothed = false;
 
-        var p1Big = game.add.sprite(430, 1550, 'p1');
+            var p1Big = game.add.sprite(430, 1550, 'p1');
 
-        p1Big.scale.set(25,25);
-        p1Big.smoothed = false;
+            p1Big.scale.set(25,25);
+            p1Big.smoothed = false;
+        }else{
+            this.p2.hudRoom= game.add.sprite(270, 1350, 'roomE');
+
+            this.p2.hudRoom.scale.set(scale,scale);
+            this.p2.hudRoom.smoothed = false;
+
+            //Bottom HUD obj
+            this.p2.hud2 = game.add.sprite(500, 1435, 'rock');
+
+            this.p2.hud2.scale.set(10,10);
+            this.p2.hud2.smoothed = false;
+
+            var p2Big = game.add.sprite(430, 1550, 'p2');
+
+            p2Big.scale.set(25,25);
+            p2Big.smoothed = false;
+        }
 
         //INITILIZE P1 CONTROL
 
         //Player control intialization
-        this.p1.createCursor();
-        this.p2.createCursor();
+        if (id == 1){
+            this.p1.createCursor();
+        }else{
+            this.p2.createCursor();
+        }
 
         //Printing map
         this.printMap(this.map);
@@ -150,10 +171,13 @@ RunRockPaperScissors.gameState.prototype = {
             //GET MAP
 
             //HANDLE P1 INPUT
-            this.p1.handleInput(this.map);
-
-            //SET P2 VALUES FROM SERVER
-            this.p2.handleInput(this.map);
+            if (id == 1){
+                this.p1.handleInput(this.map);
+                //get pos player 2
+            }else{
+                this.p2.handleInput(this.map);
+                //get pos player 1
+            }
 
         }else if (this.timer < 0){ //When the time its over
             game.state.start('versusState', true, false, this.p1.item, this.p2.item);
@@ -212,6 +236,7 @@ RunRockPaperScissors.gameState.prototype = {
 
                     //printing objs
                     if (auxRoom.player != 'p1' && auxRoom.player != 'p2'){
+                        console.log(auxRoom);
                         switch(auxRoom.type){
                             case 'rock':
                                 this.map.objs[i][j] = game.add.sprite(objOffsetX+offsetX+(spacing*i), objOffsetY+offsetY+(spacing*j), 'rock');
@@ -304,5 +329,19 @@ RunRockPaperScissors.gameState.prototype = {
             graphics.destroy();
             this.play = true;
         }
-    }
+    },
+
+    getPlayer(callback) {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/game/' + otherId,
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+            game.player2 = JSON.parse(JSON.stringify(data));
+            callback(data);
+        })
+    },
 }

@@ -84,25 +84,16 @@ function Player(x, y, id){
     }
 
     this.createCursor = function(){
-        if (id == 'p1'){
-            this.cursor = {
-                up: game.input.keyboard.addKey(Phaser.Keyboard.W),
-                down: game.input.keyboard.addKey(Phaser.Keyboard.S),
-                left: game.input.keyboard.addKey(Phaser.Keyboard.A),
-                right: game.input.keyboard.addKey(Phaser.Keyboard.D),
-            };
-        }else if (id == 'p2'){
-            this.cursor = {
-                up: game.input.keyboard.addKey(Phaser.Keyboard.UP),
-                down: game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-                left: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-                right: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-            };
-        }
+        this.cursor = {
+            up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+            down: game.input.keyboard.addKey(Phaser.Keyboard.S),
+            left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+            right: game.input.keyboard.addKey(Phaser.Keyboard.D),
+        };
     }
 
     this.handleInput = function(map){
-        if(!this.once){
+        if(!this.once && this.cursor != null){
             if (this.cursor.left.isDown){
                 this.once = true;
                 this.move(map,'left', false);
@@ -118,7 +109,7 @@ function Player(x, y, id){
             }
         }
 
-        if (!this.cursor.right.isDown && !this.cursor.left.isDown && !this.cursor.up.isDown && !this.cursor.down.isDown){
+        if (this.cursor != null && !this.cursor.right.isDown && !this.cursor.left.isDown && !this.cursor.up.isDown && !this.cursor.down.isDown){
             this.once = false;
         }
     }
