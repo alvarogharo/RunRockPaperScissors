@@ -39,7 +39,6 @@ RunRockPaperScissors.gameModeState.prototype = {
         text.smoothed = false;
 
         this.getNumPlayers(function (numPlayers) {
-            console.log(numPlayers);
 			if (numPlayers.length == 0) {
                 matchCreated = false;
 			}else{
@@ -69,8 +68,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         game.sound.play('buttonClicked');
         this.createPlayer();
         host = false;
-        this.putMode();
-        game.state.start('waitingState');
+        this.getMode();
     },
 
     createButtons: function(){
@@ -93,7 +91,6 @@ RunRockPaperScissors.gameModeState.prototype = {
     },
 
     getNumPlayers: function (callback) {
-        console.log("Peticion");
         $.ajax({
             url: 'http://localhost:8080/game',
         }).done(function (data) {
@@ -110,8 +107,6 @@ RunRockPaperScissors.gameModeState.prototype = {
                 "Content-Type": "application/json"
             },
         }).done(function (data) {
-            console.log("Player created: " + JSON.stringify(data));
-            game.player1 = data
         })
     },
 
@@ -126,6 +121,20 @@ RunRockPaperScissors.gameModeState.prototype = {
             }
         }).done(function (data) {
         	//console.log("Actualizada posicion de player 1: " + JSON.stringify(data))
+        })
+    },
+
+    getMode: function() {
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost:8080/mode/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).done(function (data) {
+            mode = data;
+            game.state.start('waitingState');
         })
     }
 }

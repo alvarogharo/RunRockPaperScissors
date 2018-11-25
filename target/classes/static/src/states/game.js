@@ -203,7 +203,10 @@ RunRockPaperScissors.gameState.prototype = {
             });
 
         }else if (timer < 0){ //When the time its over
-            if (host) this.resetTimer();
+            if (host){
+                this.resetTimer();
+                this.resetReady();
+            }
             game.state.start('versusState', true, false, this.p1.item, this.p2.item);
         }
         
@@ -348,7 +351,7 @@ RunRockPaperScissors.gameState.prototype = {
             this.countDownObj.visible = false;
             graphics.destroy();
             play = true;
-            console.log(this.startTimer());
+            this.startTimer();
         }
     },
 
@@ -405,4 +408,16 @@ RunRockPaperScissors.gameState.prototype = {
         }).done(function (data) {
         })
     },
+
+    resetReady: function () {
+        $.ajax({
+            method: "POST",
+            url: 'http://localhost:8080/reset',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).done(function (data) {
+        })
+    }
 }

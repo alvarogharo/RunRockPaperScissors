@@ -55,13 +55,30 @@ RunRockPaperScissors.winnerState.prototype = {
     replay: function(){
         game.sound.play('buttonClicked');
         score = [0,0];
-        game.state.start('gameState');
+        restart = true;
+        game.state.start('waitingState');
     },
     
     mainMenu: function(){
         game.sound.play('buttonClicked');
         score = [0,0];
+        this.delete();
+        host = false;
+        id = 0;
         game.state.start('mainMenuState');
+    },
+
+    delete: function () {
+        $.ajax({
+            method: "DELETE",
+            url: 'http://localhost:8080/game/',
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).done(function (data) {
+            //console.log("Player removed: " + JSON.stringify(data));
+        })
     }
 }
 

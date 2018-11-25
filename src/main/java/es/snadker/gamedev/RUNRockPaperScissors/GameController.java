@@ -22,6 +22,7 @@ public class GameController {
 
 	Map<Long, Player> players = new ConcurrentHashMap<>();
 	AtomicLong nextId = new AtomicLong(0);
+	AtomicLong restartCount = new AtomicLong(0);
 	Timer timer =  new Timer();
 	int mode = 0;
 	GameMap map  = new GameMap();
@@ -29,7 +30,13 @@ public class GameController {
 	Random rnd = new Random();
 	Cat cat = new Cat();
 	
-
+	
+	// Con GET recuperamos el número de jugadores
+	@GetMapping(value = "/mode")
+	public int getMode() {
+		return mode;
+	}
+	
 	// Con GET recuperamos el número de jugadores
 	@GetMapping(value = "/game")
 	public Collection<Player> getPlayers() {
@@ -40,6 +47,12 @@ public class GameController {
 	@GetMapping(value = "/map")
 	public int[][] getMap() {
 		return map.getRooms();
+	}
+	
+	// Con GET recuperamos el número de jugadores
+	@GetMapping(value = "/randomMap")
+	public int[][] getRandomMap() {
+		return map.getRandomMap();
 	}
 	
 	// Con GET recuperamos el número de jugadores
@@ -54,6 +67,25 @@ public class GameController {
 	public long restartTimer() {
 		timer.reset();
 		return timer.getCount();
+	}
+	// Con GET recuperamos el número de jugadores
+		@GetMapping(value = "/ready")
+		public int getReady() {
+			return restartCount.intValue();
+		}
+	
+	// Con POST creamos un nuevo jugador
+	@PostMapping(value = "/ready")
+	@ResponseStatus(HttpStatus.CREATED)
+	public void ready() {
+		restartCount.getAndIncrement();
+	}
+	
+	// Con POST creamos un nuevo jugador
+	@PostMapping(value = "/reset")
+	@ResponseStatus(HttpStatus.CREATED)
+	public void reset() {
+		restartCount.set(0);
 	}
 	
 	// Con POST creamos un nuevo jugador
@@ -127,5 +159,11 @@ public class GameController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	// Con este DELETE borramos el jugador con ID = id
+	@DeleteMapping(value = "/game/")
+	public void erraseEverything() {
+		players.clear();
 	}
 }

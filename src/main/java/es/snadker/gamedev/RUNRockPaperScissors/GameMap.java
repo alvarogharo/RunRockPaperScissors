@@ -38,13 +38,13 @@ public class GameMap {
 		rooms = levels.get(aux);
 	}
 	
-	public GameMap getRandomMap(){
+	public int[][] getRandomMap(){
 		Random rand = new Random();
 		int aux = rand.nextInt(levels.size());
 		
 		rooms = levels.get(aux);
 		
-		return this;
+		return rooms;
 	}
 	
 	@Override

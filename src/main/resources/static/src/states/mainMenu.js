@@ -1,6 +1,7 @@
 RunRockPaperScissors.mainMenuState = function(game) {
     var playButton;
-    var creditsBut
+    var creditsBut;
+    var restart;
 }
 
 RunRockPaperScissors.mainMenuState.prototype = {
@@ -30,6 +31,7 @@ RunRockPaperScissors.mainMenuState.prototype = {
     create: function() {
 
         var scale = 12;
+        restart = false;
         
         //Texts
         var text = new Array(); 
