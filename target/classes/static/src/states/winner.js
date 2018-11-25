@@ -64,6 +64,7 @@ RunRockPaperScissors.winnerState.prototype = {
         score = [0,0];
         this.delete();
         host = false;
+        id = 0;
         game.state.start('mainMenuState');
     },
 

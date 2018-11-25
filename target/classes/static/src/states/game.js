@@ -162,6 +162,8 @@ RunRockPaperScissors.gameState.prototype = {
             this.startTimer();
         }
 
+        console.log('id: '+id+' host: '+host);
+
         //Countdown text
         this.countDownObj = game.add.bitmapText(480, 1450, 'myFont', countDown.toString(), 200);
     },

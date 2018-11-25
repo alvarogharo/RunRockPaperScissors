@@ -165,5 +165,6 @@ public class GameController {
 	@DeleteMapping(value = "/game/")
 	public void erraseEverything() {
 		players.clear();
+		nextId.set(0);
 	}
 }
