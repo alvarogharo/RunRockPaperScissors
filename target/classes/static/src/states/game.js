@@ -1,19 +1,24 @@
 RunRockPaperScissors.gameState = function(game) {
+    //Reference variables
     this.map;
     this.p1;
     this.p2;
 
     this.cursors;
-    this.wasd;
+    /*this.wasd;
     this.onceP1;
-    this.onceP2;
+    this.onceP2;*/
 
+    //Timer variables
     var timer;
     this.timerObj;
-
-    this.graphics
     var countDown;
     this.countDownObj;
+
+    //Graphics variable
+    this.graphics
+    
+    //State variables
     var play;
 }
 
@@ -42,14 +47,11 @@ RunRockPaperScissors.gameState.prototype = {
 
     create: function() {
         var scale = 8;
-        this.onceP1 = false;
-        this.onceP2 = false;
+        /*this.onceP1 = false;
+        this.onceP2 = false;*/
         countDown = 3;
         timer = 5;
         play = false;
-        
-
-        //GET SERVER MAP
 
         //Creating the map
         this.map = new Map();
@@ -66,9 +68,11 @@ RunRockPaperScissors.gameState.prototype = {
         this.p1 = new Player(p1Pos[0],p1Pos[1],'p1');
         this.p2 = new Player(p2Pos[0],p2Pos[1],'p2');
         
+        //Updating player initial position
         this.p1.putPlayer();
         this.p2.putPlayer();
 
+        //INTERFACE
         //Upper texts
         var text = game.add.bitmapText(90, 100, 'myFontB', 'P1', 80);
         text.smoothed = false;
@@ -140,8 +144,6 @@ RunRockPaperScissors.gameState.prototype = {
             p2Big.smoothed = false;
         }
 
-        //INITILIZE P1 CONTROL
-
         //Player control intialization
         if (id == 1){
             this.p1.createCursor();
@@ -158,11 +160,10 @@ RunRockPaperScissors.gameState.prototype = {
         graphics.drawRect(0, 1320, 1080, 600);
         graphics.endFill();
         
+
         if (host){
             this.startTimer();
         }
-
-        console.log('id: '+id+' host: '+host);
 
         //Countdown text
         this.countDownObj = game.add.bitmapText(480, 1450, 'myFont', countDown.toString(), 200);
@@ -174,17 +175,12 @@ RunRockPaperScissors.gameState.prototype = {
         //CountDown Managing
         this.updateCountdown();
 
-        //Game loopwiththe timer
+        //Game loop with the timer
         if (play && timer >= 0){
 
-            //GET CDGAME
-
-            timer -= game.time.physicsElapsed;
             this.timerObj.setText(Math.round(timer).toString());
 
-            //GET MAP
-
-            //HANDLE P1 INPUT
+            //Handle local player input
             if (id == 1){
                 this.p1.handleInput(this.map);
             }else{
@@ -193,6 +189,7 @@ RunRockPaperScissors.gameState.prototype = {
             auxP1 = this.p1;
             auxP2 = this.p2;
             
+            //Get other player position
             this.getPlayer(function(data){
                 pos = data;
                 if(id == 1){
@@ -220,7 +217,9 @@ RunRockPaperScissors.gameState.prototype = {
         this.rePrintMap(this.map);
     },
 
-    //First printo of the map
+    /*Print the sprites depending on the map state
+     *@param map: Object of class Map. Current map state
+     */
     printMap: function(map){
         var offsetX = 100;
         var offsetY = 350;
@@ -302,7 +301,9 @@ RunRockPaperScissors.gameState.prototype = {
         }
     },
 
-    //updating map
+    /*Updates the sprites depending on the map state
+     *@param map: Object of class Map. Current map state
+     */
     rePrintMap: function(map){
         for(var i= 0; i<this.map.rooms[0].length;i++){
             for(var j= 0; j<this.map.rooms.length;j++){
@@ -338,8 +339,8 @@ RunRockPaperScissors.gameState.prototype = {
         
     },
 
+    //Updates countdown and trigger actions depending on time
     updateCountdown: function(){
-        //GET CDINIT
         this.getCountDown();
 
         if (countDown >= 1){
@@ -357,6 +358,7 @@ RunRockPaperScissors.gameState.prototype = {
         }
     },
 
+    //Get player position and executes callback when finished
     getPlayer: function(callback) {
         $.ajax({
             method: "GET",
@@ -370,6 +372,7 @@ RunRockPaperScissors.gameState.prototype = {
         })
     },
 
+    //Get timer server value and executes callback when finished
     getCountDown: function(callback) {
         $.ajax({
             method: "GET",
@@ -387,6 +390,7 @@ RunRockPaperScissors.gameState.prototype = {
         })
     },
 
+    //Start server timer
     startTimer: function () {
         $.ajax({
             method: "POST",
@@ -399,6 +403,7 @@ RunRockPaperScissors.gameState.prototype = {
         })
     },
 
+    //Resets server timer
     resetTimer: function(callback) {
         $.ajax({
             method: "GET",
@@ -411,6 +416,7 @@ RunRockPaperScissors.gameState.prototype = {
         })
     },
 
+    //Resets server ready people
     resetReady: function () {
         $.ajax({
             method: "POST",

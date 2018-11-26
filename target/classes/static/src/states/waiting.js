@@ -1,8 +1,15 @@
 RunRockPaperScissors.waitingState = function(game) {
-    this.timer;
+    
+
+    //Reference variables
     var serverMap;
     var lastMap;
+
+    //State variables
     var ready;
+    this.timer;
+    var once
+
 }
 
 var texts;
@@ -10,6 +17,7 @@ var texts;
 RunRockPaperScissors.waitingState.prototype = {
 
     create: function() {
+        once = false;
         ready = 0;
         if (!restart){
             lastMap = null;
@@ -29,12 +37,13 @@ RunRockPaperScissors.waitingState.prototype = {
         //Timer initialization
         this.timer = 0;
 
+        //Get server map
         this.getGameMap(function(gameMap){
             
             serverMap = gameMap;
             console.log(serverMap);
 
-            
+            //If map has already been played generate another one
             if (lastMap != null && compareMaps(serverMap,lastMap)){
                 getRandomGameMap(function(gameMap){
                     //console.log(gameMap);
@@ -42,7 +51,6 @@ RunRockPaperScissors.waitingState.prototype = {
                 });
             }
             lastMap = serverMap;
-            console.log('iguales'+compareMaps(serverMap,lastMap));
         });
     },
 
@@ -64,19 +72,30 @@ RunRockPaperScissors.waitingState.prototype = {
             });
         }else{
             if (host){
+                if(!once){
+                    once = true;
+                    this.ready();
+                }
                 this.getReady(function(data){
-                    console.log('Data '+ data);
-                    if (data > 0){
+                    if (data > 1){
                         game.state.start('gameState');
                     } 
                 })
             }else{
-                this.ready();
-                game.state.start('gameState');
+                if(!once){
+                    once = true;
+                    this.ready();
+                }
+                this.getReady(function(data){
+                    if (data > 1){
+                        game.state.start('gameState');
+                    } 
+                })
             }
         }
     },
 
+    //Updates timmer and animate text
     updateTimer: function(){
         //Timer waits for 3 seconds
         this.timer += game.time.physicsElapsed;
@@ -93,6 +112,7 @@ RunRockPaperScissors.waitingState.prototype = {
         }
     },
 
+    //Gets the server gamemap
     getGameMap: function (callback) {
         $.ajax({
             url: 'http://localhost:8080/map',
@@ -101,8 +121,7 @@ RunRockPaperScissors.waitingState.prototype = {
         })
     },
 
-   
-
+    //Gets the number of players
     getNumPlayers: function (callback) {
         $.ajax({
             url: 'http://localhost:8080/game',
@@ -111,6 +130,7 @@ RunRockPaperScissors.waitingState.prototype = {
         })
     },
 
+    //Gets the number of players ready
     getReady: function (callback) {
         $.ajax({
             url: 'http://localhost:8080/ready',
@@ -119,6 +139,7 @@ RunRockPaperScissors.waitingState.prototype = {
         })
     },
 
+    //Increments ready players by one
     ready: function () {
         $.ajax({
             method: "POST",
@@ -132,6 +153,7 @@ RunRockPaperScissors.waitingState.prototype = {
     }
 }
 
+//Get a random server map
 function getRandomGameMap (callback) {
     $.ajax({
         url: 'http://localhost:8080/randomMap',
@@ -140,6 +162,7 @@ function getRandomGameMap (callback) {
     })
 }
 
+//Compare to maps
 function compareMaps (map1, map2) {
     for(var i= 0; i<map1[0].length;i++){
         for(var j= 0; j<map1.length;j++){

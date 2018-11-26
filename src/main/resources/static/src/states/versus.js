@@ -87,7 +87,8 @@ RunRockPaperScissors.versusState.prototype = {
             }
         }
     },
-
+    
+    //Print the corresponding player sprites
     printPlayersObj: function(){
         //Print player1 obj
         switch (this.p1){
@@ -181,6 +182,7 @@ RunRockPaperScissors.versusState.prototype = {
         }
     },
 
+    //Gets server timer
     getCountDown: function(callback) {
         $.ajax({
             method: "GET",
@@ -194,6 +196,7 @@ RunRockPaperScissors.versusState.prototype = {
         })
     },
 
+    //Resets server timer
     resetTimer: function(callback) {
         $.ajax({
             method: "GET",
@@ -206,6 +209,7 @@ RunRockPaperScissors.versusState.prototype = {
         })
     },
 
+    //Starts server timer
     startTimer: function () {
         $.ajax({
             method: "POST",

@@ -1,6 +1,9 @@
 RunRockPaperScissors.mainMenuState = function(game) {
+    //Button variables
     var playButton;
     var creditsBut;
+
+    //State variables
     var restart;
 }
 
@@ -63,12 +66,13 @@ RunRockPaperScissors.mainMenuState.prototype = {
         creditsButton = new Button(200,1450,'creditsButton',this.credits,this);
     },
 
-    //Button actions
+    //Button Onclick actions
     play: function  () {
         game.sound.play('buttonClicked');
         game.state.start('gameModeState');
     },
     
+    //Button Onclick actions
     credits: function  () {
         game.sound.play('buttonClicked');
         game.state.start('creditsState');

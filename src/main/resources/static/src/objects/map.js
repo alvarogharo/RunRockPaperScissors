@@ -1,5 +1,6 @@
 function Map(){
 
+    //Predesigned levels
     var level0 = [[-1,-1,-1,-1,-1,-1],
                    [-1,-1,-1,-1,-1,-1],
                    [ 1, 0, 5, 4, 0, 2],
@@ -35,8 +36,10 @@ function Map(){
                    [-1,-1, 0, 0,-1,-1],
                    [-1,-1, 3, 0,-1,-1]];
     
+    //Current level var
     this.levels = [level0,level1,level2,level3,level4];
 
+    //Map of rooms
     this.rooms = [[null,null,null,null,null,null],
                   [null,null,null,null,null,null],
                   [null,null,null,null,null,null],
@@ -44,6 +47,7 @@ function Map(){
                   [null,null,null,null,null,null],
                   [null,null,null,null,null,null]];
 
+    //Map of sprites
     this.sprites = [[null,null,null,null,null,null],
                    [null,null,null,null,null,null],
                    [null,null,null,null,null,null],
@@ -51,6 +55,7 @@ function Map(){
                    [null,null,null,null,null,null],
                    [null,null,null,null,null,null]];
 
+    //Map of objs
     this.objs = [[null,null,null,null,null,null],
                    [null,null,null,null,null,null],
                    [null,null,null,null,null,null],
@@ -58,10 +63,11 @@ function Map(){
                    [null,null,null,null,null,null],
                    [null,null,null,null,null,null]];
     
+    //Player positions
     this.p1Pos = new Array();
     this.p2Pos = new Array();
     
-    //Fill the map withempty rooms
+    //Fill rooms array with empty rooms objects
     this.fullMap = function(){
         for(var i= 0; i<this.rooms[0].length;i++){
             for(var j= 0; j<this.rooms.length;j++){
@@ -70,7 +76,9 @@ function Map(){
         }
     }
 
-    //Cast an array level to a room level
+    /*Cast a 2D array level to a room level. This room level is stored in this.rooms array.
+     *@params level: 2D int array
+     */
     this.createLevel = function(level){
         for(var i= 0; i<this.rooms[0].length;i++){
             for(var j= 0; j<this.rooms.length;j++){
@@ -107,7 +115,7 @@ function Map(){
         }
     }
 
-    //Cast the rooms to string
+    //Cast rooms array to string
     this.toString = function(){
         var st = '';
 

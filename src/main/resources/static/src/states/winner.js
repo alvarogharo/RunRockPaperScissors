@@ -1,7 +1,12 @@
 RunRockPaperScissors.winnerState = function(game) {
+    //State variable
     this.winner;
+    var playerReady;
+
+    //Button variables
     var replayButton;
     var mainMenuButton;
+
 }
 
 RunRockPaperScissors.winnerState.prototype = {
@@ -52,33 +57,51 @@ RunRockPaperScissors.winnerState.prototype = {
         mainMenuButton = new Button(200,1450,'mainMenuButton',this.mainMenu,this);
     },
     
+    //Onclcik button method
     replay: function(){
         game.sound.play('buttonClicked');
         score = [0,0];
         restart = true;
         game.state.start('waitingState');
     },
-    
+
+    //Onclcik button method
     mainMenu: function(){
         game.sound.play('buttonClicked');
         score = [0,0];
-        this.delete();
         host = false;
         id = 0;
-        game.state.start('mainMenuState');
+        this.getNumPlayers(function(data){
+            console.log(data);
+            if (data.length > 0){
+                deleteEverything();
+            }else{
+                game.state.start('mainMenuState');
+            }
+        });
     },
 
-    delete: function () {
+    //Get the numbres of players in server
+    getNumPlayers: function (callback) {
         $.ajax({
-            method: "DELETE",
-            url: 'http://localhost:8080/game/',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            },
+            url: 'http://localhost:8080/game',
         }).done(function (data) {
-            //console.log("Player removed: " + JSON.stringify(data));
+            callback(data);
         })
-    }
+    },
+}
+
+//Deletes everything from server
+function deleteEverything() {
+    $.ajax({
+        method: "DELETE",
+        url: 'http://localhost:8080/game/',
+        processData: false,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }).done(function (data) {
+        game.state.start('mainMenuState');
+    })
 }
 

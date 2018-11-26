@@ -49,6 +49,7 @@ RunRockPaperScissors.scoreState.prototype = {
         }
     },
 
+    //Gets server timer
     getCountDown: function(callback) {
         $.ajax({
             method: "GET",
@@ -62,6 +63,7 @@ RunRockPaperScissors.scoreState.prototype = {
         })
     },
 
+    //Resets server timer
     resetTimer: function(callback) {
         $.ajax({
             method: "GET",
@@ -74,6 +76,7 @@ RunRockPaperScissors.scoreState.prototype = {
         })
     },
 
+    //Starts server timer
     startTimer: function () {
         $.ajax({
             method: "POST",

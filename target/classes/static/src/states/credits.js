@@ -26,7 +26,7 @@ RunRockPaperScissors.creditsState.prototype = {
         backButton = new Button(200,1450,'backButton',this.back,this);
     },
 
-    //Buttons actions
+    //Button onclick method
     back: function(){
         game.sound.play('buttonClicked');
         game.state.start('mainMenuState');

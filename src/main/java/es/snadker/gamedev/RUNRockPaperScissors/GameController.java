@@ -19,76 +19,83 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GameController {
-
+	
+	//Storage Objects
 	Map<Long, Player> players = new ConcurrentHashMap<>();
 	AtomicLong nextId = new AtomicLong(0);
 	AtomicLong restartCount = new AtomicLong(0);
+	
+	//State objects
 	Timer timer =  new Timer();
-	int mode = 0;
 	GameMap map  = new GameMap();
 	
+	//Auxiliar objects
 	Random rnd = new Random();
-	Cat cat = new Cat();
+	
+	//State variable
+	int mode = 0;
 	
 	
-	// Con GET recuperamos el número de jugadores
+	//Gets mode
 	@GetMapping(value = "/mode")
 	public int getMode() {
 		return mode;
 	}
 	
-	// Con GET recuperamos el número de jugadores
+	//Gets the number of players
 	@GetMapping(value = "/game")
 	public Collection<Player> getPlayers() {
 		return players.values();
 	}
 	
-	// Con GET recuperamos el número de jugadores
+	//Get the map rooms
 	@GetMapping(value = "/map")
 	public int[][] getMap() {
 		return map.getRooms();
 	}
 	
-	// Con GET recuperamos el número de jugadores
+	//Gets a random map
 	@GetMapping(value = "/randomMap")
 	public int[][] getRandomMap() {
 		return map.getRandomMap();
 	}
 	
-	// Con GET recuperamos el número de jugadores
+	//Get timer count
 	@GetMapping(value = "/cd")
 	public long getTimer() {
 		System.out.println(timer.getCount());
 		return timer.getCount();
 	}
 	
+	//Get and restart timer
 	// Con GET recuperamos el número de jugadores
 	@GetMapping(value = "/cdRestart")
 	public long restartTimer() {
 		timer.reset();
 		return timer.getCount();
 	}
-	// Con GET recuperamos el número de jugadores
-		@GetMapping(value = "/ready")
-		public int getReady() {
-			return restartCount.intValue();
-		}
 	
-	// Con POST creamos un nuevo jugador
+	//Gets the number players ready
+	@GetMapping(value = "/ready")
+	public int getReady() {
+		return restartCount.intValue();
+	}
+	
+	//Increments players ready by one
 	@PostMapping(value = "/ready")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void ready() {
 		restartCount.getAndIncrement();
 	}
 	
-	// Con POST creamos un nuevo jugador
+	//Reset timer count
 	@PostMapping(value = "/reset")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void reset() {
 		restartCount.set(0);
 	}
 	
-	// Con POST creamos un nuevo jugador
+	//Starts timer
 	@PostMapping(value = "/cd")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long startTimer() {
@@ -96,7 +103,7 @@ public class GameController {
 		return timer.getCount();
 	}
 	
-	// Con POST creamos un nuevo jugador
+	//Creates a new player
 	@PostMapping(value = "/game")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Player newPlayer() {
@@ -109,8 +116,7 @@ public class GameController {
 		return player;
 	}
 
-	// Con este GET, podemos recuperar la información particular de cada uno de los
-	// jugadores
+	//Gets the player position by id
 	@GetMapping(value = "/game/{id}")
 	public ResponseEntity<int[]> getPlayerPos(@PathVariable long id) {
 		Player player = players.get(id);
@@ -124,19 +130,19 @@ public class GameController {
 		}
 	}
 	
-	// Con este PUT actualizamos la información del modo de juego de la partida
-		@PutMapping(value = "/game")
-		public ResponseEntity<Integer> updateMode(@RequestBody int mode) {
-			if (mode != 0) {
-				this.mode = mode;
-				System.out.println(mode);
-				return new ResponseEntity<>(mode, HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
+	//Updates game mode
+	@PutMapping(value = "/game")
+	public ResponseEntity<Integer> updateMode(@RequestBody int mode) {
+		if (mode != 0) {
+			this.mode = mode;
+			System.out.println(mode);
+			return new ResponseEntity<>(mode, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
 
-	// Con este PUT actualizamos la información del jugador con ID = id
+	//Updates player position by id
 	@PutMapping(value = "/game/{id}")
 	public ResponseEntity<int[]> updatePlayer(@PathVariable long id, @RequestBody int[] pos) {
 		Player savedPlayer = players.get(id);
@@ -148,20 +154,8 @@ public class GameController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
-	// Con este DELETE borramos el jugador con ID = id
-	@DeleteMapping(value = "/game/{id}")
-	public ResponseEntity<Player> borraJugador(@PathVariable long id) {
-		Player savedPlayer = players.get(id);
-		if (savedPlayer != null) {
-			players.remove(savedPlayer.getId());
-			return new ResponseEntity<>(savedPlayer, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
 	
-	// Con este DELETE borramos el jugador con ID = id
+	//Errase every palyer in server and restarts it
 	@DeleteMapping(value = "/game/")
 	public void erraseEverything() {
 		players.clear();

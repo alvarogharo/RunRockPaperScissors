@@ -1,28 +1,38 @@
 function Player(x, y, id){
 
+    //Position variables
     this.x = x;
     this.y = y;
     this.lastX = x;
     this.lastY = y;
 
+    //Control keys cursor
     this.cursor = null;
 
+    //Identification variables
     this.id = id;
     this.item = 'nothing';
 
+    //Auxiliar variable for one execution until reset
     this.once = false;
 
+    //Visual variables
     this.hud1 = null;
     this.hud2 = null;
     this.hudRoom = null;
     this.sprite = null;
 
+    //Mocking variables
     var spacing = 150;
     var offsetX = 132;
     var offsetY = 382;
     var first = true;
 
-    //Moves the player in the direction assigned if possible
+    /*Moves the player in the direction assigned if possible
+     *@param map: Object of class Map. Current map state
+     *@param dir: String in ('up','down','left,,'right'). Determines the direction to move
+     *@param lastseconds: Boolean. Informs if it is the final seconds of the game or not
+     */
     this.move = function(map,dir, lastSeconds){
         var auxX = this.x;
         var auxY = this.y;
@@ -71,7 +81,10 @@ function Player(x, y, id){
         this.sprite.y = offsetY+(spacing*this.y);
     }
 
-    //Moves the player in the direction assigned if possible
+    /*Move the player to the given position
+     *@param map: Object of class Map. Current map state
+     *@param pos: Int array of length 2. The position to move the player at
+     */
     this.moveServer = function(map, pos){
         this.x = pos[0];
         this.y = pos[1];
@@ -108,6 +121,7 @@ function Player(x, y, id){
         }
     }
 
+    //Creates the cursor with the player control keys
     this.createCursor = function(){
         this.cursor = {
             up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -117,6 +131,9 @@ function Player(x, y, id){
         };
     }
 
+    /*Controls the player input and exceute actions.
+     *@params map: Object of class Map. Current map state
+     */
     this.handleInput = function(map){
         if(!this.once && this.cursor != null){
             if (this.cursor.left.isDown){
@@ -139,6 +156,7 @@ function Player(x, y, id){
         }
     }
 
+    //Updates player position in server sending a PUT message
     this.putPlayer = function() {
         let auxPos;
         auxPos = [this.x,this.y];
@@ -152,7 +170,6 @@ function Player(x, y, id){
                 "Content-Type": "application/json"
             }
         }).done(function (data) {
-        	//console.log("Actualizada posicion de player 1: " + JSON.stringify(data))
         })
     }
 

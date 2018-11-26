@@ -1,11 +1,16 @@
 RunRockPaperScissors.gameModeState = function(game) {
+    //Button variables
     var best1Button;
     var best3Button;
     var best5Button;
     var joinButton;
+
+    //State variables
     var matchCreated;
     var host;
     var restart;
+
+    //Once executer varible
     var doOne;
 }
 
@@ -37,7 +42,8 @@ RunRockPaperScissors.gameModeState.prototype = {
         text.smoothed = false;
         text = game.add.bitmapText(130, 260+50, 'myFont', 'Mode', 120);
         text.smoothed = false;
-
+        
+        //Get if the match been created
         this.getNumPlayers(function (numPlayers) {
 			if (numPlayers.length == 0) {
                 matchCreated = false;
@@ -47,13 +53,14 @@ RunRockPaperScissors.gameModeState.prototype = {
         });
     },
     update: function(){
+        //Create diferent buttons depending on the matchcreated state
         if (matchCreated != null && doOne){
             doOne =  false;
             this.createButtons();
         }
     },
 
-    //Button actions
+    //Button Onclick actions
     best: function(m){
         game.sound.play('buttonClicked');
         this.createPlayer();
@@ -63,7 +70,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         game.state.start('waitingState');
     },
 
-    //Button actions
+    ////Button Onclick actions
     join: function(){
         game.sound.play('buttonClicked');
         this.createPlayer();
@@ -71,6 +78,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         this.getMode();
     },
 
+    //Create the buttons depending con matchreated state
     createButtons: function(){
         if (!matchCreated){
             //Buttons
@@ -90,6 +98,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         }
     },
 
+    //Get the numbres of players in server
     getNumPlayers: function (callback) {
         $.ajax({
             url: 'http://localhost:8080/game',
@@ -98,6 +107,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         })
     },
     
+    //create a player in server
     createPlayer: function () {
         $.ajax({
             method: "POST",
@@ -111,6 +121,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         })
     },
 
+    //Updates server game mode
     putMode() {
         $.ajax({
             method: "PUT",
@@ -125,6 +136,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         })
     },
 
+    //Obtains server game mode
     getMode: function() {
         $.ajax({
             method: "GET",
