@@ -163,7 +163,7 @@ function Player(x, y, id){
         
         $.ajax({
             method: "PUT",
-            url: 'http://localhost:8080/game/' + this.id.substring(1,2),
+            url: loc+'game/' + this.id.substring(1,2),
             data: JSON.stringify(auxPos),
             processData: false,
             headers: {

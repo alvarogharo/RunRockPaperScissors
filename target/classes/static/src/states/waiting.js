@@ -115,7 +115,7 @@ RunRockPaperScissors.waitingState.prototype = {
     //Gets the server gamemap
     getGameMap: function (callback) {
         $.ajax({
-            url: 'http://localhost:8080/map',
+            url: loc+'map',
         }).done(function (data) {
             callback(data);
         })
@@ -124,7 +124,7 @@ RunRockPaperScissors.waitingState.prototype = {
     //Gets the number of players
     getNumPlayers: function (callback) {
         $.ajax({
-            url: 'http://localhost:8080/game',
+            url: loc+'game',
         }).done(function (data) {
             callback(data);
         })
@@ -133,7 +133,7 @@ RunRockPaperScissors.waitingState.prototype = {
     //Gets the number of players ready
     getReady: function (callback) {
         $.ajax({
-            url: 'http://localhost:8080/ready',
+            url: loc+'ready',
         }).done(function (data) {
             callback(data);
         })
@@ -143,7 +143,7 @@ RunRockPaperScissors.waitingState.prototype = {
     ready: function () {
         $.ajax({
             method: "POST",
-            url: 'http://localhost:8080/ready',
+            url: loc+'ready',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -156,7 +156,7 @@ RunRockPaperScissors.waitingState.prototype = {
 //Get a random server map
 function getRandomGameMap (callback) {
     $.ajax({
-        url: 'http://localhost:8080/randomMap',
+        url: loc+'randomMap',
     }).done(function (data) {
         callback(data);
     })

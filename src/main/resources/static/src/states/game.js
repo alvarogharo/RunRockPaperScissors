@@ -362,7 +362,7 @@ RunRockPaperScissors.gameState.prototype = {
     getPlayer: function(callback) {
         $.ajax({
             method: "GET",
-            url: 'http://localhost:8080/game/' + otherId,
+            url: loc+'game/' + otherId,
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -376,7 +376,7 @@ RunRockPaperScissors.gameState.prototype = {
     getCountDown: function(callback) {
         $.ajax({
             method: "GET",
-            url: 'http://localhost:8080/cd/',
+            url: loc+'cd/',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -394,7 +394,7 @@ RunRockPaperScissors.gameState.prototype = {
     startTimer: function () {
         $.ajax({
             method: "POST",
-            url: 'http://localhost:8080/cd',
+            url: loc+'cd',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -407,7 +407,7 @@ RunRockPaperScissors.gameState.prototype = {
     resetTimer: function(callback) {
         $.ajax({
             method: "GET",
-            url: 'http://localhost:8080/cdRestart/',
+            url: loc+'cdRestart/',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -420,7 +420,7 @@ RunRockPaperScissors.gameState.prototype = {
     resetReady: function () {
         $.ajax({
             method: "POST",
-            url: 'http://localhost:8080/reset',
+            url: loc+'reset',
             processData: false,
             headers: {
                 "Content-Type": "application/json"

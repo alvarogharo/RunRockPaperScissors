@@ -12,6 +12,8 @@ RunRockPaperScissors.gameModeState = function(game) {
 
     //Once executer varible
     var doOne;
+
+    var loc
 }
 
 RunRockPaperScissors.gameModeState.prototype = {
@@ -33,6 +35,7 @@ RunRockPaperScissors.gameModeState.prototype = {
     },
 
     create: function() {
+        loc = window.location.href; 
         doOne = true;
         matchCreated = null;
         restart = false;
@@ -101,7 +104,7 @@ RunRockPaperScissors.gameModeState.prototype = {
     //Get the numbres of players in server
     getNumPlayers: function (callback) {
         $.ajax({
-            url: 'http://localhost:8080/game',
+            url: loc+'game',
         }).done(function (data) {
             callback(data);
         })
@@ -111,7 +114,7 @@ RunRockPaperScissors.gameModeState.prototype = {
     createPlayer: function () {
         $.ajax({
             method: "POST",
-            url: 'http://localhost:8080/game',
+            url: loc+'game',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -125,7 +128,7 @@ RunRockPaperScissors.gameModeState.prototype = {
     putMode() {
         $.ajax({
             method: "PUT",
-            url: 'http://localhost:8080/game/',
+            url: loc+'game/',
             data: JSON.stringify(mode),
             processData: false,
             headers: {
@@ -140,7 +143,7 @@ RunRockPaperScissors.gameModeState.prototype = {
     getMode: function() {
         $.ajax({
             method: "GET",
-            url: 'http://localhost:8080/mode/',
+            url: loc+'mode/',
             processData: false,
             headers: {
                 "Content-Type": "application/json"

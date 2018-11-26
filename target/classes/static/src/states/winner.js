@@ -84,7 +84,7 @@ RunRockPaperScissors.winnerState.prototype = {
     //Get the numbres of players in server
     getNumPlayers: function (callback) {
         $.ajax({
-            url: 'http://localhost:8080/game',
+            url: loc+'game',
         }).done(function (data) {
             callback(data);
         })
@@ -95,7 +95,7 @@ RunRockPaperScissors.winnerState.prototype = {
 function deleteEverything() {
     $.ajax({
         method: "DELETE",
-        url: 'http://localhost:8080/game/',
+        url: loc+'game/',
         processData: false,
         headers: {
             "Content-Type": "application/json"

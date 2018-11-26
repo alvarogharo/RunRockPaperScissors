@@ -53,7 +53,7 @@ RunRockPaperScissors.scoreState.prototype = {
     getCountDown: function(callback) {
         $.ajax({
             method: "GET",
-            url: 'http://localhost:8080/cd/',
+            url: loc+'cd/',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -67,7 +67,7 @@ RunRockPaperScissors.scoreState.prototype = {
     resetTimer: function(callback) {
         $.ajax({
             method: "GET",
-            url: 'http://localhost:8080/cdRestart/',
+            url: loc+'cdRestart/',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
@@ -80,7 +80,7 @@ RunRockPaperScissors.scoreState.prototype = {
     startTimer: function () {
         $.ajax({
             method: "POST",
-            url: 'http://localhost:8080/cd',
+            url: loc+'cd',
             processData: false,
             headers: {
                 "Content-Type": "application/json"
