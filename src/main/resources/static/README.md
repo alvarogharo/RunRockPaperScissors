@@ -88,8 +88,6 @@ Debido a la sencillez y velocidad de las partidas, este juego no permite ni carg
 ## Estados del juego e interfaces
 El siguiente diagrama describe los estados (pantallas) que tiene al juego y como se pasa de unas a otras:
 
-![](img/Interfaces.png)
-
 ![](img/Interfaces2.png)
 
 ## Niveles
@@ -127,11 +125,14 @@ Se pretende conseguir con poca cantidad de elementos pero muy concretos, como lo
 + Manejar de manera correcta variables locales y globales es muy importante para no sobrecargar Phaser.
 + Meter fuentes personalizadas en Phaser se hace en formato bitmap. A estas fuentes, Phaser, no te permite cambiarles el color por código.
 
+## Lecciones aprendidas en la fase 3
++ API rest es más facil de lo que pueda parece a primera vista.
++ Utilizar los callbacks es muy importante.
++ Temporizar las escenas genera muchos bugs.
++ Testear con dos instancias de webgGL es complicado.
+
 ## A implementar en proxima versión
-+ Transiciones entre estados
-+ Pantalla de boot
 + Animaciones
 + Sonido ambiental
-+ Crear una clase para encapsular los botones
-+ Comunicación online con API Rest
++ Comunicación online con WebSockets
 
