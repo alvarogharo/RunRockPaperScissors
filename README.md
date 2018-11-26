@@ -88,11 +88,11 @@ Debido a la sencillez y velocidad de las partidas, este juego no permite ni carg
 ## Estados del juego e interfaces
 El siguiente diagrama describe los estados (pantallas) que tiene al juego y como se pasa de unas a otras:
 
-![](img/Interfaces2.png)
+![](src/main/resources/static/img/Interfaces2.png)
 
 ## Diagrama UML
 
-![](img/uml.png)
+![](src/main/resources/static/img/uml.png)
 
 ## Niveles
 Los niveles del juego en esta caso son los mapas. Estos mapas se pretende que sean generados de manera semialeatoria, siempre manteniendo una ponderación de distancias para permitir que ambos jugadores tengan las mismas oportunidades de ganar.
@@ -101,7 +101,7 @@ Esto mapas estarán creados como matriz cuadrada en la que solo se crearán medi
 
 Estos mapas tendrán un aspecto similar a este:
 
-![](img/Map.png)
+![](src/main/resources/static/img/Map.png)
 
 ## Progreso del juego
 El juego debido a su carácter arcade no tiene ningún tipo de progresión ya que esta pensado para partidas cortas y divertidas.
@@ -114,7 +114,7 @@ Manteniendo el estilo 8-bit mencionado para el apartado artístico, la música y
 Los assets que se readilizarán guardando un estilo simplista para intentar conseguir un acabado lo mas cercano a los 8 bits.
 Se pretende conseguir con poca cantidad de elementos pero muy concretos, como los que se muestran a continuación:
 
-![](img/Assets.png)
+![](src/main/resources/static/img/Assets.png)
 
 ## Detalles de producción
 + **Fecha de inicio:** 24/09/2018
