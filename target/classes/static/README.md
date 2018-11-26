@@ -125,6 +125,12 @@ Se pretende conseguir con poca cantidad de elementos pero muy concretos, como lo
 + Manejar de manera correcta variables locales y globales es muy importante para no sobrecargar Phaser.
 + Meter fuentes personalizadas en Phaser se hace en formato bitmap. A estas fuentes, Phaser, no te permite cambiarles el color por código.
 
+## Lecciones aprendidas en la fase 3
++ API rest es más facil de lo que pueda parece a primera vista.
++ Utilizar los callbacks es muy importante.
++ Temporizar las escenas genera muchos bugs.
++ Testear con dos instancias de webgGL es complicado.
+
 ## A implementar en proxima versión
 + Animaciones
 + Sonido ambiental
