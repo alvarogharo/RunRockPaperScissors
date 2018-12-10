@@ -55,6 +55,23 @@ RunRockPaperScissors.gameState.prototype = {
 
         //Creating the map
         this.map = new Map();
+
+        //Get server map
+        /*this.getGameMap(function(gameMap){
+            
+            serverMap = gameMap;
+            console.log(serverMap);
+
+            //If map has already been played generate another one
+            if (lastMap != null && compareMaps(serverMap,lastMap)){
+                getRandomGameMap(function(gameMap){
+                    //console.log(gameMap);
+                    serverMap = gameMap;
+                });
+            }
+            lastMap = serverMap;
+        });*/
+
         this.map.createLevel(serverMap);
 
         auxMap = this.map;
@@ -356,6 +373,15 @@ RunRockPaperScissors.gameState.prototype = {
             play = true;
             this.startTimer();
         }
+    },
+
+    //Gets the server gamemap
+    getGameMap: function (callback) {
+        $.ajax({
+            url: loc+'map',
+        }).done(function (data) {
+            callback(data);
+        })
     },
 
     //Get player position and executes callback when finished

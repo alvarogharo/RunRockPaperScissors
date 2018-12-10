@@ -5,6 +5,7 @@ RunRockPaperScissors.mainMenuState = function(game) {
 
     //State variables
     var restart;
+    var replay;
 }
 
 RunRockPaperScissors.mainMenuState.prototype = {
@@ -35,6 +36,7 @@ RunRockPaperScissors.mainMenuState.prototype = {
 
         var scale = 12;
         restart = false;
+        replay = false;
         
         //Texts
         var text = new Array(); 

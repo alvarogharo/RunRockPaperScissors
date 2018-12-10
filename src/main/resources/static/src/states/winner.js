@@ -62,6 +62,7 @@ RunRockPaperScissors.winnerState.prototype = {
         game.sound.play('buttonClicked');
         score = [0,0];
         restart = true;
+        replay = false;
         game.state.start('waitingState');
     },
 
@@ -71,6 +72,7 @@ RunRockPaperScissors.winnerState.prototype = {
         score = [0,0];
         host = false;
         id = 0;
+        replay = false;
         this.getNumPlayers(function(data){
             console.log(data);
             if (data.length > 0){

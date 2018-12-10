@@ -8,7 +8,7 @@ RunRockPaperScissors.waitingState = function(game) {
     //State variables
     var ready;
     this.timer;
-    var once
+    var once;
 
 }
 
@@ -19,7 +19,7 @@ RunRockPaperScissors.waitingState.prototype = {
     create: function() {
         once = false;
         ready = 0;
-        if (!restart){
+        if (!restart && !replay){
             lastMap = null;
             serverMap = null;
         }
