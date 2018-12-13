@@ -9,7 +9,6 @@ RunRockPaperScissors.waitingState = function(game) {
     var ready;
     this.timer;
     var once;
-
 }
 
 var texts;
@@ -38,20 +37,33 @@ RunRockPaperScissors.waitingState.prototype = {
         this.timer = 0;
 
         //Get server map
-        this.getGameMap(function(gameMap){
-            
-            serverMap = gameMap;
-            console.log(serverMap);
-
-            //If map has already been played generate another one
-            if (lastMap != null && compareMaps(serverMap,lastMap)){
-                getRandomGameMap(function(gameMap){
-                    //console.log(gameMap);
+        if (host){    
+            getRandomGameMap(function(gameMap){
+                serverMap = gameMap;
+                lastMap = serverMap;
+                if (restart){
+                    console.log("Host esta ready");
+                    $.ajax({
+                        method: "POST",
+                        url: loc+'ready',
+                        processData: false,
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                    }).done(function (data) {
+                    })
+                }
+            });
+        }else{
+            if (!restart){
+                this.getGameMap(function(gameMap){
+                        
                     serverMap = gameMap;
+                    lastMap = serverMap;
+                    game.state.start('gameState');
                 });
             }
-            lastMap = serverMap;
-        });
+        }
     },
 
     update: function() {
@@ -70,29 +82,38 @@ RunRockPaperScissors.waitingState.prototype = {
                     game.state.start('gameState');
                 }
             });
-        }else{
-            if (host){
-                if(!once){
-                    once = true;
-                    this.ready();
-                }
-                this.getReady(function(data){
-                    if (data > 1){
-                        game.state.start('gameState');
-                    } 
-                })
-            }else{
-                if(!once){
-                    once = true;
-                    this.ready();
-                }
-                this.getReady(function(data){
-                    if (data > 1){
-                        game.state.start('gameState');
-                    } 
-                })
-            }
         }
+
+        if (!host){
+            this.getReady(function(data){
+                ready = data;
+            });
+
+            if (ready == 1 && !once){
+                once = true;
+                this.getGameMap(function(gameMap){
+                
+                    serverMap = gameMap;
+                    $.ajax({
+                        method: "POST",
+                        url: loc+'ready',
+                        processData: false,
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                    })
+                    lastMap = serverMap;
+                    game.state.start('gameState');
+                });
+            }
+        }else{
+            this.getReady(function(data){
+                if (data > 1){
+                    lastMap = serverMap;
+                    game.state.start('gameState');
+                } 
+            })
+        }     
     },
 
     //Updates timmer and animate text
@@ -130,17 +151,8 @@ RunRockPaperScissors.waitingState.prototype = {
         })
     },
 
-    //Gets the number of players ready
-    getReady: function (callback) {
-        $.ajax({
-            url: loc+'ready',
-        }).done(function (data) {
-            callback(data);
-        })
-    },
-
     //Increments ready players by one
-    ready: function () {
+    ready: function() {
         $.ajax({
             method: "POST",
             url: loc+'ready',
@@ -150,7 +162,29 @@ RunRockPaperScissors.waitingState.prototype = {
             },
         }).done(function (data) {
         })
-    }
+    },
+
+    //Gets the number of players ready
+    getReady: function (callback) {
+        $.ajax({
+            url: loc+'ready',
+        }).done(function (data) {
+            callback(data);
+        })
+    },
+}
+
+//Increments ready players by one
+function ready() {
+    $.ajax({
+        method: "POST",
+        url: loc+'ready',
+        processData: false,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }).done(function (data) {
+    })
 }
 
 //Get a random server map

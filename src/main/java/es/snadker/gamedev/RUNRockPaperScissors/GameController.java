@@ -78,6 +78,7 @@ public class GameController {
 	//Gets the number players ready
 	@GetMapping(value = "/ready")
 	public int getReady() {
+		System.out.println("Ready: "+ restartCount.intValue());
 		return restartCount.intValue();
 	}
 	

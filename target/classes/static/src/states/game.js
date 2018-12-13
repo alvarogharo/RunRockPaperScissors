@@ -20,6 +20,9 @@ RunRockPaperScissors.gameState = function(game) {
     
     //State variables
     var play;
+
+    var p1Pos;
+    var p2Pos;
 }
 
 var auxMap;
@@ -57,34 +60,46 @@ RunRockPaperScissors.gameState.prototype = {
         this.map = new Map();
 
         //Get server map
-        this.getGameMap(function(gameMap){
-            
-            serverMap = gameMap;
-            console.log(serverMap);
+        /*if (replay){
 
-            //If map has already been played generate another one
-            if (lastMap != null && compareMaps(serverMap,lastMap)){
-                getRandomGameMap(function(gameMap){
-                    //console.log(gameMap);
-                    serverMap = gameMap;
-                });
-            }
-            lastMap = serverMap;
-        });
+            this.getGameMap(function(gameMap){
+                
+                serverMap = gameMap;
+                //console.log(serverMap);
+                console.log("ServerMap: "+serverMap);
+                console.log("LastMap: "+lastMap);
+                
+
+                //If map has already been played generate another one
+                if (lastMap != null && compareMaps(serverMap,lastMap)){
+                    var that = this;
+                    console.log("That: "+that);
+                    getRandomGameMap(function(gameMap,that){
+                        //console.log(gameMap);
+                        serverMap = gameMap;
+                        lastMap = serverMap;
+                        initializeMap(that);
+                    });
+                }else{
+                    lastMap = serverMap;
+                    var that = this;
+                    initializeMap(that);
+                }
+            });
+        }else{
+            var that = this;
+            initializeMap(that);
+        }*/
 
         this.map.createLevel(serverMap);
-
         auxMap = this.map;
-
-        //INITIALIZE PLAYERS
-
-        //Creating the players
-        var p1Pos = this.map.p1Pos;
-        var p2Pos = this.map.p2Pos;
+        
+        p1Pos = this.map.p1Pos;
+        p2Pos = this.map.p2Pos;
 
         this.p1 = new Player(p1Pos[0],p1Pos[1],'p1');
         this.p2 = new Player(p2Pos[0],p2Pos[1],'p2');
-        
+            
         //Updating player initial position
         this.p1.putPlayer();
         this.p2.putPlayer();
@@ -454,4 +469,20 @@ RunRockPaperScissors.gameState.prototype = {
         }).done(function (data) {
         })
     }
+}
+
+function initializeMap(that){
+    
+    that.map.createLevel(serverMap);
+    auxMap = that.map;
+    
+    p1Pos = that.map.p1Pos;
+    p2Pos = that.map.p2Pos;
+
+    that.p1 = new Player(p1Pos[0],p1Pos[1],'p1');
+    that.p2 = new Player(p2Pos[0],p2Pos[1],'p2');
+        
+    //Updating player initial position
+    that.p1.putPlayer();
+    that.p2.putPlayer();
 }

@@ -44,7 +44,8 @@ RunRockPaperScissors.scoreState.prototype = {
                 game.state.start('winnerState', true, false, 2);
             }else if(score[0] < mode && score[1] < mode) {
                 replay = true;
-                game.state.start('gameState');
+                restart = true;
+                game.state.start('waitingState');
             }
             
         }
