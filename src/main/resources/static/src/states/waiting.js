@@ -90,7 +90,7 @@ RunRockPaperScissors.waitingState.prototype = {
             });
 
             if (ready == 1 && !once){
-                once = true;
+                once = true;//websoce
                 this.getGameMap(function(gameMap){
                 
                     serverMap = gameMap;
