@@ -120,7 +120,6 @@ RunRockPaperScissors.gameModeState.prototype = {
                 "Content-Type": "application/json"
             },
         }).done(function (data) {
-            console.log("Actualizada posicion de player 1: " + JSON.stringify(data))
         })
     },
 

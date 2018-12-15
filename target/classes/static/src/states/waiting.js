@@ -42,7 +42,6 @@ RunRockPaperScissors.waitingState.prototype = {
                 serverMap = gameMap;
                 lastMap = serverMap;
                 if (restart){
-                    console.log("Host esta ready");
                     $.ajax({
                         method: "POST",
                         url: loc+'ready',

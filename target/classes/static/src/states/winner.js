@@ -74,7 +74,6 @@ RunRockPaperScissors.winnerState.prototype = {
         id = 0;
         replay = false;
         this.getNumPlayers(function(data){
-            console.log(data);
             if (data.length > 0){
                 deleteEverything();
             }else{

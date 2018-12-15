@@ -5,9 +5,6 @@ RunRockPaperScissors.gameState = function(game) {
     this.p2;
 
     this.cursors;
-    /*this.wasd;
-    this.onceP1;
-    this.onceP2;*/
 
     //Timer variables
     var timer;
@@ -50,46 +47,12 @@ RunRockPaperScissors.gameState.prototype = {
 
     create: function() {
         var scale = 8;
-        /*this.onceP1 = false;
-        this.onceP2 = false;*/
         countDown = 3;
         timer = 5;
         play = false;
 
         //Creating the map
         this.map = new Map();
-
-        //Get server map
-        /*if (replay){
-
-            this.getGameMap(function(gameMap){
-                
-                serverMap = gameMap;
-                //console.log(serverMap);
-                console.log("ServerMap: "+serverMap);
-                console.log("LastMap: "+lastMap);
-                
-
-                //If map has already been played generate another one
-                if (lastMap != null && compareMaps(serverMap,lastMap)){
-                    var that = this;
-                    console.log("That: "+that);
-                    getRandomGameMap(function(gameMap,that){
-                        //console.log(gameMap);
-                        serverMap = gameMap;
-                        lastMap = serverMap;
-                        initializeMap(that);
-                    });
-                }else{
-                    lastMap = serverMap;
-                    var that = this;
-                    initializeMap(that);
-                }
-            });
-        }else{
-            var that = this;
-            initializeMap(that);
-        }*/
 
         this.map.createLevel(serverMap);
         auxMap = this.map;
