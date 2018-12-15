@@ -12,8 +12,6 @@ RunRockPaperScissors.gameModeState = function(game) {
 
     //Once executer varible
     var doOne;
-
-    var loc
 }
 
 RunRockPaperScissors.gameModeState.prototype = {
@@ -35,10 +33,11 @@ RunRockPaperScissors.gameModeState.prototype = {
     },
 
     create: function() {
-        loc = window.location.href; 
+        
         doOne = true;
         matchCreated = null;
         restart = false;
+        this.intiWS();
 
         //Text
         var text = game.add.bitmapText(130, 100+50, 'myFont', 'GAME', 120);
@@ -47,13 +46,7 @@ RunRockPaperScissors.gameModeState.prototype = {
         text.smoothed = false;
         
         //Get if the match been created
-        this.getNumPlayers(function (numPlayers) {
-			if (numPlayers.length == 0) {
-                matchCreated = false;
-			}else{
-                matchCreated = true;
-            }
-        });
+        this.getNumPlayers();
     },
     update: function(){
         //Create diferent buttons depending on the matchcreated state
@@ -101,55 +94,64 @@ RunRockPaperScissors.gameModeState.prototype = {
         }
     },
 
+    intiWS: function(){
+        ws.onmessage = function (message) {
+            if (debug) {
+                console.log('[DEBUG-WS] Se ha recibido un mensaje: ' + message.data);
+            }
+
+            var msg = JSON.parse(message.data);
+
+            console.log('INFO RECIBIDA ' + msg.type);
+
+            switch (msg.type) {
+                case "N_PLAYERS":
+                console.log("NPlayers: "+ msg.nPlayers);
+                    if (msg.nPlayers == 0) {
+                        matchCreated = false;
+                    }else{
+                        matchCreated = true;
+                    }
+                    break;
+                case "MODE":
+                    console.log("Mode: "+ msg.gameMode);
+                    mode = msg.gameMode;
+                    game.state.start('waitingState');
+                    break;
+            }
+        }
+    },
+
     //Get the numbres of players in server
-    getNumPlayers: function (callback) {
-        $.ajax({
-            url: loc+'game',
-        }).done(function (data) {
-            callback(data);
-        })
+    getNumPlayers: function () {
+        data = {
+            type: 'GET_N_PLAYERS'
+        }
+        ws.send(JSON.stringify(data));
     },
     
     //create a player in server
     createPlayer: function () {
-        $.ajax({
-            method: "POST",
-            url: loc+'game',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }).done(function (data) {
-        })
+        data = {
+            type: 'CREATE_PLAYER'
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Updates server game mode
     putMode() {
-        $.ajax({
-            method: "PUT",
-            url: loc+'game/',
-            data: JSON.stringify(mode),
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-        	//console.log("Actualizada posicion de player 1: " + JSON.stringify(data))
-        })
+        data = {
+            type: 'UPDATE_MODE',
+            gameMode: mode
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Obtains server game mode
     getMode: function() {
-        $.ajax({
-            method: "GET",
-            url: loc+'mode/',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-            mode = data;
-            game.state.start('waitingState');
-        })
+        data = {
+            type: 'GET_MODE',
+        }
+        ws.send(JSON.stringify(data));
     }
 }

@@ -24,6 +24,7 @@ public class GameHandler  extends TextWebSocketHandler{
 	// connection is opened and ready for use.
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessions.add(session);
+		System.out.println("Conected");
 	}
 	
 	// Invoked after the WebSocket connection has been closed by either side, or
@@ -42,28 +43,51 @@ public class GameHandler  extends TextWebSocketHandler{
 			ObjectNode json = mapper.createObjectNode();
 
 			switch (node.get("type").asText()) {
-			case "JOIN":
-				if (gameController.getPlayers() < 2) {
-					Player player = gameController.newPlayer();
+			
+			case "GET_N_PLAYERS":
 
-					ObjectNode jsonPlayer = mapper.createObjectNode();
-					jsonPlayer.put("id", player.getId());
-					jsonPlayer.put("x", player.getX());
-					jsonPlayer.put("y", player.getY());
-					jsonPlayer.put("score", player.getScore());
+				json.put("type", "N_PLAYERS");
+				json.put("nPlayers", gameController.getPlayers());
 
-					json.put("type", "PLAYER_CREATED");
-					json.putPOJO("player", jsonPlayer);
-					//json.putPOJO("player", player);
-				} else {
-					json.put("type", "GAME_CPMPLETE");
-				}
 				session.sendMessage(new TextMessage(json.toString()));
 
 				if (debug)
 					System.out.println("[DEBUG] " + json.toString());
 				break;
+			case "CREATE_PLAYER":
+				gameController.newPlayer();
+				break;
+			case "UPDATE_MODE":
+				gameController.updateMode(node.get("gameMode").asInt());
+				break;
+			case "GET_MODE":
+				json.put("type", "MODE");
+				json.put("gameMode", gameController.getMode());
 
+				session.sendMessage(new TextMessage(json.toString()));
+				break;
+			case "GET_GAMEMAP":
+				json.put("type", "GAMEMAP");
+				json.put("gameMap", gameController.getMap().toString());
+
+				session.sendMessage(new TextMessage(json.toString()));
+				break;
+			case "GET_RANDOM_MAP":
+				json.put("type", "RANDOM_MAP");
+				json.put("gameMap", gameController.getRandomMap().toString());
+
+				session.sendMessage(new TextMessage(json.toString()));
+				break;
+			case "READY":
+				gameController.ready();
+				break;
+			case "GET_READY":
+				json.put("type", "READY");
+				json.put("ready", gameController.getReady());
+
+				session.sendMessage(new TextMessage(json.toString()));
+				break;
+				
 			default:
 				break;
 			}

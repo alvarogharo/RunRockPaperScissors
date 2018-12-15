@@ -7,6 +7,10 @@ RunRockPaperScissors.bootState = function(game) {
     var score;
     var id;
     var otherId;
+
+    var loc;
+    var ws;
+    var debug;
 }
 
 RunRockPaperScissors.bootState.prototype = {
@@ -20,8 +24,36 @@ RunRockPaperScissors.bootState.prototype = {
 
     create: function() {
         //Initialization
+        debug = true;
+        loc = window.location.href;
         score = new Array(0,0);
         mode = 3;
+
+        this.initWS();
+
         game.state.start('mainMenuState');
+    },
+
+    initWS: function(){
+        loc = loc.slice(4, loc.length);
+        console.log("Loc: "+loc);
+
+        ws = new WebSocket('ws'+loc+'runrps');
+
+        ws.onopen = function (event) {
+            if (debug) {
+                console.log('[DEBUG-WS] Se ha establecido conexion con el servidor.');
+            }
+        }
+
+        ws.onerror = function (error) {
+            console.log('[DEBUG-WS] Ha ocurrido un error: ' + error);
+        }
+
+        ws.onclose = function (event) {
+            if (debug) {
+                console.log('[DEBUG-WS] Se ha cerrado la conexion.');
+            }
+        }
     }
 }

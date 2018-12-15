@@ -50,7 +50,7 @@ public class GameMap {
 	@Override
 	public String toString() {
 		String rms;
-		rms = "Rooms: [";
+		rms = "[";
 		for (int i = 0; i < rooms[0].length; i++) {
 			rms += "[";
 			for (int j = 0; j < rooms.length; j++) {
