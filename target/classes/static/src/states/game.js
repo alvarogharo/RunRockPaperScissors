@@ -488,7 +488,3 @@ RunRockPaperScissors.gameState.prototype = {
         ws.send(JSON.stringify(data));
     }
 }
-
-function changeState(p1Item,p2Item){
-    game.state.start('versusState', true, false, p1Item, p2Item);
-}
