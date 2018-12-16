@@ -143,6 +143,7 @@ RunRockPaperScissors.waitingState.prototype = {
                         game.state.start('gameState');
                     }
                     break;
+                
             }
         }
     },

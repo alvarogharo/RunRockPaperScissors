@@ -133,6 +133,18 @@ public class GameHandler  extends TextWebSocketHandler{
 				
 				session.sendMessage(new TextMessage(json.toString()));
 				break;
+			case "DONE":
+				gameController.startTimer();
+				gameController.reset();
+				
+				System.out.println("Timer: "+gameController.getTimer());
+				
+				json.put("type", "CHANGE");
+				
+				for(WebSocketSession w : sessions) {
+					w.sendMessage(new TextMessage(json.toString()));
+				}
+				break;
 				
 			default:
 				break;

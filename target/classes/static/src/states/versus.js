@@ -20,6 +20,7 @@ RunRockPaperScissors.versusState.prototype = {
     init: function(player1, player2){
         this.p1 = player1;
         this.p2 = player2;
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     },
 
     create: function() {
@@ -67,11 +68,6 @@ RunRockPaperScissors.versusState.prototype = {
 
         //Timer initialization
         timer = 0;
-        if (host){
-            this.startTimer();
-            this.resetReady();
-        }
-
         one = true;
     },
 
@@ -105,7 +101,9 @@ RunRockPaperScissors.versusState.prototype = {
             }
 
             if (readyv > 1){
-                game.state.start('scoreState');
+                if (host){
+                    this.done();
+                }
             }
         }
     },
@@ -221,6 +219,9 @@ RunRockPaperScissors.versusState.prototype = {
                 case "READY":
                     readyv = msg.ready;
                     break;
+                case "CHANGE":
+                    changeState(game);
+                    break;
             }
         }
     },
@@ -273,5 +274,17 @@ RunRockPaperScissors.versusState.prototype = {
             type: 'GET_READY'
         }
         ws.send(JSON.stringify(data));
+    },
+
+    //Gets the number of players ready
+    done: function (callback) {
+        data = {
+            type: 'DONE'
+        }
+        ws.send(JSON.stringify(data));
     }
+}
+
+function changeState(game){
+    game.state.start('scoreState');
 }

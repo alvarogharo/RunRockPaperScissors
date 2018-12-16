@@ -24,11 +24,14 @@ RunRockPaperScissors.gameState = function(game) {
     var auxP1;
     var auxP2;
     var onceg;
+    var once2;
     var readyg;
     this.end;
 }
 
 var auxMap;
+var p1Item;
+var p2Item;
 
 
 RunRockPaperScissors.gameState.prototype = {
@@ -61,8 +64,11 @@ RunRockPaperScissors.gameState.prototype = {
         timer = 5;
         play = false;
         onceg = false;
+        once2 = false;
         readyg = 0;
         this.end = false;
+        p1Item = null;
+        p2Item = null;
 
         this.intiWS();
 
@@ -214,8 +220,13 @@ RunRockPaperScissors.gameState.prototype = {
                 this.ready();
             }
 
-            if (readyg > 1){
-                game.state.start('versusState', true, false, this.p1.item, this.p2.item);
+            if (readyg > 1 && !once2){
+                once2 = true;
+                p1Item = this.p1.item;
+                p2Item = this.p2.item;
+                if (host){
+                    this.done();
+                }
             }
         }
         
@@ -400,6 +411,10 @@ RunRockPaperScissors.gameState.prototype = {
                 case "READY":
                     readyg = msg.ready;
                     break;
+                case "CHANGE":
+                    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                    changeState(p1Item,p2Item);
+                    break;
             }
         }
     },
@@ -464,5 +479,18 @@ RunRockPaperScissors.gameState.prototype = {
             type: 'GET_READY'
         }
         ws.send(JSON.stringify(data));
+    },
+
+    //Gets the number of players ready
+    done: function (callback) {
+        data = {
+            type: 'DONE'
+        }
+        ws.send(JSON.stringify(data));
     }
+}
+
+function changeState(p1Item,p2Item){
+    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+    game.state.start('versusState', true, false, p1Item, p2Item);
 }
