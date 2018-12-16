@@ -103,8 +103,8 @@ RunRockPaperScissors.waitingState.prototype = {
 
             switch (msg.type) {
                 case "RANDOM_MAP":
-                    console.log('GameMap: '+ msg.gameMap);
-                    serverMap = msg.gameMap;
+                    console.log(msg.gameMap);
+                    serverMap = eval(msg.gameMap);
                     lastMap = serverMap;
                     if (restart){
                         ready();
@@ -123,8 +123,7 @@ RunRockPaperScissors.waitingState.prototype = {
                     }
                     break;
                 case "GAMEMAP":
-                    console.log('GameMap: '+ msg.gameMap);
-                    serverMap = msg.gameMap;
+                    serverMap =  eval(msg.gameMap);
                     ready();
                     lastMap = serverMap;
                     game.state.start('gameState');

@@ -38,13 +38,13 @@ public class GameMap {
 		rooms = levels.get(aux);
 	}
 	
-	public int[][] getRandomMap(){
+	public String getRandomMap(){
 		Random rand = new Random();
 		int aux = rand.nextInt(levels.size());
 		
 		rooms = levels.get(aux);
 		
-		return rooms;
+		return toString();
 	}
 	
 	@Override
@@ -55,20 +55,24 @@ public class GameMap {
 			rms += "[";
 			for (int j = 0; j < rooms.length; j++) {
 				if(j != rooms.length-1){
-					rms += ""+rooms[j][i]+",";
+					rms += ""+rooms[i][j]+",";
 				}else{
-					rms += ""+rooms[j][i];
+					rms += ""+rooms[i][j];
 				}
 			}
-			rms += "]";
+			if(i != rooms.length-1){
+				rms += "],";
+			}else{
+				rms += "]";
+			}
 		}
 		rms += "]";
 		
 		return rms;
 	}
 
-	public int[][] getRooms() {
-		return rooms;
+	public String getRooms() {
+		return toString();
 	}
 
 	public void setRooms(int[][] rooms) {

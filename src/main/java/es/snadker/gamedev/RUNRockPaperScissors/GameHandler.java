@@ -68,13 +68,13 @@ public class GameHandler  extends TextWebSocketHandler{
 				break;
 			case "GET_GAMEMAP":
 				json.put("type", "GAMEMAP");
-				json.put("gameMap", gameController.getMap().toString());
+				json.put("gameMap", gameController.getMap());
 
 				session.sendMessage(new TextMessage(json.toString()));
 				break;
 			case "GET_RANDOM_MAP":
 				json.put("type", "RANDOM_MAP");
-				json.put("gameMap", gameController.getRandomMap().toString());
+				json.put("gameMap", gameController.getRandomMap());
 
 				session.sendMessage(new TextMessage(json.toString()));
 				break;

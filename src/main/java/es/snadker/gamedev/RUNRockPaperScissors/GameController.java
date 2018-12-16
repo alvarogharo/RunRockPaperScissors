@@ -46,12 +46,12 @@ public class GameController {
 	}
 	
 	//Get the map rooms
-	public int[][] getMap() {
+	public String getMap() {
 		return map.getRooms();
 	}
 	
 	//Gets a random map
-	public int[][] getRandomMap() {
+	public String getRandomMap() {
 		return map.getRandomMap();
 	}
 	
