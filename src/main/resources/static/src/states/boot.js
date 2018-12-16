@@ -24,7 +24,7 @@ RunRockPaperScissors.bootState.prototype = {
 
     create: function() {
         //Initialization
-        debug = true;
+        debug = false;
         loc = window.location.href;
         score = new Array(0,0);
         mode = 3;

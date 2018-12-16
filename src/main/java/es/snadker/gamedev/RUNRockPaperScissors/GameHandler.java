@@ -87,6 +87,44 @@ public class GameHandler  extends TextWebSocketHandler{
 
 				session.sendMessage(new TextMessage(json.toString()));
 				break;
+			case "UPDATE_PLAYER":
+				int[] aux = new int[2];
+				aux[0] = node.get("position").get(0).asInt();
+				aux[1] = node.get("position").get(1).asInt();
+				
+				gameController.updatePlayer(node.get("id").asInt(), aux);
+				
+				break;
+			case "GET_PLAYER":
+				long id = node.get("id").asLong();
+				int[] aux2 = new int[2];
+				
+				aux2[0] = gameController.getPlayerPos(id)[0];
+				aux2[1] = gameController.getPlayerPos(id)[1];
+				
+				String pos = "["+aux2[0]+","+aux2[1]+"]";
+				
+				json.put("type", "PLAYER");
+				json.put("id", node.get("id").asText());
+				json.put("position", pos);
+				
+				session.sendMessage(new TextMessage(json.toString()));
+				break;
+			case "GET_COUNTDOWN":
+				json.put("type", "COUNTDOWN");
+				json.put("countdown", gameController.getTimer());
+				
+				session.sendMessage(new TextMessage(json.toString()));
+				break;
+			case "START_TIMER":
+				gameController.startTimer();
+				break;
+			case "RESTART_TIMER":
+				gameController.restartTimer();
+				break;
+			case "RESET_READY":
+				gameController.reset();
+				break;
 				
 			default:
 				break;

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 public class GameController {
 	
 	//Storage Objects
@@ -57,7 +60,6 @@ public class GameController {
 	
 	//Get timer count
 	public long getTimer() {
-		System.out.println(timer.getCount());
 		return timer.getCount();
 	}
 	
@@ -69,7 +71,6 @@ public class GameController {
 	
 	//Gets the number players ready
 	public int getReady() {
-		System.out.println("Ready: "+ restartCount.intValue());
 		return restartCount.intValue();
 	}
 	
@@ -106,6 +107,7 @@ public class GameController {
 		int[] pos = new int[2];
 		pos[0] = player.getX();
 		pos[1] = player.getY();
+		
 		return pos;
 	}
 	
@@ -119,8 +121,9 @@ public class GameController {
 	//Updates player position by id
 	public int[] updatePlayer(long id, int[] pos) {
 		Player savedPlayer = players.get(id);
-		players.get(id).setX(pos[0]);
-		players.get(id).setY(pos[1]);
+
+		savedPlayer.setX(pos[0]);
+		savedPlayer.setY(pos[1]);
 		return pos;
 	}
 	

@@ -20,6 +20,9 @@ RunRockPaperScissors.gameState = function(game) {
 
     var p1Pos;
     var p2Pos;
+
+    var auxP1;
+    var auxP2;
 }
 
 var auxMap;
@@ -46,10 +49,16 @@ RunRockPaperScissors.gameState.prototype = {
     },
 
     create: function() {
+        
+        console.log("Id: "+id);
+        console.log("otherId: "+otherId);
+
         var scale = 8;
         countDown = 3;
         timer = 5;
         play = false;
+
+        this.intiWS();
 
         //Creating the map
         this.map = new Map();
@@ -185,16 +194,7 @@ RunRockPaperScissors.gameState.prototype = {
             auxP2 = this.p2;
             
             //Get other player position
-            this.getPlayer(function(data){
-                pos = data;
-                if(id == 1){
-                    auxP2.moveServer(auxMap, pos);
-
-                }else{
-                    auxP1.moveServer(auxMap, pos);
-
-                }
-            });
+            this.getPlayer();
 
         }else if (timer < 0){ //When the time its over
             if (host){
@@ -353,99 +353,93 @@ RunRockPaperScissors.gameState.prototype = {
         }
     },
 
-    //Gets the server gamemap
-    getGameMap: function (callback) {
-        $.ajax({
-            url: loc+'map',
-        }).done(function (data) {
-            callback(data);
-        })
+    intiWS: function(){
+        ws.onmessage = function (message) {
+            if (debug) {
+                //console.log('[DEBUG-WS] Se ha recibido un mensaje: ' + message.data);
+            }
+
+            //Increments ready players by one
+            function ready() {
+                data = {
+                    type: 'READY'
+                }
+                ws.send(JSON.stringify(data));
+            }
+
+            var msg = JSON.parse(message.data);
+
+            //console.log('INFO RECIBIDA ' + msg.type);
+
+            switch (msg.type) {
+                case "COUNTDOWN":
+                    if (!play){
+                        
+                        countDown = 3-msg.countdown;
+                    }else{
+                        timer = 30-msg.countdown; 
+                    }
+                    break;
+                case "PLAYER":
+                    pos = eval(msg.position);
+                    //console.log("Cuenta atras!!");
+                    //console.log("id" +msg.id);
+                    //console.log("pos:" +msg.position);
+
+                    if(otherId == 1){
+                        auxP1.moveServer(auxMap, pos);
+
+                    }else{
+                        auxP2.moveServer(auxMap, pos);
+                    }
+                    break;
+            }
+        }
     },
 
     //Get player position and executes callback when finished
     getPlayer: function(callback) {
-        $.ajax({
-            method: "GET",
-            url: loc+'game/' + otherId,
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-            callback(data);
-        })
+        //console.log("Otherid: "+otherId);
+        data = {
+            type: 'GET_PLAYER',
+            id: otherId
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Get timer server value and executes callback when finished
     getCountDown: function(callback) {
-        $.ajax({
-            method: "GET",
-            url: loc+'cd/',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-            if (!play){
-                countDown = 3-data;
-            }else{
-                timer = 5-data; 
-            }
-        })
+
+        data = {
+            type: 'GET_COUNTDOWN'
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Start server timer
     startTimer: function () {
-        $.ajax({
-            method: "POST",
-            url: loc+'cd',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }).done(function (data) {
-        })
+
+        data = {
+            type: 'START_TIMER'
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Resets server timer
     resetTimer: function(callback) {
-        $.ajax({
-            method: "GET",
-            url: loc+'cdRestart/',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-        })
+
+        data = {
+            type: 'RESTART_TIMER'
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Resets server ready people
     resetReady: function () {
-        $.ajax({
-            method: "POST",
-            url: loc+'reset',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }).done(function (data) {
-        })
+
+        data = {
+            type: 'RESET_READY'
+        }
+        ws.send(JSON.stringify(data));
     }
-}
-
-function initializeMap(that){
-    
-    that.map.createLevel(serverMap);
-    auxMap = that.map;
-    
-    p1Pos = that.map.p1Pos;
-    p2Pos = that.map.p2Pos;
-
-    that.p1 = new Player(p1Pos[0],p1Pos[1],'p1');
-    that.p2 = new Player(p2Pos[0],p2Pos[1],'p2');
-        
-    //Updating player initial position
-    that.p1.putPlayer();
-    that.p2.putPlayer();
 }

@@ -160,17 +160,16 @@ function Player(x, y, id){
     this.putPlayer = function() {
         let auxPos;
         auxPos = [this.x,this.y];
+        console.log(JSON.stringify(auxPos));
+        console.log('----------------');
         
-        $.ajax({
-            method: "PUT",
-            url: loc+'game/' + this.id.substring(1,2),
-            data: JSON.stringify(auxPos),
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-        })
+
+        data = {
+            type: 'UPDATE_PLAYER',
+            id: this.id.substring(1,2),
+            position: auxPos
+        }
+        ws.send(JSON.stringify(data));
     }
 
 }
