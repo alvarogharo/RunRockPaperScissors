@@ -1,5 +1,9 @@
 RunRockPaperScissors.scoreState = function(game) {
 
+    this.end;
+
+    var onces;
+    var readys;
 }
 
 var timer;
@@ -9,6 +13,9 @@ RunRockPaperScissors.scoreState.prototype = {
     create: function() {
 
         this.intiWS();
+        this.end = false;
+        onces = false;
+        readys = 0;
 
         //Timer initialization
         timer = 0;
@@ -32,6 +39,7 @@ RunRockPaperScissors.scoreState.prototype = {
         game.sound.play('buttonClicked');
         if (host){
             this.startTimer();
+            this.resetReady();
         }
     },
 
@@ -40,18 +48,29 @@ RunRockPaperScissors.scoreState.prototype = {
         this.getCountDown();
 
         if (timer >= 3){
-            if (host) this.resetTimer();
-            if (score[0] == mode){
-                game.state.start('winnerState', true, false, 1);
-            }else if (score[1] == mode){
-                game.state.start('winnerState', true, false, 2);
-            }else if(score[0] < mode && score[1] < mode) {
-                replay = true;
-                restart = true;
-                once = false;
-                game.state.start('waitingState');
+            this.end = true;
+        }
+
+        if (this.end){
+
+            this.getReady();
+            if (!onces){
+                onces = true;
+                this.ready();
             }
-            
+
+            if (readys > 1){
+                if (score[0] == mode){
+                    game.state.start('winnerState', true, false, 1);
+                }else if (score[1] == mode){
+                    game.state.start('winnerState', true, false, 2);
+                }else if(score[0] < mode && score[1] < mode) {
+                    replay = true;
+                    restart = true;
+                    once = false;
+                    game.state.start('waitingState');
+                }
+            }
         }
     },
 
@@ -68,6 +87,9 @@ RunRockPaperScissors.scoreState.prototype = {
             switch (msg.type) {
                 case "COUNTDOWN":
                     timer = msg.countdown;
+                    break;
+                case "READY":
+                    readys = msg.ready;
                     break;
             }
         }
@@ -96,5 +118,30 @@ RunRockPaperScissors.scoreState.prototype = {
             type: 'START_TIMER'
         }
         ws.send(JSON.stringify(data));
-    } 
+    },
+
+    //Resets server ready people
+    resetReady: function () {
+
+        data = {
+            type: 'RESET_READY'
+        }
+        ws.send(JSON.stringify(data));
+    },
+
+    //Increments ready players by one
+    ready: function() {
+        data = {
+            type: 'READY'
+        }
+        ws.send(JSON.stringify(data));
+    },
+
+    //Gets the number of players ready
+    getReady: function (callback) {
+        data = {
+            type: 'GET_READY'
+        }
+        ws.send(JSON.stringify(data));
+    }
 }

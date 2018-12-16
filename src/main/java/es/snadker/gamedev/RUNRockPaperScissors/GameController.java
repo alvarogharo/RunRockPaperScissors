@@ -60,6 +60,7 @@ public class GameController {
 	
 	//Get timer count
 	public long getTimer() {
+		System.out.println(timer.getCount());
 		return timer.getCount();
 	}
 	

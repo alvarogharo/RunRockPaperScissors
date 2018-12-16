@@ -18,6 +18,8 @@ RunRockPaperScissors.waitingState.prototype = {
 
     create: function() {
         this.intiWS();
+        if (host){
+        this.resetReady();}
         console.log('HOST: '+host);
         once = false;
         readyn = 0;
@@ -173,6 +175,15 @@ RunRockPaperScissors.waitingState.prototype = {
     getReady: function (callback) {
         data = {
             type: 'GET_READY'
+        }
+        ws.send(JSON.stringify(data));
+    },
+
+    //Resets server ready people
+    resetReady: function () {
+
+        data = {
+            type: 'RESET_READY'
         }
         ws.send(JSON.stringify(data));
     },

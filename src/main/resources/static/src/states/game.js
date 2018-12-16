@@ -24,6 +24,8 @@ RunRockPaperScissors.gameState = function(game) {
     var auxP1;
     var auxP2;
     var onceg;
+    var readyg;
+    this.end;
 }
 
 var auxMap;
@@ -59,6 +61,8 @@ RunRockPaperScissors.gameState.prototype = {
         timer = 5;
         play = false;
         onceg = false;
+        readyg = 0;
+        this.end = false;
 
         this.intiWS();
 
@@ -200,12 +204,19 @@ RunRockPaperScissors.gameState.prototype = {
             this.getPlayer();
 
         }else if (timer < 0){ //When the time its over
-            if (host){
-                
-                this.resetTimer();
-                this.resetReady();
+            this.end =true;
+        }
+
+        if (this.end){
+            this.getReady();
+            if (!onceg){
+                onceg = true;
+                this.ready();
             }
-            game.state.start('versusState', true, false, this.p1.item, this.p2.item);
+
+            if (readyg > 1){
+                game.state.start('versusState', true, false, this.p1.item, this.p2.item);
+            }
         }
         
         //Updating hud
@@ -385,6 +396,9 @@ RunRockPaperScissors.gameState.prototype = {
                     }else{
                         auxP2.moveServer(auxMap, pos);
                     }
+                    break;
+                case "READY":
+                    readyg = msg.ready;
                     break;
             }
         }

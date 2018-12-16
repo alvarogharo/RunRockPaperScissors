@@ -7,6 +7,10 @@ RunRockPaperScissors.versusState = function(game) {
     this.wins;
     this.scale;
     this.winner;
+    this.end;
+
+    var readyv;
+    var oncev;
 }
 
 var one;
@@ -21,6 +25,9 @@ RunRockPaperScissors.versusState.prototype = {
     create: function() {
 
         this.intiWS();
+        this.end = false;
+        oncev = false;
+        readyv = 0;
         
         //Initializing scale
         this.scale = 12;
@@ -62,6 +69,7 @@ RunRockPaperScissors.versusState.prototype = {
         timer = 0;
         if (host){
             this.startTimer();
+            this.resetReady();
         }
 
         one = true;
@@ -71,8 +79,7 @@ RunRockPaperScissors.versusState.prototype = {
         this.getCountDown();
 
         if (timer >= 6){
-            if (host) this.resetTimer();
-            game.state.start('scoreState');
+            this.end = true;
         }else if(timer >= 3){
             if (one){
                 one = false;
@@ -87,6 +94,18 @@ RunRockPaperScissors.versusState.prototype = {
             }else{
                 this.wins.visible = true;
                 this.wins.setText('TIE');
+            }
+        }
+
+        if(this.end){
+            this.getReady();
+            if (!oncev){
+                oncev = true;
+                this.ready();
+            }
+
+            if (readyv > 1){
+                game.state.start('scoreState');
             }
         }
     },
@@ -199,6 +218,9 @@ RunRockPaperScissors.versusState.prototype = {
                 case "COUNTDOWN":
                     timer = msg.countdown;
                     break;
+                case "READY":
+                    readyv = msg.ready;
+                    break;
             }
         }
     },
@@ -224,6 +246,31 @@ RunRockPaperScissors.versusState.prototype = {
     startTimer: function () {
         data = {
             type: 'START_TIMER'
+        }
+        ws.send(JSON.stringify(data));
+    },
+
+    //Resets server ready people
+    resetReady: function () {
+
+        data = {
+            type: 'RESET_READY'
+        }
+        ws.send(JSON.stringify(data));
+    },
+
+    //Increments ready players by one
+    ready: function() {
+        data = {
+            type: 'READY'
+        }
+        ws.send(JSON.stringify(data));
+    },
+
+    //Gets the number of players ready
+    getReady: function (callback) {
+        data = {
+            type: 'GET_READY'
         }
         ws.send(JSON.stringify(data));
     }

@@ -21,7 +21,7 @@ public class Timer {
 		currentTime = System.currentTimeMillis();
 		count = currentTime - startTime;
 		count = count /1000;
-		if (count > 100){
+		if (count > 10000){
 			count = 0;
 		}
 		return count;
