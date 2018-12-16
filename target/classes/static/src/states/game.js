@@ -412,8 +412,7 @@ RunRockPaperScissors.gameState.prototype = {
                     readyg = msg.ready;
                     break;
                 case "CHANGE":
-                    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-                    changeState(p1Item,p2Item);
+                    game.state.start('versusState', true, false, p1Item, p2Item);
                     break;
             }
         }
@@ -491,6 +490,5 @@ RunRockPaperScissors.gameState.prototype = {
 }
 
 function changeState(p1Item,p2Item){
-    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
     game.state.start('versusState', true, false, p1Item, p2Item);
 }

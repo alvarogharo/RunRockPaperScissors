@@ -20,7 +20,6 @@ RunRockPaperScissors.versusState.prototype = {
     init: function(player1, player2){
         this.p1 = player1;
         this.p2 = player2;
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     },
 
     create: function() {
@@ -220,7 +219,7 @@ RunRockPaperScissors.versusState.prototype = {
                     readyv = msg.ready;
                     break;
                 case "CHANGE":
-                    changeState(game);
+                    game.state.start('scoreState');
                     break;
             }
         }
@@ -283,8 +282,4 @@ RunRockPaperScissors.versusState.prototype = {
         }
         ws.send(JSON.stringify(data));
     }
-}
-
-function changeState(game){
-    game.state.start('scoreState');
 }
