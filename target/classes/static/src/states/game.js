@@ -198,6 +198,7 @@ RunRockPaperScissors.gameState.prototype = {
 
         }else if (timer < 0){ //When the time its over
             if (host){
+                
                 this.resetTimer();
                 this.resetReady();
             }
@@ -356,15 +357,7 @@ RunRockPaperScissors.gameState.prototype = {
     intiWS: function(){
         ws.onmessage = function (message) {
             if (debug) {
-                //console.log('[DEBUG-WS] Se ha recibido un mensaje: ' + message.data);
-            }
-
-            //Increments ready players by one
-            function ready() {
-                data = {
-                    type: 'READY'
-                }
-                ws.send(JSON.stringify(data));
+                console.log('[DEBUG-WS] Se ha recibido un mensaje: ' + message.data);
             }
 
             var msg = JSON.parse(message.data);
@@ -377,14 +370,11 @@ RunRockPaperScissors.gameState.prototype = {
                         
                         countDown = 3-msg.countdown;
                     }else{
-                        timer = 30-msg.countdown; 
+                        timer = 5-msg.countdown; 
                     }
                     break;
                 case "PLAYER":
                     pos = eval(msg.position);
-                    //console.log("Cuenta atras!!");
-                    //console.log("id" +msg.id);
-                    //console.log("pos:" +msg.position);
 
                     if(otherId == 1){
                         auxP1.moveServer(auxMap, pos);
@@ -408,7 +398,7 @@ RunRockPaperScissors.gameState.prototype = {
     },
 
     //Get timer server value and executes callback when finished
-    getCountDown: function(callback) {
+    getCountDown: function() {
 
         data = {
             type: 'GET_COUNTDOWN'

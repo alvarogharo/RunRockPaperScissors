@@ -80,6 +80,7 @@ public class GameHandler  extends TextWebSocketHandler{
 				break;
 			case "READY":
 				gameController.ready();
+				System.out.println("Ready people: "+gameController.getReady());
 				break;
 			case "GET_READY":
 				json.put("type", "READY");
@@ -124,6 +125,13 @@ public class GameHandler  extends TextWebSocketHandler{
 				break;
 			case "RESET_READY":
 				gameController.reset();
+				break;
+			case "DELETE_ALL":
+				gameController.erraseEverything();
+				
+				json.put("type", "ALL_DELETED");
+				
+				session.sendMessage(new TextMessage(json.toString()));
 				break;
 				
 			default:

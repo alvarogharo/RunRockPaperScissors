@@ -27,6 +27,8 @@ RunRockPaperScissors.winnerState.prototype = {
     },
 
     create: function() {
+
+        this.intiWS();
         //Scale intialization
         var scale = 45;
 
@@ -73,36 +75,49 @@ RunRockPaperScissors.winnerState.prototype = {
         host = false;
         id = 0;
         replay = false;
-        this.getNumPlayers(function(data){
-            if (data.length > 0){
-                deleteEverything();
-            }else{
-                game.state.start('mainMenuState');
+        this.getNumPlayers();
+    },
+
+    intiWS: function(){
+        ws.onmessage = function (message) {
+            if (debug) {
+                console.log('[DEBUG-WS] Se ha recibido un mensaje: ' + message.data);
             }
-        });
+
+            var msg = JSON.parse(message.data);
+
+            //console.log('INFO RECIBIDA ' + msg.type);
+
+            switch (msg.type) {
+                case "N_PLAYERS":
+                    if (msg.nPlayers > 0){
+                        deleteEverything();
+                    }else{
+                        game.state.start('mainMenuState');
+                    }
+                    break;
+                case "ALL_DELETED":
+                    game.state.start('mainMenuState');
+                    break;
+            }
+        }
     },
 
     //Get the numbres of players in server
-    getNumPlayers: function (callback) {
-        $.ajax({
-            url: loc+'game',
-        }).done(function (data) {
-            callback(data);
-        })
+    getNumPlayers: function () {
+        data = {
+            type: 'GET_N_PLAYERS'
+        }
+        ws.send(JSON.stringify(data));
     },
 }
 
 //Deletes everything from server
 function deleteEverything() {
-    $.ajax({
-        method: "DELETE",
-        url: loc+'game/',
-        processData: false,
-        headers: {
-            "Content-Type": "application/json"
-        },
-    }).done(function (data) {
-        game.state.start('mainMenuState');
-    })
+
+    data = {
+        type: 'DELETE_ALL'
+    }
+    ws.send(JSON.stringify(data));
 }
 

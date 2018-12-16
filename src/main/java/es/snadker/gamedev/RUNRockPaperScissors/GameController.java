@@ -75,8 +75,8 @@ public class GameController {
 	}
 	
 	//Increments players ready by one
-	public void ready() {
-		restartCount.getAndIncrement();
+	public int ready() {
+		return (int)restartCount.getAndIncrement();
 	}
 	
 	//Reset timer count

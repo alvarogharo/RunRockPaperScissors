@@ -6,19 +6,21 @@ RunRockPaperScissors.waitingState = function(game) {
     var lastMap;
 
     //State variables
-    var ready;
+    
     this.timer;
     var once;
 }
 
 var texts;
+var readyn;
 
 RunRockPaperScissors.waitingState.prototype = {
 
     create: function() {
         this.intiWS();
+        console.log('HOST: '+host);
         once = false;
-        ready = 0;
+        readyn = 0;
         if (!restart && !replay){
             lastMap = null;
             serverMap = null;
@@ -48,21 +50,24 @@ RunRockPaperScissors.waitingState.prototype = {
     },
 
     update: function() {
+        this.getReady();
         this.updateTimer();
-
+    
         if (!restart){
             this.getNumPlayers();
         }
 
         if (!host){
-            this.getReady();
+            
+            console.log("Number: "+readyn);
+            console.log(readyn == 1);
+            console.log("Once!!!!" +once);
 
-            if (ready == 1 && !once){
+            if (readyn == 1 && !once){
+                
                 once = true;
                 this.getGameMap();
             }
-        }else{
-            this.getReady();
         }     
     },
 
@@ -129,8 +134,9 @@ RunRockPaperScissors.waitingState.prototype = {
                     game.state.start('gameState');
                     break;
                 case "READY":
-                    ready = msg.ready;
-                    if (ready > 1 && !host){
+                    readyn = msg.ready;
+                    console.log(readyn);
+                    if (readyn > 1 && host){
                         lastMap = serverMap;
                         game.state.start('gameState');
                     }

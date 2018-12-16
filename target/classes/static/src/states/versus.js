@@ -19,6 +19,9 @@ RunRockPaperScissors.versusState.prototype = {
     },
 
     create: function() {
+
+        this.intiWS();
+        
         //Initializing scale
         this.scale = 12;
 
@@ -182,43 +185,46 @@ RunRockPaperScissors.versusState.prototype = {
         }
     },
 
+    intiWS: function(){
+        ws.onmessage = function (message) {
+            if (debug) {
+                console.log('[DEBUG-WS] Se ha recibido un mensaje: ' + message.data);
+            }
+
+            var msg = JSON.parse(message.data);
+
+            //console.log('INFO RECIBIDA ' + msg.type);
+
+            switch (msg.type) {
+                case "COUNTDOWN":
+                    timer = msg.countdown;
+                    break;
+            }
+        }
+    },
+
     //Gets server timer
     getCountDown: function(callback) {
-        $.ajax({
-            method: "GET",
-            url: loc+'cd/',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-            timer = data;
-        })
+
+        data = {
+            type: 'GET_COUNTDOWN'
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Resets server timer
-    resetTimer: function(callback) {
-        $.ajax({
-            method: "GET",
-            url: loc+'cdRestart/',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).done(function (data) {
-        })
+    resetTimer: function() {
+        data = {
+            type: 'RESTART_TIMER'
+        }
+        ws.send(JSON.stringify(data));
     },
 
     //Starts server timer
     startTimer: function () {
-        $.ajax({
-            method: "POST",
-            url: loc+'cd',
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }).done(function (data) {
-        })
+        data = {
+            type: 'START_TIMER'
+        }
+        ws.send(JSON.stringify(data));
     }
 }
